@@ -1,0 +1,1951 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manifiesto de Ruta — Guía Operativa Trucking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F2EA;
+    --paper-2:#EBE6D8;
+    --asphalt:#193251;
+    --asphalt-2:#24456F;
+    --steel:#3A4557;
+    --steel-soft:#5C6B85;
+    --orange:#E8590C;
+    --orange-dark:#C24A08;
+    --yellow:#FFC845;
+    --green:#2E7D46;
+    --green-bg:#E4F3E8;
+    --red:#C4392B;
+    --red-bg:#FBE7E4;
+    --line: rgba(24,27,32,0.14);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--asphalt);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 80px;}
+
+  /* ---------- Header: manifest strip ---------- */
+  .manifest-head{
+    background:var(--asphalt);
+    color:var(--paper);
+    border-radius:10px;
+    padding:26px 30px;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:22px;
+    background-image:
+      repeating-linear-gradient(-45deg, rgba(255,200,69,0.06) 0 14px, transparent 14px 28px);
+  }
+  .manifest-head::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:8px;
+    background:repeating-linear-gradient(-55deg, var(--yellow) 0 18px, var(--asphalt) 18px 36px);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    color:var(--yellow);
+    text-transform:uppercase;
+    margin:10px 0 6px;
+  }
+  h1{
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+    font-size:clamp(28px,4vw,42px);
+    margin:0 0 8px;
+  }
+  .manifest-head p{
+    max-width:640px;
+    color:#C9CDD6;
+    font-size:14.5px;
+    line-height:1.55;
+    margin:0;
+  }
+
+  /* ---------- Lead-type selector ---------- */
+  .routes{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:22px;
+  }
+  @media(max-width:760px){.routes{grid-template-columns:1fr;}}
+  .route-btn{
+    background:#fff;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 15px;
+    text-align:left;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+    transition:border-color .15s, transform .1s, box-shadow .15s;
+    position:relative;
+  }
+  .route-btn:hover{transform:translateY(-1px); box-shadow:0 4px 14px rgba(24,27,32,0.08);}
+  .route-btn .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    color:var(--steel-soft);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .route-btn .title{
+    font-family:'Oswald',sans-serif;
+    font-size:19px;
+    font-weight:600;
+    margin-top:4px;
+    color:var(--asphalt);
+  }
+  .route-btn .desc{font-size:12.5px;color:var(--steel-soft);margin-top:4px;line-height:1.4;}
+  .route-btn.active{
+    border-color:var(--orange);
+    box-shadow:0 0 0 3px rgba(232,89,12,0.12);
+  }
+  .route-btn.active .title{color:var(--orange-dark);}
+
+  /* ---------- Layout: main + tools sidebar ---------- */
+  .grid{display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start;}
+  @media(max-width:940px){.grid{grid-template-columns:1fr;}}
+
+  .card{
+    background:#fff;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:22px 24px;
+    margin-bottom:18px;
+  }
+  .card h2{
+    font-family:'Oswald',sans-serif;
+    font-size:20px;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    margin:0 0 4px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .card h2 .num{
+    background:var(--asphalt);
+    color:var(--yellow);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    padding:3px 8px;
+    border-radius:5px;
+  }
+  .card .sub{font-size:13px; color:var(--steel-soft); margin:0 0 14px; line-height:1.5;}
+
+  .script-box{
+    background:var(--paper-2);
+    border-left:3px solid var(--orange);
+    border-radius:0 8px 8px 0;
+    padding:14px 16px;
+    font-size:14px;
+    line-height:1.6;
+    color:var(--asphalt);
+    margin-bottom:6px;
+  }
+  .script-box em{color:var(--steel-soft); font-style:normal; font-size:12px; display:block; margin-bottom:5px; font-family:'IBM Plex Mono',monospace; letter-spacing:.04em; text-transform:uppercase;}
+
+  ul.qlist{list-style:none; margin:0; padding:0;}
+  ul.qlist li{
+    padding:8px 0 8px 22px;
+    position:relative;
+    font-size:13.8px;
+    border-bottom:1px dotted var(--line);
+    line-height:1.4;
+  }
+  ul.qlist li:last-child{border-bottom:none;}
+  ul.qlist li::before{
+    content:"→";
+    position:absolute; left:0; color:var(--orange); font-weight:700;
+  }
+
+  /* ---------- Checklist fields ---------- */
+  .field-group{margin-bottom:16px;}
+  .field-group h3{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--steel-soft);
+    margin:0 0 8px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:6px;
+  }
+  .check-grid{display:grid; grid-template-columns:1fr 1fr; gap:2px 18px;}
+  @media(max-width:600px){.check-grid{grid-template-columns:1fr;}}
+  .check-row{
+    display:flex; align-items:flex-start; gap:9px;
+    padding:6px 4px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:13.5px;
+  }
+  .check-row:hover{background:var(--paper-2);}
+  .check-row input{
+    margin-top:3px;
+    width:15px;height:15px;
+    accent-color:var(--orange);
+    flex-shrink:0;
+  }
+  .check-row.checked label{ color:var(--steel-soft); text-decoration:line-through; }
+  .check-row label{cursor:pointer;}
+
+  .progress-wrap{
+    display:flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    margin-bottom:14px;
+    color:var(--steel-soft);
+  }
+  .progress-bar{flex:1; height:8px; background:var(--paper-2); border-radius:5px; overflow:hidden;}
+  .progress-fill{height:100%; background:linear-gradient(90deg,var(--orange),var(--yellow)); width:0%; transition:width .25s;}
+
+  /* ---------- Tools sidebar ---------- */
+  .tools-card{
+    background:var(--asphalt);
+    color:var(--paper);
+    border-radius:10px;
+    padding:20px;
+    position:sticky;
+    top:20px;
+  }
+  .tools-card h2{
+    font-family:'Oswald',sans-serif;
+    font-size:16px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin:0 0 4px;
+    color:#fff;
+  }
+  .tools-card .sub{font-size:11.5px; color:#9CA3B0; margin:0 0 16px;}
+  .tool-block{
+    background:var(--asphalt-2);
+    border-radius:8px;
+    padding:13px 14px;
+    margin-bottom:10px;
+  }
+  .tool-block .t-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--yellow);
+    margin-bottom:6px;
+    display:block;
+  }
+  .tool-block .t-note{font-size:11px; color:#9CA3B0; margin:4px 0 8px; line-height:1.4;}
+  .tool-block input[type=text]{
+    width:100%;
+    background:#102640;
+    border:1px solid #35577F;
+    color:var(--paper);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    padding:8px 9px;
+    border-radius:6px;
+    margin-bottom:7px;
+    letter-spacing:.02em;
+  }
+  .tool-block input[type=text]::placeholder{color:#5C6470;}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    width:100%;
+    background:var(--orange);
+    color:#fff;
+    border:none;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:12.5px;
+    padding:9px 10px;
+    border-radius:6px;
+    cursor:pointer;
+    transition:background .15s;
+    text-decoration:none;
+  }
+  .btn:hover{background:var(--orange-dark);}
+  .btn.ghost{
+    background:transparent;
+    border:1px solid #454C5A;
+    color:var(--paper);
+  }
+  .btn.ghost:hover{border-color:var(--yellow); color:var(--yellow); background:transparent;}
+  .link-line{font-size:15px;}
+
+  /* ---------- Timeline ---------- */
+  .timeline{list-style:none; margin:0; padding:0; counter-reset:step;}
+  .tl-item{
+    display:grid;
+    grid-template-columns:34px 1fr;
+    gap:14px;
+    position:relative;
+    padding-bottom:20px;
+  }
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    counter-increment:step;
+    content:counter(step);
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;
+    font-size:13px;
+    width:34px; height:34px;
+    border-radius:50%;
+    background:var(--asphalt);
+    color:var(--yellow);
+    display:flex; align-items:center; justify-content:center;
+    z-index:1;
+  }
+  .tl-item:not(:last-child)::after{
+    content:"";
+    position:absolute;
+    left:16px; top:34px; bottom:-2px;
+    width:2px;
+    background:var(--line);
+  }
+  .tl-body{padding-top:5px;}
+  .tl-body .tl-title{font-family:'Oswald',sans-serif; font-size:15.5px; text-transform:uppercase; letter-spacing:.02em; margin-bottom:3px;}
+  .tl-body .tl-desc{font-size:13.2px; color:var(--steel-soft); line-height:1.5;}
+  .tl-body .tl-desc code{
+    background:var(--paper-2);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    padding:1px 5px;
+    border-radius:4px;
+  }
+
+  /* ---------- Status badges ---------- */
+  .badge{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.05em;
+    padding:3px 9px;
+    border-radius:5px;
+  }
+  .badge.go{background:var(--green-bg); color:var(--green);}
+  .badge.no{background:var(--red-bg); color:var(--red);}
+
+  .foot-note{
+    font-size:12px;
+    color:var(--steel-soft);
+    text-align:center;
+    margin-top:26px;
+    line-height:1.6;
+  }
+
+  /* ---------- DOT auto-fill banner ---------- */
+  .autofill-card{
+    background:#fff;
+    border:1.5px dashed var(--steel-soft);
+    border-radius:10px;
+    padding:16px 20px;
+    margin-bottom:22px;
+  }
+  .autofill-top{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .autofill-top .lead{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--steel-soft);
+  }
+  .autofill-top input[type=text]{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    padding:8px 10px;
+    border:1.5px solid var(--line);
+    border-radius:6px;
+    width:170px;
+  }
+  .autofill-top .btn{width:auto; padding:8px 16px;}
+  .autofill-status{
+    margin-top:10px;
+    font-size:12.5px;
+    color:var(--steel-soft);
+    min-height:18px;
+  }
+  .autofill-status.ok{color:var(--green);}
+  .autofill-status.miss{color:var(--red);}
+  .autofill-data{
+    margin-top:12px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:8px 16px;
+    display:none;
+  }
+  .autofill-data.show{display:grid;}
+  .autofill-data .dv{
+    background:var(--green-bg);
+    border-radius:6px;
+    padding:7px 10px;
+  }
+  .autofill-data .dv .k{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9.5px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--green);
+    display:block;
+  }
+  .autofill-data .dv .v{font-size:13px; color:var(--asphalt); font-weight:600; margin-top:1px;}
+  .src-badge{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9.5px;
+    letter-spacing:.04em;
+    background:var(--green-bg);
+    color:var(--green);
+    padding:1px 6px;
+    border-radius:4px;
+    margin-left:7px;
+    vertical-align:middle;
+  }
+
+  /* ---------- Intake prototype ---------- */
+  .intake-section{
+    border:1px solid var(--line);
+    border-radius:9px;
+    margin:12px 0;
+    overflow:hidden;
+    background:#fff;
+  }
+  .intake-section summary{
+    list-style:none;
+    cursor:pointer;
+    padding:14px 16px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    font-weight:600;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+    color:var(--asphalt);
+    background:#F8F6F0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .intake-section summary::-webkit-details-marker{display:none;}
+  .intake-section summary::after{content:"+";font-size:18px;color:var(--orange);}
+  .intake-section[open] summary::after{content:"−";}
+  .intake-body{padding:16px;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;}
+  @media(max-width:700px){.form-grid{grid-template-columns:1fr;}}
+  .form-field label{
+    display:block;
+    font-size:11px;
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.04em;
+    color:var(--steel-soft);
+    text-transform:uppercase;
+    margin-bottom:5px;
+  }
+  .form-field input,.form-field select,.form-field textarea{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:9px 10px;
+    font:13px 'Inter',sans-serif;
+    color:var(--asphalt);
+    background:#fff;
+  }
+  .form-field textarea{min-height:76px;resize:vertical;}
+  .choice-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .choice-pill input{display:none;}
+  .choice-pill span{
+    display:inline-block;
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:8px 13px;
+    font-size:12px;
+    cursor:pointer;
+    background:#fff;
+  }
+  .choice-pill input:checked + span{
+    border-color:var(--orange);
+    background:#FFF1E8;
+    color:var(--orange-dark);
+    font-weight:600;
+  }
+  .hint{
+    font-size:11.5px;color:var(--steel-soft);margin-top:5px;line-height:1.4;
+  }
+  .coverage-row{
+    display:grid;
+    grid-template-columns:28px minmax(180px,1fr) minmax(150px,.8fr);
+    gap:10px;
+    align-items:center;
+    margin-bottom:9px;
+  }
+  .coverage-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--orange);}
+  .coverage-row input[type=text]{
+    width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:6px;
+    font:13px 'Inter',sans-serif;
+  }
+  .coverage-name{
+    border:1px solid var(--line);border-radius:6px;padding:9px 10px;background:#fff;font-size:13px;
+  }
+  .save-bar{
+    position:sticky;bottom:12px;z-index:5;
+    display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+    background:var(--asphalt);color:#fff;border-radius:10px;padding:12px 14px;
+    box-shadow:0 6px 20px rgba(24,27,32,.18);
+    margin-top:16px;
+  }
+  .save-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .save-actions .btn{width:auto;}
+  .btn.secondary{background:#fff;color:var(--asphalt);}
+  .btn.secondary:hover{background:#F2EFE7;}
+  .src-line{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+  .auto-chip{font-family:'IBM Plex Mono',monospace;font-size:9.5px;background:var(--green-bg);color:var(--green);padding:2px 6px;border-radius:4px;}
+
+
+  .doc-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 14px}
+  .doc-summary.three{grid-template-columns:repeat(3,1fr)}
+  .summary-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .summary-status{font:10.5px 'IBM Plex Mono',monospace;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--steel-soft)}
+  .missing-title{font:10.5px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--steel-soft);margin:4px 0 6px}
+  .route-guide{display:grid;gap:10px}
+  .route-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .route-meta-box{background:#F8F6F0;border:1px solid var(--line);border-radius:8px;padding:11px 12px}
+  .route-meta-box .rk{display:block;font:10px 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--steel-soft);margin-bottom:5px}
+  .route-meta-box .rv{font-size:13px;line-height:1.45;color:var(--asphalt)}
+  .priority-list{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
+  .priority-chip{background:#EEF3F8;border:1px solid #D7E2ED;border-radius:999px;padding:6px 9px;font-size:11.5px;color:var(--asphalt)}
+  .form-field input.auto-found,.form-field select.auto-found,.form-field textarea.auto-found{background:#EEF8F0!important;border-color:#9DCBAC!important;box-shadow:0 0 0 2px rgba(46,125,70,.07)}
+  .form-field input.field-confirmed,.form-field select.field-confirmed,.form-field textarea.field-confirmed{background:#EEF5FD!important;border-color:#A9C5E4!important;box-shadow:0 0 0 2px rgba(36,69,111,.06)}
+  .field-state{display:inline-flex;align-items:center;margin-top:5px;font:9.5px 'IBM Plex Mono',monospace;border-radius:999px;padding:3px 7px}
+  .field-state.auto{background:#E4F3E8;color:#2E7D46}
+  .field-state.confirmed{background:#E7F0FA;color:#24456F}
+  @media(max-width:700px){.doc-summary,.doc-summary.three,.route-meta{grid-template-columns:1fr}}
+  .doc-kpi{background:#F8F6F0;border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+  .doc-kpi .big{font-family:'Bebas Neue',sans-serif;font-size:25px;color:var(--asphalt)}
+  .doc-kpi .small{font:11px 'IBM Plex Mono',monospace;color:var(--steel-soft);text-transform:uppercase;letter-spacing:.05em}
+  .doc-card{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:10px;background:#fff}
+  .doc-title{font-weight:700;color:var(--asphalt);font-size:13.5px}
+  .doc-desc{font-size:11.5px;color:var(--steel-soft);margin-top:3px}
+  .status-group{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+  .status-pill input{display:none}
+  .status-pill span{display:inline-block;padding:6px 9px;border:1px solid var(--line);border-radius:999px;font:10px 'IBM Plex Mono',monospace;cursor:pointer;background:#fff}
+  .status-pill input:checked + span{font-weight:700}
+  .status-pill.pending input:checked + span{background:#FDE8E3;border-color:#F3B4A8;color:#A43B25}
+  .status-pill.requested input:checked + span{background:#FFF4D6;border-color:#E5C766;color:#8A6812}
+  .status-pill.received input:checked + span{background:var(--green-bg);border-color:#B8DCC2;color:var(--green)}
+  .status-pill.na input:checked + span{background:#EEF1F5;border-color:#CBD1D8;color:#5E6877}
+  .missing-box{border-left:4px solid var(--orange);background:#FFF8F1;border-radius:6px;padding:12px 14px;margin:12px 0}
+  .missing-box strong{display:block;margin-bottom:6px;color:var(--orange-dark)}
+  .missing-list{margin:0;padding-left:18px;font-size:12.5px;line-height:1.7;color:var(--asphalt)}
+
+
+  /* ---------- Info tooltips ---------- */
+  .label-with-info{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .info-inline{position:relative;display:inline-flex;align-items:center;vertical-align:middle;}
+  .info-icon{
+    width:18px;height:18px;border-radius:50%;border:none;padding:0;
+    display:inline-flex;align-items:center;justify-content:center;
+    background:#DCE6F3;color:var(--asphalt);font-size:11px;font-weight:700;
+    cursor:pointer;line-height:1;box-shadow:inset 0 0 0 1px rgba(25,50,81,.14);
+  }
+  .info-icon:hover{background:#C9D8EB;}
+  .tooltip-card{
+    position:absolute;top:25px;left:0;z-index:100;
+    width:min(320px,82vw);padding:12px 13px 11px;
+    background:#fff;color:var(--asphalt);border:1px solid rgba(25,50,81,.14);
+    border-radius:10px;box-shadow:0 12px 34px rgba(18,33,54,.16);
+    display:none !important;
+    text-transform:none;letter-spacing:normal;font-family:'Inter',sans-serif;
+  }
+  .tooltip-card::before{
+    content:"";position:absolute;top:-7px;left:10px;width:12px;height:12px;background:#fff;
+    transform:rotate(45deg);border-left:1px solid rgba(25,50,81,.14);border-top:1px solid rgba(25,50,81,.14);
+  }
+  .info-inline:hover .tooltip-card,
+  .info-inline:focus-within .tooltip-card,
+  .info-inline.open .tooltip-card{display:block !important;}
+  .tooltip-title{font-family:'Oswald',sans-serif;font-size:16px;line-height:1.1;margin:0 0 3px;text-transform:uppercase;letter-spacing:.02em;}
+  .tooltip-sub{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--steel-soft);margin:0 0 7px;text-transform:none;letter-spacing:.02em;}
+  .tooltip-body{font-family:'Inter',sans-serif;font-size:12.5px;line-height:1.45;color:var(--steel);font-weight:400;text-transform:none;letter-spacing:normal;}
+  .tooltip-source{font-family:'Inter',sans-serif;margin-top:8px;padding-top:7px;border-top:1px dashed var(--line);font-size:11.5px;line-height:1.35;color:var(--steel-soft);font-weight:400;text-transform:none;letter-spacing:normal;}
+
+
+  /* ---------- Embedded PFA calculator modal ---------- */
+  .pfa-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(10,24,40,.72);
+    z-index:9999;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+  }
+  .pfa-modal.show{display:flex;}
+  .pfa-shell{
+    width:min(1500px, 98vw);
+    height:min(920px, 94vh);
+    background:#fff;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 24px 70px rgba(0,0,0,.30);
+    display:flex;
+    flex-direction:column;
+  }
+  .pfa-modal-head{
+    background:var(--asphalt);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:12px 16px;
+    border-bottom:4px solid var(--yellow);
+  }
+  .pfa-modal-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+  }
+  .pfa-modal-title strong{
+    font-family:'Oswald',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    font-size:17px;
+  }
+  .pfa-modal-title span{
+    font-size:11.5px;
+    color:#C9CDD6;
+  }
+  .pfa-close{
+    border:1px solid rgba(255,255,255,.28);
+    background:transparent;
+    color:#fff;
+    border-radius:7px;
+    padding:7px 11px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  .pfa-close:hover{
+    border-color:var(--yellow);
+    color:var(--yellow);
+  }
+  .pfa-frame{
+    width:100%;
+    flex:1;
+    border:0;
+    background:#f4f7fa;
+  }
+  body.modal-open{overflow:hidden;}
+  @media(max-width:700px){
+    .pfa-modal{padding:0;}
+    .pfa-shell{width:100vw;height:100vh;border-radius:0;}
+    .pfa-modal-title span{display:none;}
+  }
+
+
+  /* ---------- Embedded Loss Run Center modal ---------- */
+  .loss-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(10,24,40,.72);
+    z-index:10050;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+  }
+  .loss-modal.show{display:flex;}
+  .loss-shell{
+    width:min(1280px,98vw);
+    height:min(900px,94vh);
+    background:#fff;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 24px 70px rgba(0,0,0,.30);
+    display:flex;
+    flex-direction:column;
+  }
+  .loss-modal-head{
+    background:var(--asphalt);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:12px 16px;
+    border-bottom:4px solid var(--yellow);
+  }
+  .loss-modal-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+  }
+  .loss-modal-title strong{
+    font-family:'Oswald',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    font-size:17px;
+  }
+  .loss-modal-title span{
+    font-size:11.5px;
+    color:#C9CDD6;
+  }
+  .loss-close{
+    border:1px solid rgba(255,255,255,.28);
+    background:transparent;
+    color:#fff;
+    border-radius:7px;
+    padding:7px 11px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  .loss-close:hover{
+    border-color:var(--yellow);
+    color:var(--yellow);
+  }
+  .loss-frame{
+    width:100%;
+    flex:1;
+    border:0;
+    background:#f6f8fa;
+  }
+  @media(max-width:700px){
+    .loss-modal{padding:0;}
+    .loss-shell{width:100vw;height:100vh;border-radius:0;}
+    .loss-modal-title span{display:none;}
+  }
+
+
+  /* ---------- Embedded Motor Guidelines modal ---------- */
+  .motor-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(10,24,40,.72);
+    z-index:10100;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+  }
+  .motor-modal.show{display:flex;}
+  .motor-shell{
+    width:min(1500px,98vw);
+    height:min(940px,94vh);
+    background:#fff;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 24px 70px rgba(0,0,0,.30);
+    display:flex;
+    flex-direction:column;
+  }
+  .motor-modal-head{
+    background:var(--asphalt);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:12px 16px;
+    border-bottom:4px solid var(--yellow);
+  }
+  .motor-modal-title{display:flex;align-items:center;gap:10px;min-width:0;}
+  .motor-modal-title strong{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.03em;font-size:17px;}
+  .motor-modal-title span{font-size:11.5px;color:#C9CDD6;}
+  .motor-close{
+    border:1px solid rgba(255,255,255,.28);
+    background:transparent;
+    color:#fff;
+    border-radius:7px;
+    padding:7px 11px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  .motor-close:hover{border-color:var(--yellow);color:var(--yellow);}
+  .motor-frame{width:100%;flex:1;border:0;background:#f4f7fa;}
+  @media(max-width:700px){
+    .motor-modal{padding:0;}
+    .motor-shell{width:100vw;height:100vh;border-radius:0;}
+    .motor-modal-title span{display:none;}
+  }
+
+
+  .save-ok{color:#BEE5C8!important;}
+  .save-error{color:#FFD0C9!important;}
+  .save-working{color:#FFE39B!important;}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="manifest-head">
+    <div class="eyebrow">Truemate Group · Playbook interno</div>
+    <h1>Manifiesto de Ruta</h1>
+    <p>Guía operativa para cotizaciones Trucking: consulta, confirma y registra la información necesaria desde el primer contacto hasta someter la cotización.</p>
+  </div>
+
+  <!-- DOT AUTO-FILL -->
+  <div class="autofill-card">
+    <div class="autofill-top">
+      <span class="lead">Carga automática por DOT</span>
+      <input type="text" id="autoDotInput" placeholder="Número de DOT">
+      <button class="btn" onclick="manualLookup()">Buscar datos</button>
+    </div>
+    <div class="autofill-status" id="autofillStatus">Si la herramienta se abre desde GHL con <code>?dot=</code> en el link, esto corre solo. También puedes escribir un DOT y probarlo a mano.</div>
+    <div class="autofill-data" id="autofillData"></div>
+  </div>
+
+  <!-- ROUTE SELECTOR -->
+  <div class="routes" id="routes">
+    <button class="route-btn" data-route="email">
+      <div class="tag">Ruta 01</div>
+      <div class="title">Campaña de Correo</div>
+      <div class="desc">El cliente respondió a un email. Ya tiene interés — hay que calificar rápido.</div>
+    </button>
+    <button class="route-btn" data-route="cold">
+      <div class="tag">Ruta 02</div>
+      <div class="title">Llamada en Frío</div>
+      <div class="desc">Contacto sin previo interés. Hay que ganar 30 segundos de atención primero.</div>
+    </button>
+    <button class="route-btn" data-route="referido">
+      <div class="tag">Ruta 03</div>
+      <div class="title">Cliente Referido</div>
+      <div class="desc">Llega con confianza previa. Se puede ir directo a los datos, con tacto.</div>
+    </button>
+    <button class="route-btn" data-route="renewal">
+      <div class="tag">Ruta 04</div>
+      <div class="title">Renovación</div>
+      <div class="desc">Confirma lo que ya tenemos, identifica cambios y prepara la renovación.</div>
+    </button>
+  </div>
+
+  <div class="grid">
+    <div>
+
+      <!-- STEP 1: script per route -->
+      <div class="card">
+        <h2><span class="num">01</span> Conversación comercial</h2>
+        <p class="sub">Elige cómo llegó el cliente. Aquí solo verás una apertura natural, el objetivo y qué revisar primero; los datos se trabajan una sola vez en la Ficha de cotización.</p>
+        <div id="route-content"></div>
+      </div>
+
+      <!-- STEP 2: active intake -->
+      <div class="card">
+        <h2><span class="num">02</span> Ficha de cotización</h2>
+        <p class="sub">Confirma lo que ya aparece desde GHL y completa únicamente lo que falte durante la llamada. Los campos automáticos se pueden corregir si el cliente te da información distinta.</p>
+        <div class="missing-box" id="caseSummaryBox">
+          <div class="summary-head">
+            <strong>Resumen del expediente</strong>
+            <span class="summary-status" id="summaryStatus">Ingresa un DOT para comenzar</span>
+          </div>
+          <div class="doc-summary three">
+            <div class="doc-kpi"><div class="big" id="foundCount">0 / 12</div><div class="small">Datos encontrados</div></div>
+            <div class="doc-kpi"><div class="big" id="completeCount">0 / 12</div><div class="small">Datos completos</div></div>
+            <div class="doc-kpi"><div class="big" id="docsCount">0 / 4</div><div class="small">Documentos listos</div></div>
+          </div>
+          <div class="missing-title">Pendientes para avanzar</div>
+          <ul class="missing-list" id="dynamicMissingList">
+            <li>Ingresa un DOT para cargar el expediente.</li>
+          </ul>
+        </div>
+
+
+        <details class="intake-section" open>
+          <summary>Identificación del negocio</summary>
+          <div class="intake-body">
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="label-with-info">Motivo de la cotización <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Motivo de la cotización</div><div class="tooltip-sub">Nuevo / Renovación</div><div class="tooltip-body">Indica si estamos trabajando un negocio nuevo o una renovación. Esto cambia el tipo de validación, los documentos y el enfoque de la llamada.</div><div class="tooltip-source">En Truemate: si es renovación, confirmamos lo precargado; si es negocio nuevo, levantamos el perfil completo.</div></span></span></label>
+                <div class="choice-row">
+                  <label class="choice-pill"><input type="radio" name="quote_type" value="nuevo"><span>Negocio nuevo</span></label>
+                  <label class="choice-pill"><input type="radio" name="quote_type" value="renovacion"><span>Renovación</span></label>
+                </div>
+              </div>
+              <div class="form-field">
+                <label class="label-with-info">Persona de contacto / Company Rep 1 <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Company Rep 1</div><div class="tooltip-sub">Persona principal de contacto</div><div class="tooltip-body">Nombre de la persona con quien normalmente se comunica el equipo para temas de cotización, seguimiento o renovación.</div><div class="tooltip-source">En Truemate: sirve para saber a quién pedir documentos y con quién confirmar cambios del riesgo.</div></span></span></label>
+                <input id="intake_company_rep_1" type="text" placeholder="Se carga desde GHL">
+                <div class="hint"><span class="auto-chip">GHL</span> Persona con quien normalmente nos comunicamos.</div>
+              </div>
+              <div class="form-field">
+                <label>Nombre legal</label>
+                <input id="intake_legal_name" type="text" placeholder="Se carga desde GHL">
+              </div>
+              <div class="form-field">
+                <label class="label-with-info">DOT / MC <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">USDOT Number</div><div class="tooltip-sub">Identificador FMCSA</div><div class="tooltip-body">Número asignado por la FMCSA al carrier o empresa de transporte. Se usa para consultar unidades, conductores, autoridad, seguros, inspecciones y seguridad.</div><div class="tooltip-source">Fuente oficial: FMCSA / SAFER. En Truemate lo usamos como llave principal para buscar el expediente.</div></span></span></label>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                  <input id="intake_dot" type="text" placeholder="DOT">
+                  <input id="intake_mc" type="text" placeholder="MC">
+                </div>
+              </div>
+              <div class="form-field">
+                <label class="label-with-info">Business Address <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Business Address</div><div class="tooltip-sub">Dirección principal del negocio</div><div class="tooltip-body">Dirección comercial registrada de la empresa. Nos ayuda a validar el riesgo, la ubicación y el expediente del cliente.</div></span></span></label>
+                <input id="intake_business_address" type="text" placeholder="Se carga desde GHL">
+              </div>
+              <div class="form-field">
+                <label class="label-with-info">Garaging Address <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Garaging Address</div><div class="tooltip-sub">Dónde se guardan las unidades</div><div class="tooltip-body">Dirección donde usualmente se estacionan o guardan los vehículos. Puede afectar apetito del mercado y prima.</div></span></span></label>
+                <input id="intake_garaging_address" type="text" placeholder="Se carga desde GHL">
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="intake-section" open>
+          <summary>Vehículos y operación</summary>
+          <div class="intake-body">
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="label-with-info">Power Units encontradas <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Power Units</div><div class="tooltip-sub">Unidades motrices</div><div class="tooltip-body">Cantidad de unidades motrices de la empresa, como tractores o straight trucks. Confirma si cotizaremos todas o solo algunas.</div></span></span></label>
+                <input id="intake_power_units" type="text" placeholder="Ej: 7">
+                <div class="hint">Confirma si vamos a cotizar todas las unidades o solo algunas.</div>
+              </div>
+              <div class="form-field">
+                <label>Unidades a cotizar</label>
+                <input id="units_to_quote" type="number" min="0" placeholder="Ej: 5">
+              </div>
+              <div class="form-field">
+                <label class="label-with-info">Drivers encontrados <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Drivers</div><div class="tooltip-sub">Conductores</div><div class="tooltip-body">Número de conductores asociados a la operación. Luego debemos validar cuáles se van a incluir en la cotización y pedir su CDL o DL.</div></span></span></label>
+                <input id="intake_drivers" type="text" placeholder="Ej: 3">
+              </div>
+              <div class="form-field">
+                <label>Drivers a cotizar</label>
+                <input id="drivers_to_quote" type="number" min="0" placeholder="Ej: 3">
+              </div>
+              <div class="form-field">
+                <label class="label-with-info">Tipo de vehículo <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Vehicle Type</div><div class="tooltip-sub">Tipo de unidad</div><div class="tooltip-body">El tipo de vehículo —tractor, van, box truck, etc.— idealmente se confirma decodificando el VIN para evitar errores en la llamada.</div><div class="tooltip-source">En Truemate: lo cruzamos con el VIN y luego con Motor Guidelines.</div></span></span></label>
+                <input id="vehicle_type" type="text" placeholder="Se obtiene al decodificar el VIN">
+                <div class="hint">No hace falta preguntarlo si ya vas a usar el decodificador VIN.</div>
+              </div>
+              <div class="form-field">
+                <label>Radio / Miles</label>
+                <select id="radius">
+                  <option value="">Seleccionar</option>
+                  <option>Local / 50 miles</option>
+                  <option>100 miles</option>
+                  <option>200 miles</option>
+                  <option>500 miles</option>
+                  <option>Unlimited</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label class="label-with-info">Commodity / tipo de carga <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Commodity</div><div class="tooltip-sub">Mercancía transportada</div><div class="tooltip-body">Tipo principal de carga que mueve el cliente: general freight, reefer, flatbed, auto hauler, etc. Esto define mercados y restricciones.</div></span></span></label>
+                <input id="commodity" type="text" placeholder="General Freight, Auto Hauler, Reefer...">
+              </div>
+              <div class="form-field">
+                <label class="label-with-info">UIIA <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">UIIA</div><div class="tooltip-sub">Uniform Intermodal Interchange and Facilities Access Agreement</div><div class="tooltip-body">Indica si el carrier trabaja con contenedores o acceso intermodal y si requiere este acuerdo. Algunos mercados o operaciones lo piden validar.</div></span></span></label>
+                <div class="choice-row">
+                  <label class="choice-pill"><input type="radio" name="uiia" value="si"><span>Sí</span></label>
+                  <label class="choice-pill"><input type="radio" name="uiia" value="no"><span>No</span></label>
+                </div>
+              </div>
+              <div class="form-field" style="grid-column:1/-1">
+                <label>Notas de operación</label>
+                <textarea id="operation_notes" placeholder="Ej: Tiene 7 unidades pero solo quiere renovar 5; una unidad se vende el próximo mes..."></textarea>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="intake-section" open>
+          <summary>Renovación / póliza actual</summary>
+          <div class="intake-body">
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="label-with-info">Aseguradora actual <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Insurer</div><div class="tooltip-sub">Aseguradora vigente</div><div class="tooltip-body">Nombre de la compañía que actualmente asegura la operación. Nos sirve para dar contexto, pedir loss runs y validar renovación.</div></span></span></label>
+                <input id="intake_insurer" type="text" placeholder="Se carga desde GHL">
+              </div>
+              <div class="form-field">
+                <label class="label-with-info">Fecha de vencimiento <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Policy Expiration Date</div><div class="tooltip-sub">Fecha de expiración</div><div class="tooltip-body">Fecha en la que vence la póliza actual. En renovación se usa más para confirmar que para volver a preguntar desde cero.</div></span></span></label>
+                <input id="intake_policy_expiration_date" type="date">
+                <div class="hint">En una renovación, úsala para confirmar: “Me aparece que vence en esta fecha, ¿sigue correcto?”</div>
+              </div>
+              <div class="form-field" style="grid-column:1/-1">
+                <label class="label-with-info">Loss Runs <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Loss Runs</div><div class="tooltip-sub">Historial de pérdidas / reclamaciones</div><div class="tooltip-body">Reporte que muestra reclamos, pagos y reservas de la póliza en años previos. Muchos mercados no cotizan en firme sin este documento.</div><div class="tooltip-source">En Truemate: idealmente de los últimos 3–5 años, según mercado.</div></span></span></label>
+                <div class="choice-row">
+                  <label class="choice-pill"><input type="radio" name="loss_runs" value="Recibidos"><span>Recibidos</span></label>
+                  <label class="choice-pill"><input type="radio" name="loss_runs" value="Solicitados"><span>Solicitados</span></label>
+                  <label class="choice-pill"><input type="radio" name="loss_runs" value="Pendientes"><span>Pendientes</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="intake-section">
+          <summary>Coberturas a cotizar <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Coberturas a cotizar</div><div class="tooltip-sub">Selección de coberturas</div><div class="tooltip-body">Marca solo las coberturas que el cliente quiere incluir en la cotización y ajusta los límites cuando haga falta.</div></span></span></summary>
+          <div class="intake-body">
+            <div class="hint" style="margin-bottom:12px;">Marca solo lo que el cliente quiere cotizar. Puedes cambiar los límites.</div>
+
+            <div class="coverage-row" data-coverage="auto_liability">
+              <input id="cov_auto_liability" type="checkbox" checked>
+              <div class="coverage-name">Auto Liability <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Auto Liability</div><div class="tooltip-sub">Responsabilidad civil primaria</div><div class="tooltip-body">Cobertura principal de responsabilidad por daños corporales o materiales causados por la unidad asegurada.</div></span></span></div>
+              <input type="text" value="$1,000,000">
+            </div>
+            <div class="coverage-row" data-coverage="motor_truck_cargo">
+              <input id="cov_motor_truck_cargo" type="checkbox" checked>
+              <div class="coverage-name">Motor Truck Cargo <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Motor Truck Cargo</div><div class="tooltip-sub">Carga transportada</div><div class="tooltip-body">Protege la mercancía del cliente mientras está siendo transportada por el carrier, sujeto a condiciones y exclusiones.</div></span></span></div>
+              <input type="text" value="$100,000">
+            </div>
+            <div class="coverage-row" data-coverage="physical_damage">
+              <input id="cov_physical_damage" type="checkbox" checked>
+              <div class="coverage-name">Physical Damage <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Physical Damage</div><div class="tooltip-sub">Daño físico de la unidad</div><div class="tooltip-body">Cubre daño al vehículo del cliente, por ejemplo colisión o comprehensive, según la póliza y el valor declarado.</div></span></span></div>
+              <input type="text" placeholder="Valor / límite">
+            </div>
+            <div class="coverage-row" data-coverage="general_liability">
+              <input id="cov_general_liability" type="checkbox">
+              <div class="coverage-name">General Liability <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">General Liability</div><div class="tooltip-sub">Responsabilidad general</div><div class="tooltip-body">Cobertura para ciertos eventos de responsabilidad general fuera del uso directo del auto, según exposición y póliza.</div></span></span></div>
+              <input type="text" value="$1,000,000 / Agg $2,000,000">
+            </div>
+            <div class="coverage-row" data-coverage="trailer_interchange">
+              <input id="cov_trailer_interchange" type="checkbox">
+              <div class="coverage-name">Trailer Interchange <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Trailer Interchange</div><div class="tooltip-sub">Intercambio de remolques</div><div class="tooltip-body">Protege remolques que el carrier usa bajo contrato de intercambio cuando no son de su propiedad.</div></span></span></div>
+              <input type="text" value="$50,000">
+            </div>
+            <div class="coverage-row" data-coverage="miles_radius">
+              <input id="cov_miles_radius" type="checkbox">
+              <div class="coverage-name">Miles / Radius <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Radius / Miles</div><div class="tooltip-sub">Radio de operación</div><div class="tooltip-body">Distancia habitual de operación de las unidades. Afecta elegibilidad y prima en múltiples mercados.</div></span></span></div>
+              <input type="text" value="Unlimited">
+            </div>
+
+            <button class="btn ghost" style="width:auto;color:var(--asphalt);border-color:var(--line);margin-top:6px;" type="button" onclick="alert('En la versión final aquí podremos agregar una cobertura personalizada.')">+ Agregar cobertura</button>
+
+            <div class="form-field" style="margin-top:14px;">
+              <label>Notas de cobertura</label>
+              <textarea id="coverage_notes" placeholder="Ej: Cliente quiere comparar cargo de 100K vs 250K; GL solo si la diferencia de prima es razonable..."></textarea>
+            </div>
+          </div>
+        </details>
+
+
+        <details class="intake-section" open>
+          <summary>Documentos necesarios para cotizar</summary>
+          <div class="intake-body">
+            <div class="doc-card">
+              <div class="doc-title">CDL / Licencias de los conductores <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">CDL / DL</div><div class="tooltip-sub">Licencia del conductor</div><div class="tooltip-body">Documento que valida la licencia del conductor. Se debe pedir de cada conductor que será incluido en la cotización.</div></span></span></div>
+              <div class="doc-desc">Solicitar copia legible de cada conductor que se va a cotizar.</div>
+              <div class="status-group">
+                <label class="status-pill pending"><input type="radio" name="doc_cdl" value="Pendiente" checked><span>Pendiente</span></label>
+                <label class="status-pill requested"><input type="radio" name="doc_cdl" value="Solicitado"><span>Solicitado</span></label>
+                <label class="status-pill received"><input type="radio" name="doc_cdl" value="Recibido"><span>Recibido</span></label>
+              </div>
+            </div>
+
+            <div class="doc-card">
+              <div class="doc-title">Loss Runs <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">Loss Runs</div><div class="tooltip-sub">Historial de reclamaciones</div><div class="tooltip-body">Documento emitido por la aseguradora actual con la siniestralidad del cliente. Es clave para cotizar en firme.</div></span></span></div>
+              <div class="doc-desc">Idealmente de los últimos 3–5 años, según el mercado.</div>
+              <div class="status-group">
+                <label class="status-pill pending"><input type="radio" name="doc_loss" value="Pendiente" checked><span>Pendiente</span></label>
+                <label class="status-pill requested"><input type="radio" name="doc_loss" value="Solicitado"><span>Solicitado</span></label>
+                <label class="status-pill received"><input type="radio" name="doc_loss" value="Recibido"><span>Recibido</span></label>
+              </div>
+            </div>
+
+            <div class="doc-card">
+              <div class="doc-title">IFTA <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">IFTA</div><div class="tooltip-sub">International Fuel Tax Agreement</div><div class="tooltip-body">Acuerdo que permite reportar y pagar impuestos de combustible entre jurisdicciones. A veces se solicita para validar operación interestatal o soporte del riesgo.</div></span></span></div>
+              <div class="doc-desc">Solo cuando aplique al riesgo o cuando el mercado lo requiera.</div>
+              <div class="status-group">
+                <label class="status-pill na"><input type="radio" name="doc_ifta" value="Por verificar" checked><span>Por verificar</span></label>
+                <label class="status-pill pending"><input type="radio" name="doc_ifta" value="Pendiente"><span>Pendiente</span></label>
+                <label class="status-pill requested"><input type="radio" name="doc_ifta" value="Solicitado"><span>Solicitado</span></label>
+                <label class="status-pill received"><input type="radio" name="doc_ifta" value="Recibido"><span>Recibido</span></label>
+                <label class="status-pill na"><input type="radio" name="doc_ifta" value="No aplica"><span>No aplica</span></label>
+              </div>
+            </div>
+
+            <div class="doc-card">
+              <div class="doc-title">VIN / Registration de las unidades <span class="info-inline"><button class="info-icon" type="button" aria-label="Más información">i</button><span class="tooltip-card"><div class="tooltip-title">VIN</div><div class="tooltip-sub">Vehicle Identification Number</div><div class="tooltip-body">Número único de identificación de cada vehículo. Nos sirve para decodificar el tipo de unidad, año y confirmar qué equipos se van a cotizar.</div></span></span></div>
+              <div class="doc-desc">Para validar las unidades que realmente se van a cotizar.</div>
+              <div class="status-group">
+                <label class="status-pill pending"><input type="radio" name="doc_vin" value="Pendiente" checked><span>Pendiente</span></label>
+                <label class="status-pill requested"><input type="radio" name="doc_vin" value="Solicitado"><span>Solicitado</span></label>
+                <label class="status-pill received"><input type="radio" name="doc_vin" value="Recibido"><span>Recibido</span></label>
+              </div>
+            </div>
+
+            <div class="form-field" style="margin-top:14px">
+              <label>Notas de documentos</label>
+              <textarea id="document_notes" placeholder="Ej: Cliente enviará 2 CDL hoy; loss runs solicitados a la aseguradora; IFTA solo falta Q2 y Q3..."></textarea>
+            </div>
+          </div>
+        </details>
+
+        <details class="intake-section">
+          <summary>Notas generales</summary>
+          <div class="intake-body">
+            <div class="form-field">
+              <label>Notas de la llamada</label>
+              <textarea id="general_notes" style="min-height:110px" placeholder="Escribe aquí cualquier dato importante que no encaje en los campos anteriores."></textarea>
+            </div>
+          </div>
+        </details>
+
+        
+        <div class="save-bar">
+          <div>
+            <strong style="font-size:12.5px;">Estado del caso:</strong>
+            <span id="caseStatus" style="font-size:12px;color:#C9CDD6;margin-left:6px;">En proceso</span>
+            <span id="saveState" style="font-size:11px;color:#9FB7CF;margin-left:10px;"></span>
+          </div>
+          <div class="save-actions">
+            <button class="btn secondary" id="saveProgressBtn" type="button" onclick="saveProgress(false)">Guardar avance</button>
+            <button class="btn" id="savePdfBtn" type="button" onclick="saveProgress(true)">Guardar y generar PDF</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- STEP 3: full process timeline -->
+      <div class="card">
+        <h2><span class="num">03</span> Flujo completo del proceso</h2>
+        <p class="sub">Ruta operativa desde el primer contacto hasta el sometimiento y seguimiento de la cotización.</p>
+        <ul class="timeline">
+          <li class="tl-item">
+            <div class="tl-body">
+              <div class="tl-title">Iniciar la conversación</div>
+              <div class="tl-desc">Selecciona la ruta correcta: correo, llamada, referido o renovación. Usa la apertura sugerida como guía y adapta la conversación a lo que el cliente ya envió o confirmó.</div>
+            </div>
+          </li>
+          <li class="tl-item">
+            <div class="tl-body">
+              <div class="tl-title">Cargar o confirmar el expediente</div>
+              <div class="tl-desc">Busca el DOT y revisa la información encontrada automáticamente. No vuelvas a preguntar datos que ya tenemos; confirma únicamente lo necesario y completa los campos pendientes.</div>
+            </div>
+          </li>
+          <li class="tl-item">
+            <div class="tl-body">
+              <div class="tl-title">Validar la operación</div>
+              <div class="tl-desc">Confirma unidades a cotizar, drivers, tipo de vehículo, radius, commodity, garaging y cualquier cambio reciente en la operación.</div>
+            </div>
+          </li>
+          <li class="tl-item">
+            <div class="tl-body">
+              <div class="tl-title">Verificar DOT y vehículos</div>
+              <div class="tl-desc">Usa <strong>Verificar DOT</strong> para confirmar el estatus de la compañía y <strong>Decodificar VIN</strong> cuando sea necesario para validar año, tipo de vehículo y características de las unidades.</div>
+            </div>
+          </li>
+          <li class="tl-item">
+            <div class="tl-body">
+              <div class="tl-title">Revisar documentos pendientes</div>
+              <div class="tl-desc">Consulta el resumen del expediente y solicita solo lo que falte: CDL, Loss Runs, IFTA si aplica y VIN / Registration.</div>
+            </div>
+          </li>
+          <li class="tl-item">
+            <div class="tl-body">
+              <div class="tl-title">Consultar Motor Guidelines</div>
+              <div class="tl-desc">Abre <strong>Motor Guidelines</strong> y usa el perfil del riesgo para identificar los mercados recomendados para <span class="badge go">SOMETER</span>. Revisa comentarios y restricciones antes de enviar.</div>
+            </div>
+          </li>
+          <li class="tl-item">
+            <div class="tl-body">
+              <div class="tl-title">Preparar el paquete de cotización</div>
+              <div class="tl-desc">Verifica que la información y los documentos requeridos estén completos para los mercados seleccionados antes de someter.</div>
+            </div>
+          </li>
+          <li class="tl-item">
+            <div class="tl-body">
+              <div class="tl-title">Calcular financiamiento si aplica</div>
+              <div class="tl-desc">Usa la <strong>Calculadora PFA y Diferidos</strong> únicamente cuando el cliente necesite revisar opciones de pago o financiamiento de prima.</div>
+            </div>
+          </li>
+          <li class="tl-item">
+            <div class="tl-body">
+              <div class="tl-title">Someter a los mercados seleccionados</div>
+              <div class="tl-desc">Envía el riesgo a los MGA / carriers identificados por Motor Guidelines y registra dónde fue sometido.</div>
+            </div>
+          </li>
+          <li class="tl-item">
+            <div class="tl-body">
+              <div class="tl-title">Dar seguimiento</div>
+              <div class="tl-desc">Actualiza el expediente con respuestas, requisitos adicionales, cotizaciones recibidas y próximos pasos hasta cerrar o descartar el caso.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- TOOLS SIDEBAR -->
+    <div class="tools-card">
+      <h2>Panel de Herramientas</h2>
+      <p class="sub">Pega el dato y abre el link directo — sin tener que armar la URL a mano.</p>
+
+      <div class="tool-block">
+        <span class="t-label">① Verificar DOT (gratis)</span>
+        <input type="text" id="dotInput" placeholder="Ej: 1982662">
+        <button class="btn" onclick="openDot()">Verificar en motus.dot.gov</button>
+      </div>
+
+      <div class="tool-block">
+        <span class="t-label">② Decodificar VIN (2000+)</span>
+        <input type="text" id="vinInput" placeholder="Ej: 1FTBR3X83LKA86862">
+        <button class="btn" onclick="openVin()">Decodificar en NHTSA</button>
+      </div>
+
+      <div class="tool-block">
+        <span class="t-label">③ VIN de vehículo pre-2000</span>
+        <p class="t-note">Este decodificador requiere pegar el VIN manualmente en la página — no acepta el dato por link.</p>
+        <a class="btn ghost" href="https://cmvid.nisrinc.com/cmv_id/cmv_id.asp" target="_blank" rel="noopener">Abrir CMV ID (manual)</a>
+      </div>
+
+      <div class="tool-block">
+        <span class="t-label">④ Motor Guidelines V2.1</span>
+        <p class="t-note">Determina en qué MGA/aseguradora se puede someter o cotizar el perfil del cliente.</p>
+        <button class="btn ghost" type="button" onclick="openMotorGuidelines()">Abrir Motor Guidelines aquí</button>
+      </div>
+
+      <div class="tool-block">
+        <span class="t-label">⑤ Loss Run Center</span>
+        <p class="t-note">Busca la aseguradora y consulta cómo solicitar los Loss Runs, contactos, firma requerida y tiempos estimados.</p>
+        <button class="btn ghost" type="button" onclick="openLossRunCenter()">Abrir Loss Run Center aquí</button>
+      </div>
+<div class="tool-block">
+        <span class="t-label">⑥ Calculadora PFA y Diferidos</span>
+        <p class="t-note">Para cotizar financiamiento de la prima o pagos diferidos.</p>
+        <button class="btn ghost" type="button" onclick="openPfaCalculator()">Abrir calculadora aquí</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot-note">Borrador interno — Truemate Group LLC · Ajusta preguntas, campos y links con tu supervisor antes de entregarlo al equipo.</p>
+</div>
+
+<script>
+  // ---- Route content ----
+  const routeData = {
+    email: {
+      title: "Cliente que respondió al correo",
+      objective: "Aprovechar la información que ya envió, detectar únicamente lo que falta y avanzar a mercado sin hacerlo repetir datos.",
+      script: "Hola {name}, gracias por responderme. Ya tengo parte de la información de la compañía y quiero revisar contigo solamente lo que nos falta para poder empezar a buscar opciones. Así no te hago repetir información que ya tenemos.",
+      priorities: ["Revisar documentos recibidos", "Confirmar unidades y drivers a cotizar", "Completar solo los datos faltantes"]
+    },
+    cold: {
+      title: "Seguimiento / llamada de prospección",
+      objective: "Retomar el contacto de forma natural usando la renovación como motivo real de la llamada y abrir la puerta a comparar precio y cobertura.",
+      script: "Hola {name}, ¿cómo estás? Te habla [agente] de Truemate. Estuve revisando tu expediente porque estuvimos en contacto anteriormente por el seguro de la compañía. Me aparece que tu póliza vence {date}. Quería revisar contigo este año si podemos conseguirte una mejor opción de precio o cobertura. ¿La operación sigue más o menos igual?",
+      priorities: ["Confirmar si está abierto a comparar", "Validar cambios en la operación", "Confirmar fecha de renovación y carrier actual"]
+    },
+    referido: {
+      title: "Cliente referido",
+      objective: "Usar la confianza del referido, explicar que ya revisamos parte del expediente y conversar solo sobre lo necesario para preparar opciones.",
+      script: "Hola {name}, ¿cómo estás? Mi nombre es [agente] de Truemate. [persona que refiere] me compartió tu contacto porque me comentó que estabas revisando el seguro de tu compañía. Ya pude encontrar parte de la información, así que no quiero hacerte repetir todo; solo voy a confirmar contigo algunos datos y lo que nos haga falta.",
+      priorities: ["Entender qué quiere mejorar", "Confirmar operación y renovación", "Revisar documentos faltantes"]
+    },
+    renewal: {
+      title: "Renovación",
+      objective: "Confirmar únicamente qué cambió desde la última cotización y salir de la llamada con el expediente listo para someter.",
+      script: "Hola {name}, ¿cómo estás? Te habla [agente] de Truemate. Estoy revisando tu renovación porque me aparece que la póliza vence {date}. Quería confirmar si este año hubo algún cambio en unidades, conductores u operación y revisar si podemos mejorar las opciones que tienes actualmente.",
+      priorities: ["Confirmar cambios desde la última vez", "Validar unidades y drivers", "Completar documentos pendientes"]
+    }
+  };
+
+  const routeContent = document.getElementById('route-content');
+  function routeTokenValue(id, fallback){
+    const el = document.getElementById(id);
+    return el && String(el.value || '').trim() ? String(el.value).trim() : fallback;
+  }
+  function renderRoute(key){
+    const d = routeData[key];
+    const name = routeTokenValue('intake_company_rep_1','[nombre]');
+    const dateRaw = routeTokenValue('intake_policy_expiration_date','');
+    const date = dateRaw ? new Date(dateRaw+'T12:00:00').toLocaleDateString('es-US',{month:'long',day:'numeric',year:'numeric'}) : '[fecha de renovación]';
+    const script = d.script.replaceAll('{name}',name).replaceAll('{date}',date);
+    const priorities = d.priorities.map((q,i)=>`<span class="priority-chip">${i+1}. ${q}</span>`).join('');
+    routeContent.innerHTML = `
+      <div class="route-guide">
+        <div class="route-meta">
+          <div class="route-meta-box"><span class="rk">Objetivo</span><div class="rv">${d.objective}</div></div>
+          <div class="route-meta-box"><span class="rk">Ruta seleccionada</span><div class="rv"><strong>${d.title}</strong></div></div>
+        </div>
+        <div class="script-box"><em>Apertura sugerida · úsala como guía, no como libreto</em>${script}</div>
+        <div><span class="rk" style="font:10px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--steel-soft)">Qué revisar primero</span><div class="priority-list">${priorities}</div></div>
+      </div>
+    `;
+  }
+
+  document.querySelectorAll('.route-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.route-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderRoute(btn.dataset.route);
+    });
+  });
+  document.querySelector('.route-btn[data-route="email"]').classList.add('active');
+  renderRoute('email');
+
+  // ---- Auto-fill por DOT (datos que vienen de GHL / CAB vía n8n) ----
+
+  // Endpoint real de n8n (Workflow B) y token compartido.
+  const ENDPOINT_URL = "https://n8n.truemategroup.com/webhook/lookup-dot";
+  const TOKEN = "truemate-2026-x7f9k2";
+
+  // Datos de prueba para poder probar el flujo antes de tener n8n conectado.
+  // Borra este bloque cuando el ENDPOINT_URL real esté funcionando.
+  const MOCK_DB = {
+    "1982662": {
+      legal_name: "GREG MOTOR CARRIER LLC",
+      dot: "1982662",
+      mc: "MC-745213",
+      state: "OH",
+      years_in_business: "1",
+      power_units: "1",
+      company_rep_1: "JOHN DOE",
+      drivers: "1",
+      business_address: "100 SAMPLE ST",
+      garaging_address: "100 SAMPLE ST",
+      insurer: "SAMPLE CARRIER",
+      policy_expiration_date: "2026-12-31T00:00:00.000Z"
+    },
+    "123456": {
+      legal_name: "SAMPLE TRUCKING INC",
+      dot: "123456",
+      mc: "MC-098765",
+      state: "TX",
+      years_in_business: "4",
+      power_units: "6",
+      company_rep_1: "JANE DOE",
+      drivers: "6",
+      business_address: "200 SAMPLE AVE",
+      garaging_address: "200 SAMPLE AVE",
+      insurer: "SAMPLE CARRIER",
+      policy_expiration_date: "2026-11-30T00:00:00.000Z"
+    }
+  };
+
+  // Relaciona cada campo del checklist con la llave que debe traer el JSON del endpoint.
+  const AUTO_FIELD_MAP = {
+    f1: { key: "legal_name", label: "Nombre legal" },
+    f2: { key: "company_rep_1", label: "Company Rep 1" },
+    f3: { key: "dot", label: "DOT" },
+    f4: { key: "mc", label: "MC" },
+    f5: { key: "state", label: "Estado" },
+    f6: { key: "years_in_business", label: "Años en negocio" },
+    f7: { key: "power_units", label: "Power Units" },
+    f8: { key: "drivers", label: "Drivers" },
+    f9: { key: "business_address", label: "Business Address" },
+    f10:{ key: "garaging_address", label: "Garaging Address" },
+    f11:{ key: "insurer", label: "Insurer" },
+    f12:{ key: "policy_expiration_date", label: "Policy Expiration Date" }
+  };
+
+  const statusEl = document.getElementById('autofillStatus');
+  const dataPanel = document.getElementById('autofillData');
+
+  async function fetchDataForDot(dot){
+    try{
+      const res = await fetch(`${ENDPOINT_URL}?dot=${encodeURIComponent(dot)}&token=${encodeURIComponent(TOKEN)}`, { signal: AbortSignal.timeout(6000) });
+      if(res.ok){
+        const body = await res.json();
+        // n8n responde una lista de filas encontradas; tomamos la primera si existe.
+        if(Array.isArray(body)) return body.length > 0 ? body[0] : null;
+        if(body && Object.keys(body).length > 0) return body;
+        return null;
+      }
+    }catch(e){ /* endpoint sin respuesta — probamos con los datos de prueba */ }
+    return MOCK_DB[dot] || null;
+  }
+
+  function applyAutoFill(data){
+    dataPanel.innerHTML = '';
+    let filled = 0;
+
+    const fields = [
+      ["legal_name","Nombre legal"],
+      ["company_rep_1","Company Rep 1"],
+      ["dot","DOT"],
+      ["mc","MC"],
+      ["state","Estado"],
+      ["years_in_business","Años en negocio"],
+      ["power_units","Power Units"],
+      ["drivers","Drivers"],
+      ["business_address","Business Address"],
+      ["garaging_address","Garaging Address"],
+      ["insurer","Insurer"],
+      ["policy_expiration_date","Policy Expiration Date"]
+    ];
+
+    fields.forEach(([key,label]) => {
+      const val = data[key];
+      if(val){
+        filled++;
+        const dv = document.createElement('div');
+        dv.className = 'dv';
+        dv.innerHTML = `<span class="k">${label}</span><span class="v">${val}</span>`;
+        dataPanel.appendChild(dv);
+      }
+    });
+
+    const mapToForm = {
+      legal_name:"intake_legal_name",
+      company_rep_1:"intake_company_rep_1",
+      dot:"intake_dot",
+      mc:"intake_mc",
+      power_units:"intake_power_units",
+      drivers:"intake_drivers",
+      business_address:"intake_business_address",
+      garaging_address:"intake_garaging_address",
+      insurer:"intake_insurer"
+    };
+    window.currentAutoData = data || {};
+    Object.entries(mapToForm).forEach(([key,id]) => {
+      const el = document.getElementById(id);
+      if(el && data[key] !== undefined && data[key] !== null && String(data[key]).trim() !== ''){
+        el.value = data[key];
+        markAutoField(el);
+      }
+    });
+
+    const dateEl = document.getElementById('intake_policy_expiration_date');
+    if(dateEl && data.policy_expiration_date){
+      dateEl.value = String(data.policy_expiration_date).slice(0,10);
+      markAutoField(dateEl);
+    }
+
+    dataPanel.classList.toggle('show', filled > 0);
+    statusEl.className = 'autofill-status ok';
+    statusEl.textContent = `${filled} campos encontrados para el DOT ${data.dot || ''}. Los campos verdes vinieron automáticamente; confirma o corrige únicamente lo necesario.`;
+    updateCaseSummary();
+    renderCurrentRoute();
+  }
+
+  async function lookupDot(dot){
+    if(!dot) return;
+    statusEl.className = 'autofill-status';
+    statusEl.textContent = `Buscando datos para el DOT ${dot}…`;
+    const data = await fetchDataForDot(dot);
+    if(data){
+      applyAutoFill(data);
+    }else{
+      statusEl.className = 'autofill-status miss';
+      statusEl.textContent = `No se encontraron datos precargados para el DOT ${dot}. Continúa recopilando la ficha manualmente.`;
+      dataPanel.classList.remove('show');
+      window.currentAutoData = {};
+      clearAutoFieldStates();
+      updateCaseSummary();
+    }
+  }
+
+  function manualLookup(){
+    const v = document.getElementById('autoDotInput').value.trim();
+    lookupDot(v);
+  }
+
+  // Si la página se abre con ?dot=XXXXX en la URL (como la pasaría GHL en el iframe), corre solo.
+  (function initFromUrl(){
+    const params = new URLSearchParams(window.location.search);
+    const dotParam = params.get('dot');
+    if(dotParam){
+      document.getElementById('autoDotInput').value = dotParam;
+      lookupDot(dotParam);
+    }
+  })();
+
+  // ---- Resumen dinámico + estados visuales de campos ----
+  window.currentAutoData = window.currentAutoData || {};
+  const FOUND_KEYS = ["legal_name","company_rep_1","dot","mc","state","years_in_business","power_units","drivers","business_address","garaging_address","insurer","policy_expiration_date"];
+  const COMPLETE_FIELDS = [
+    ["intake_legal_name","Nombre legal"],["intake_company_rep_1","Persona de contacto"],["intake_dot","DOT"],["intake_mc","MC"],
+    ["intake_business_address","Business Address"],["intake_garaging_address","Garaging Address"],["intake_power_units","Power Units"],["units_to_quote","Unidades a cotizar"],
+    ["intake_drivers","Drivers"],["drivers_to_quote","Drivers a cotizar"],["intake_insurer","Aseguradora actual"],["intake_policy_expiration_date","Fecha de vencimiento"]
+  ];
+  const DOC_FIELDS = [["doc_cdl","CDL"],["doc_loss","Loss Runs"],["doc_ifta","IFTA"],["doc_vin","VIN / Registration"]];
+
+  function ensureFieldState(el){
+    if(!el) return null;
+    const host = el.closest('.form-field') || el.parentElement;
+    if(!host) return null;
+    let badge = host.querySelector(`.field-state[data-for="${el.id}"]`);
+    if(!badge){
+      badge = document.createElement('span');
+      badge.className = 'field-state';
+      badge.dataset.for = el.id;
+      el.insertAdjacentElement('afterend', badge);
+    }
+    return badge;
+  }
+  function markAutoField(el){
+    if(!el) return;
+    el.classList.remove('field-confirmed');
+    el.classList.add('auto-found');
+    el.dataset.autofilled = '1';
+    const badge = ensureFieldState(el);
+    if(badge){ badge.className='field-state auto'; badge.textContent='AUTO · GHL'; }
+  }
+  function markConfirmedField(el){
+    if(!el || !String(el.value || '').trim()) return;
+    el.classList.remove('auto-found');
+    el.classList.add('field-confirmed');
+    const badge = ensureFieldState(el);
+    if(badge){ badge.className='field-state confirmed'; badge.textContent='✓ CONFIRMADO / EDITADO'; }
+  }
+  function clearAutoFieldStates(){
+    document.querySelectorAll('.auto-found,.field-confirmed').forEach(el=>{el.classList.remove('auto-found','field-confirmed'); delete el.dataset.autofilled;});
+    document.querySelectorAll('.field-state').forEach(el=>el.remove());
+  }
+  function documentReady(name){
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    if(!el) return false;
+    return el.value === 'Recibido' || el.value === 'No aplica';
+  }
+  function updateCaseSummary(){
+    const found = FOUND_KEYS.filter(k => window.currentAutoData && window.currentAutoData[k] !== undefined && window.currentAutoData[k] !== null && String(window.currentAutoData[k]).trim() !== '').length;
+    const complete = COMPLETE_FIELDS.filter(([id])=>{ const el=document.getElementById(id); return el && String(el.value||'').trim() !== ''; }).length;
+    const docs = DOC_FIELDS.filter(([name])=>documentReady(name)).length;
+    const foundEl=document.getElementById('foundCount'), completeEl=document.getElementById('completeCount'), docsEl=document.getElementById('docsCount');
+    if(foundEl) foundEl.textContent=`${found} / 12`;
+    if(completeEl) completeEl.textContent=`${complete} / 12`;
+    if(docsEl) docsEl.textContent=`${docs} / 4`;
+
+    const missing=[];
+    COMPLETE_FIELDS.forEach(([id,label])=>{ const el=document.getElementById(id); if(!el || !String(el.value||'').trim()) missing.push(label); });
+    DOC_FIELDS.forEach(([name,label])=>{ if(!documentReady(name)){ const el=document.querySelector(`input[name="${name}"]:checked`); const status=el?el.value:'Pendiente'; missing.push(`${label}: ${status.toLowerCase()}`); } });
+    const list=document.getElementById('dynamicMissingList');
+    if(list){
+      if(!document.getElementById('intake_dot')?.value && found===0){ list.innerHTML='<li>Ingresa un DOT para cargar el expediente.</li>'; }
+      else if(missing.length===0){ list.innerHTML='<li><strong>Expediente completo para avanzar.</strong></li>'; }
+      else { list.innerHTML=missing.slice(0,8).map(x=>`<li>${x}</li>`).join('') + (missing.length>8?`<li>+ ${missing.length-8} pendiente(s) adicional(es)</li>`:''); }
+    }
+    const status=document.getElementById('summaryStatus');
+    if(status){
+      if(!document.getElementById('intake_dot')?.value && found===0) status.textContent='Ingresa un DOT para comenzar';
+      else if(complete===12 && docs===4) status.textContent='Listo para someter';
+      else status.textContent=`${complete}/12 datos · ${docs}/4 docs listos`;
+    }
+  }
+  function renderCurrentRoute(){
+    const active=document.querySelector('.route-btn.active');
+    if(active) renderRoute(active.dataset.route);
+  }
+
+  COMPLETE_FIELDS.forEach(([id])=>{
+    const el=document.getElementById(id);
+    if(el){
+      el.addEventListener('input',()=>{ if(el.dataset.autofilled==='1') markConfirmedField(el); updateCaseSummary(); renderCurrentRoute(); });
+      el.addEventListener('change',()=>{ if(String(el.value||'').trim()) markConfirmedField(el); updateCaseSummary(); renderCurrentRoute(); });
+    }
+  });
+  DOC_FIELDS.forEach(([name])=>document.querySelectorAll(`input[name="${name}"]`).forEach(el=>el.addEventListener('change',updateCaseSummary)));
+  updateCaseSummary();
+
+  // ---- Tool launchers ----
+  function openDot(){
+    const v = document.getElementById('dotInput').value.trim();
+    if(!v) return;
+    window.open(`https://motus.dot.gov/customer/${encodeURIComponent(v)}/account`, '_blank');
+  }
+  function openVin(){
+    const v = document.getElementById('vinInput').value.trim();
+    if(!v) return;
+    window.open(`https://vpic.nhtsa.dot.gov/decoder/VinDecoder?VIN=${encodeURIComponent(v)}&ModelYear=`, '_blank');
+  }
+</script>
+
+<script>
+  document.addEventListener('click', function(e){
+    const toggler = e.target.closest('.info-icon');
+    document.querySelectorAll('.info-inline.open').forEach(el=>{ if(!el.contains(e.target)) el.classList.remove('open'); });
+    if(toggler){
+      const wrap = toggler.closest('.info-inline');
+      wrap.classList.toggle('open');
+      e.stopPropagation();
+    }
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') document.querySelectorAll('.info-inline.open').forEach(el=>el.classList.remove('open'));
+  });
+</script>
+
+
+  <!-- MOTOR GUIDELINES MODAL -->
+  <div class="motor-modal" id="motorModal" aria-hidden="true">
+    <div class="motor-shell" role="dialog" aria-modal="true" aria-label="TrueMate Motor Guidelines">
+      <div class="motor-modal-head">
+        <div class="motor-modal-title">
+          <strong>Motor Guidelines</strong>
+          <span>Consulta interna de mercados · permanece dentro del Manifiesto</span>
+        </div>
+        <button class="motor-close" type="button" onclick="closeMotorGuidelines()">✕ Cerrar</button>
+      </div>
+      <iframe
+        id="motorFrame"
+        class="motor-frame"
+        src="motor-guidelines.html"
+        title="TrueMate Motor Guidelines"
+        loading="lazy"
+        sandbox="allow-scripts allow-forms allow-modals allow-same-origin allow-popups">
+      </iframe>
+    </div>
+  </div>
+
+<script>
+  function openMotorGuidelines(){
+    const modal = document.getElementById('motorModal');
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('modal-open');
+  }
+  function closeMotorGuidelines(){
+    const modal = document.getElementById('motorModal');
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('modal-open');
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeMotorGuidelines();
+  });
+  document.addEventListener('click', function(e){
+    const modal = document.getElementById('motorModal');
+    if(e.target === modal) closeMotorGuidelines();
+  });
+</script>
+
+  <!-- PFA CALCULATOR MODAL -->
+  <div class="pfa-modal" id="pfaModal" aria-hidden="true">
+    <div class="pfa-shell" role="dialog" aria-modal="true" aria-label="Calculadora PFA y Diferidos">
+      <div class="pfa-modal-head">
+        <div class="pfa-modal-title">
+          <strong>Calculadora PFA y Diferidos</strong>
+          <span>Herramienta interna Truemate · permanece dentro del Manifiesto</span>
+        </div>
+        <button class="pfa-close" type="button" onclick="closePfaCalculator()">✕ Cerrar</button>
+      </div>
+      <iframe
+        id="pfaFrame"
+        class="pfa-frame"
+        src="pfa-calculator.html"
+        title="Truemate PFA & Deferred Payment Analyzer"
+        loading="lazy"
+        sandbox="allow-scripts allow-forms allow-modals allow-same-origin">
+      </iframe>
+    </div>
+  </div>
+
+
+<script>
+  function openPfaCalculator(){
+    const modal = document.getElementById('pfaModal');
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('modal-open');
+  }
+  function closePfaCalculator(){
+    const modal = document.getElementById('pfaModal');
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('modal-open');
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closePfaCalculator();
+  });
+  document.addEventListener('click', function(e){
+    const modal = document.getElementById('pfaModal');
+    if(e.target === modal) closePfaCalculator();
+  });
+</script>
+
+
+  <!-- LOSS RUN CENTER MODAL -->
+  <div class="loss-modal" id="lossModal" aria-hidden="true">
+    <div class="loss-shell" role="dialog" aria-modal="true" aria-label="Truemate Loss Run Center">
+      <div class="loss-modal-head">
+        <div class="loss-modal-title">
+          <strong>Loss Run Center</strong>
+          <span>Directorio interno de carriers y procedimientos</span>
+        </div>
+        <button class="loss-close" type="button" onclick="closeLossRunCenter()">✕ Cerrar</button>
+      </div>
+      <iframe
+        id="lossFrame"
+        class="loss-frame"
+        src="loss-run-center.html"
+        title="Truemate Loss Run Center"
+        loading="lazy"
+        sandbox="allow-scripts allow-forms allow-modals allow-same-origin allow-popups">
+      </iframe>
+    </div>
+  </div>
+
+
+<script>
+  function openLossRunCenter(){
+    const modal = document.getElementById('lossModal');
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('modal-open');
+  }
+  function closeLossRunCenter(){
+    const modal = document.getElementById('lossModal');
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('modal-open');
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeLossRunCenter();
+  });
+  document.addEventListener('click', function(e){
+    const modal = document.getElementById('lossModal');
+    if(e.target === modal) closeLossRunCenter();
+  });
+</script>
+
+
+<script>
+  // ====== CONFIGURACIÓN DE GUARDADO ======
+  // Este endpoint lo crearemos en n8n en el siguiente paso.
+  const SAVE_INTAKE_ENDPOINT = "https://n8n.truemategroup.com/webhook/save-intake";
+
+  function val(id){
+    const el = document.getElementById(id);
+    return el ? String(el.value ?? '').trim() : '';
+  }
+
+  function checkedValue(name){
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '';
+  }
+
+  function coverageData(key, label){
+    const box = document.getElementById(`cov_${key}`);
+    const limit = document.getElementById(`limit_${key}`);
+    return {
+      name: label,
+      selected: !!(box && box.checked),
+      limit: limit ? String(limit.value ?? '').trim() : ''
+    };
+  }
+
+  function buildIntakePayload(){
+    const payload = {
+      dot: val('intake_dot') || val('autoDotInput'),
+      legal_name: val('intake_legal_name'),
+      company_rep_1: val('intake_company_rep_1'),
+      mc: val('intake_mc'),
+      quote_type: checkedValue('quote_type'),
+      business_address: val('intake_business_address'),
+      garaging_address: val('intake_garaging_address'),
+
+      power_units: val('intake_power_units'),
+      units_to_quote: val('units_to_quote'),
+      drivers: val('intake_drivers'),
+      drivers_to_quote: val('drivers_to_quote'),
+      vehicle_type: val('vehicle_type'),
+      radius: val('radius'),
+      commodity: val('commodity'),
+      uiia: checkedValue('uiia'),
+      operation_notes: val('operation_notes'),
+
+      insurer: val('intake_insurer'),
+      policy_expiration_date: val('intake_policy_expiration_date'),
+      renewal_loss_runs_status: checkedValue('loss_runs'),
+
+      cdl_status: checkedValue('doc_cdl'),
+      loss_runs_status: checkedValue('doc_loss'),
+      ifta_status: checkedValue('doc_ifta'),
+      vin_registration_status: checkedValue('doc_vin'),
+      document_notes: val('document_notes'),
+
+      coverage_auto_liability: coverageData('auto_liability','Auto Liability'),
+      coverage_motor_truck_cargo: coverageData('motor_truck_cargo','Motor Truck Cargo'),
+      coverage_physical_damage: coverageData('physical_damage','Physical Damage'),
+      coverage_general_liability: coverageData('general_liability','General Liability'),
+      coverage_trailer_interchange: coverageData('trailer_interchange','Trailer Interchange'),
+      coverage_miles_radius: coverageData('miles_radius','Miles / Radius'),
+      coverage_notes: val('coverage_notes'),
+      general_notes: val('general_notes'),
+
+      case_status: 'En proceso',
+      source: 'Manifiesto de Ruta',
+      saved_at: new Date().toISOString()
+    };
+    return payload;
+  }
+
+  function setSaveState(text, cls=''){
+    const el = document.getElementById('saveState');
+    if(!el) return;
+    el.className = cls;
+    el.textContent = text;
+  }
+
+  async function saveProgress(generatePdfAfter){
+    const data = buildIntakePayload();
+
+    if(!data.dot){
+      alert('Primero debes tener un DOT para guardar el caso.');
+      return;
+    }
+
+    const saveBtn = document.getElementById('saveProgressBtn');
+    const pdfBtn = document.getElementById('savePdfBtn');
+    if(saveBtn) saveBtn.disabled = true;
+    if(pdfBtn) pdfBtn.disabled = true;
+    setSaveState('Guardando…', 'save-working');
+
+    try{
+      const res = await fetch(SAVE_INTAKE_ENDPOINT, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(data)
+      });
+
+      let body = null;
+      try { body = await res.json(); } catch(e) {}
+
+      if(!res.ok){
+        throw new Error((body && (body.message || body.error)) || `HTTP ${res.status}`);
+      }
+
+      setSaveState('✓ Guardado', 'save-ok');
+
+      if(generatePdfAfter){
+        generateCasePdf(data);
+      }
+    }catch(err){
+      console.error('Error guardando intake:', err);
+      setSaveState('No se pudo guardar', 'save-error');
+      alert('No se pudo guardar el avance. Revisa el webhook de n8n antes de continuar.');
+    }finally{
+      if(saveBtn) saveBtn.disabled = false;
+      if(pdfBtn) pdfBtn.disabled = false;
+    }
+  }
+
+  function esc(v){
+    return String(v ?? '')
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;');
+  }
+
+  function coverageLines(data){
+    const rows = [
+      data.coverage_auto_liability,
+      data.coverage_motor_truck_cargo,
+      data.coverage_physical_damage,
+      data.coverage_general_liability,
+      data.coverage_trailer_interchange,
+      data.coverage_miles_radius
+    ].filter(x => x && x.selected);
+
+    if(!rows.length) return '<div class="muted">No se seleccionaron coberturas.</div>';
+    return rows.map(x => `<div class="row"><span>${esc(x.name)}</span><strong>${esc(x.limit || '—')}</strong></div>`).join('');
+  }
+
+  function generateCasePdf(data){
+    const w = window.open('', '_blank', 'width=980,height=900');
+    if(!w){
+      alert('El navegador bloqueó la ventana del PDF. Permite pop-ups para este sitio.');
+      return;
+    }
+
+    const html = `
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>${esc(data.legal_name || 'Truemate Trucking Intake')}</title>
+<style>
+  body{font-family:Arial,sans-serif;color:#193251;margin:0;background:#fff}
+  .page{max-width:900px;margin:0 auto;padding:34px}
+  h1{margin:0;font-size:28px}
+  .sub{color:#66758a;margin-top:5px}
+  .bar{height:6px;background:#193251;margin:18px 0 22px}
+  h2{font-size:15px;text-transform:uppercase;border-bottom:1px solid #d9dee5;padding-bottom:7px;margin-top:24px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px}
+  .field{border-bottom:1px dotted #d9dee5;padding:7px 0}
+  .field small{display:block;color:#7a8798;text-transform:uppercase;font-size:9px;letter-spacing:.05em}
+  .field strong{font-size:13px}
+  .row{display:flex;justify-content:space-between;gap:20px;padding:7px 0;border-bottom:1px dotted #d9dee5;font-size:13px}
+  .docs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .doc{padding:10px;border:1px solid #d9dee5;border-radius:8px}
+  .doc small{display:block;color:#7a8798;font-size:9px;text-transform:uppercase}
+  .notes{white-space:pre-wrap;border:1px solid #d9dee5;border-radius:8px;padding:12px;min-height:42px;font-size:12px}
+  .muted{color:#7a8798;font-size:12px}
+  .footer{margin-top:28px;color:#8993a0;font-size:10px;text-align:center}
+  @media print{.no-print{display:none}.page{padding:12px 20px}}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Truemate Trucking — Ficha de Cotización</h1>
+  <div class="sub">${esc(data.legal_name)} · DOT ${esc(data.dot)} · ${esc(data.quote_type || 'Cotización')}</div>
+  <div class="bar"></div>
+
+  <h2>Identificación</h2>
+  <div class="grid">
+    <div class="field"><small>Legal Name</small><strong>${esc(data.legal_name || '—')}</strong></div>
+    <div class="field"><small>Company Rep 1</small><strong>${esc(data.company_rep_1 || '—')}</strong></div>
+    <div class="field"><small>DOT</small><strong>${esc(data.dot || '—')}</strong></div>
+    <div class="field"><small>MC</small><strong>${esc(data.mc || '—')}</strong></div>
+    <div class="field"><small>Business Address</small><strong>${esc(data.business_address || '—')}</strong></div>
+    <div class="field"><small>Garaging Address</small><strong>${esc(data.garaging_address || '—')}</strong></div>
+  </div>
+
+  <h2>Operación</h2>
+  <div class="grid">
+    <div class="field"><small>Power Units</small><strong>${esc(data.power_units || '—')}</strong></div>
+    <div class="field"><small>Units to Quote</small><strong>${esc(data.units_to_quote || '—')}</strong></div>
+    <div class="field"><small>Drivers</small><strong>${esc(data.drivers || '—')}</strong></div>
+    <div class="field"><small>Drivers to Quote</small><strong>${esc(data.drivers_to_quote || '—')}</strong></div>
+    <div class="field"><small>Vehicle Type</small><strong>${esc(data.vehicle_type || '—')}</strong></div>
+    <div class="field"><small>Radius</small><strong>${esc(data.radius || '—')}</strong></div>
+    <div class="field"><small>Commodity</small><strong>${esc(data.commodity || '—')}</strong></div>
+    <div class="field"><small>UIIA</small><strong>${esc(data.uiia || '—')}</strong></div>
+  </div>
+
+  <h2>Renovación</h2>
+  <div class="grid">
+    <div class="field"><small>Current Insurer</small><strong>${esc(data.insurer || '—')}</strong></div>
+    <div class="field"><small>Expiration Date</small><strong>${esc(data.policy_expiration_date || '—')}</strong></div>
+  </div>
+
+  <h2>Coberturas a cotizar</h2>
+  ${coverageLines(data)}
+
+  <h2>Documentos</h2>
+  <div class="docs">
+    <div class="doc"><small>CDL / DL</small><strong>${esc(data.cdl_status || '—')}</strong></div>
+    <div class="doc"><small>Loss Runs</small><strong>${esc(data.loss_runs_status || '—')}</strong></div>
+    <div class="doc"><small>IFTA</small><strong>${esc(data.ifta_status || '—')}</strong></div>
+    <div class="doc"><small>VIN / Registration</small><strong>${esc(data.vin_registration_status || '—')}</strong></div>
+  </div>
+
+  <h2>Notas</h2>
+  <div class="notes">${esc([
+    data.operation_notes && 'OPERACIÓN:\\n' + data.operation_notes,
+    data.coverage_notes && 'COBERTURAS:\\n' + data.coverage_notes,
+    data.document_notes && 'DOCUMENTOS:\\n' + data.document_notes,
+    data.general_notes && 'GENERALES:\\n' + data.general_notes
+  ].filter(Boolean).join('\\n\\n') || 'Sin notas adicionales.')}</div>
+
+  <div class="footer">Truemate Group · Generado ${new Date().toLocaleString()}</div>
+  <div class="no-print" style="text-align:center;margin-top:22px">
+    <button onclick="window.print()" style="padding:10px 16px;font-weight:700;cursor:pointer">Imprimir / Guardar como PDF</button>
+  </div>
+</div>
+</body>
+</html>`;
+
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+    setTimeout(()=>w.focus(), 200);
+  }
+</script>
+
+</body>
+</html>
