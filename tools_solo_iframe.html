@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrueMate Tools</title>
+  <style>
+    :root{
+      --navy:#0f2f53;
+      --navy-2:#173d67;
+      --blue:#2d7dd2;
+      --gold:#f5c451;
+      --bg:#eef4fb;
+      --card:#ffffff;
+      --text:#162840;
+      --muted:#60728d;
+      --border:#d6e2ef;
+      --green:#168b4a;
+      --shadow:0 12px 30px rgba(17,47,84,.10);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:linear-gradient(180deg,#f7faff 0%,var(--bg) 100%);
+      color:var(--text);
+    }
+    .topbar{
+      background:linear-gradient(135deg,var(--navy),var(--navy-2));
+      color:#fff;
+      border-bottom:4px solid var(--gold);
+    }
+    .topbar .inner{
+      max-width:1240px;
+      margin:0 auto;
+      padding:28px 24px 24px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .brand h1{
+      margin:0;
+      font-size:32px;
+      letter-spacing:-.02em;
+    }
+    .brand p{
+      margin:8px 0 0;
+      color:#d7e3f1;
+      font-size:15px;
+    }
+    .pill{
+      border:1px solid rgba(255,255,255,.28);
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:13px;
+      color:#eef5ff;
+      background:rgba(255,255,255,.06);
+      white-space:nowrap;
+    }
+    main{
+      max-width:1240px;
+      margin:0 auto;
+      padding:30px 24px 50px;
+    }
+    .intro{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      align-items:center;
+      margin-bottom:24px;
+      flex-wrap:wrap;
+    }
+    .intro h2{
+      margin:0 0 6px;
+      font-size:24px;
+    }
+    .intro p{
+      margin:0;
+      color:var(--muted);
+      max-width:760px;
+      line-height:1.5;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      min-height:230px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      width:6px;
+      height:100%;
+      background:var(--green);
+    }
+    .card .tag{
+      display:inline-flex;
+      width:max-content;
+      align-items:center;
+      gap:8px;
+      background:#e9f7ef;
+      color:#167443;
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:12px;
+      font-weight:700;
+      margin-bottom:16px;
+    }
+    .card h3{
+      margin:0 0 8px;
+      font-size:22px;
+    }
+    .card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.5;
+      flex:1;
+    }
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:22px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      appearance:none;
+      border:none;
+      border-radius:12px;
+      padding:11px 14px;
+      font-weight:700;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-size:14px;
+    }
+    .btn-primary{
+      color:#fff;
+      background:var(--navy);
+    }
+    .btn-secondary{
+      color:var(--navy);
+      background:#edf4ff;
+      border:1px solid #d2e2f4;
+    }
+    .note{
+      margin-top:24px;
+      background:#fff8dd;
+      border:1px solid #efd67c;
+      color:#725200;
+      padding:14px 16px;
+      border-radius:14px;
+      font-size:14px;
+      line-height:1.5;
+    }
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(10,25,45,.68);
+      z-index:1000;
+      padding:18px;
+    }
+    .modal.show{display:flex}
+    .modal-panel{
+      width:min(1500px,96vw);
+      height:min(92vh,1000px);
+      background:#fff;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 30px 70px rgba(0,0,0,.28);
+      display:flex;
+      flex-direction:column;
+    }
+    .modal-head{
+      background:var(--navy);
+      color:#fff;
+      padding:12px 16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:4px solid var(--gold);
+    }
+    .modal-title{
+      font-weight:800;
+      letter-spacing:.01em;
+    }
+    .close{
+      border:1px solid rgba(255,255,255,.3);
+      color:#fff;
+      background:rgba(255,255,255,.06);
+      border-radius:10px;
+      padding:9px 12px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    iframe{
+      border:0;
+      width:100%;
+      height:100%;
+      background:#fff;
+    }
+    @media(max-width:900px){
+      .grid{grid-template-columns:1fr 1fr}
+      .topbar .inner{align-items:flex-start}
+    }
+    @media(max-width:640px){
+      .grid{grid-template-columns:1fr}
+      .brand h1{font-size:27px}
+      main{padding:22px 16px 40px}
+      .topbar .inner{padding:22px 16px}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="inner">
+      <div class="brand">
+        <h1>TrueMate Tools</h1>
+        <p>Acceso rápido a herramientas operativas de Commercial Auto / Trucking</p>
+      </div>
+      <div class="pill">Hub independiente del Manifiesto</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div>
+        <h2>Herramientas de uso diario</h2>
+        <p>
+          Este hub abre las herramientas dentro de la misma interfaz. Si una herramienta se actualiza, el acceso desde aquí utiliza la versión nueva.
+        </p>
+      </div>
+      <a class="btn btn-secondary" href="index.html">Abrir Manifiesto de Ruta</a>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="tag">Mercados</div>
+        <h3>Motor Guidelines</h3>
+        <p>Consulta rápida de MGA, carriers, appetite, restricciones y mercados recomendados para someter.</p>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="openTool('Motor Guidelines','motor-guidelines.html')">Abrir herramienta</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="tag">Loss Runs</div>
+        <h3>Loss Run Center</h3>
+        <p>Consulta y administra la información necesaria para solicitar y dar seguimiento a loss runs.</p>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="openTool('Loss Run Center','loss-run-center.html')">Abrir herramienta</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="tag">Financiamiento</div>
+        <h3>PFA Calculator</h3>
+        <p>Calculadora de PFA y pagos diferidos para revisar opciones de financiamiento de prima.</p>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="openTool('PFA Calculator','pfa-calculator.html')">Abrir herramienta</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="tag">FMCSA</div>
+        <h3>Verificar DOT</h3>
+        <p>Acceso rápido para validar información del DOT y estatus operativo antes de continuar una cotización.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://safer.fmcsa.dot.gov/CompanySnapshot.aspx" target="_blank" rel="noopener">Abrir FMCSA</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="tag">VIN</div>
+        <h3>Decodificar VIN</h3>
+        <p>Consulta de VIN para validar año, fabricante y características principales de las unidades.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://vpic.nhtsa.dot.gov/decoder/" target="_blank" rel="noopener">Abrir NHTSA VIN</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="tag">Proceso</div>
+        <h3>Manifiesto de Ruta</h3>
+        <p>Guía completa desde el primer contacto hasta el sometimiento y seguimiento de la cotización.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="index.html">Abrir Manifiesto</a>
+        </div>
+      </article>
+    </section>
+
+    <div class="note">
+      <strong>Importante:</strong> las herramientas internas se abren únicamente dentro de este hub. No se muestra un botón de acceso directo en otra pestaña. Una actualización en <code>motor-guidelines.html</code>, <code>loss-run-center.html</code> o <code>pfa-calculator.html</code> se refleja también aquí.
+    </div>
+  </main>
+
+  <div class="modal" id="toolModal" aria-hidden="true">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <div class="modal-title" id="modalTitle">Herramienta</div>
+        <button class="close" onclick="closeTool()">✕ Cerrar</button>
+      </div>
+      <iframe id="toolFrame" src="about:blank"></iframe>
+    </div>
+  </div>
+
+  <script>
+    function openTool(title, src){
+      const modal = document.getElementById('toolModal');
+      const frame = document.getElementById('toolFrame');
+      document.getElementById('modalTitle').textContent = title;
+      frame.src = src + '?v=' + Date.now();
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+    }
+
+    function closeTool(){
+      const modal = document.getElementById('toolModal');
+      const frame = document.getElementById('toolFrame');
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden','true');
+      frame.src='about:blank';
+      document.body.style.overflow='';
+    }
+
+    document.addEventListener('keydown', function(e){
+      if(e.key==='Escape') closeTool();
+    });
+
+    document.getElementById('toolModal').addEventListener('click', function(e){
+      if(e.target===this) closeTool();
+    });
+  </script>
+</body>
+</html>
