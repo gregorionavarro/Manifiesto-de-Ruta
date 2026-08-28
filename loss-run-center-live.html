@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Truemate Loss Run Center</title>
+<meta name="description" content="Directorio interno de carriers y procedimientos para solicitar Loss Runs.">
+<style>
+:root{--navy:#14354f;--navy2:#0d2639;--gold:#d6a84b;--ink:#17212b;--muted:#66727e;--line:#e5e9ed;--bg:#f6f8fa;--card:#fff;--green:#1e7a4c;--amber:#9a6b14;--red:#a33b35;--blue:#2f6690;}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.top{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:26px 0 54px;box-shadow:0 5px 18px rgba(15,38,57,.14)}
+.wrap{width:min(1180px,calc(100% - 32px));margin:auto} .brand{display:flex;gap:14px;align-items:center}.brandrow{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.livepill{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:800;white-space:nowrap}.livepill.ok{background:rgba(31,122,76,.28)}.livepill.err{background:rgba(163,59,53,.35)} .mark{width:48px;height:48px;border-radius:14px;background:#fff;color:var(--navy);font-weight:900;display:grid;place-items:center;letter-spacing:-1px;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+h1{font-size:28px;margin:0 0 3px} .sub{margin:0;color:#d7e1e9;font-size:14px} .hero{margin-top:28px} .hero h2{font-size:34px;line-height:1.05;margin:0 0 10px;max-width:720px} .hero p{color:#dce6ed;margin:0;max-width:760px}
+.searchbox{margin-top:-27px;background:#fff;border-radius:18px;padding:18px;box-shadow:0 14px 38px rgba(20,53,79,.14);position:relative;z-index:2} .searchrow{display:grid;grid-template-columns:1fr auto;gap:12px} .inputwrap{position:relative} .searchicon{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:20px;color:#72808d} input[type=search]{width:100%;height:54px;border:1px solid #dce2e7;border-radius:13px;padding:0 46px;font-size:17px;outline:none;background:#fbfcfd} input[type=search]:focus{border-color:#7fa2bc;box-shadow:0 0 0 4px rgba(47,102,144,.1)} .clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);border:0;background:transparent;font-size:19px;cursor:pointer;color:#84919b}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px} .chip{border:1px solid #dce3e8;background:#fff;border-radius:999px;padding:8px 12px;font-size:13px;cursor:pointer;color:#42515e} .chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.stats{display:flex;gap:18px;flex-wrap:wrap;margin:18px 0;color:#66727e;font-size:13px} .stat strong{color:#1f2d38}
+.resultbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:20px 0 12px} .resultbar h3{margin:0;font-size:16px} .resultbar small{color:#73808b}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;padding-bottom:42px} .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 4px 14px rgba(16,38,57,.05);transition:.18s ease} .card:hover{transform:translateY(-1px);box-shadow:0 9px 26px rgba(16,38,57,.09)} .cardhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start} .company{font-size:18px;font-weight:800;line-height:1.2} .status{font-size:11px;border-radius:999px;padding:6px 9px;white-space:nowrap;background:#eaf6ef;color:var(--green);font-weight:700}
+.meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0} .field{background:#f8fafb;border:1px solid #edf0f2;border-radius:11px;padding:10px;min-height:58px} .label{text-transform:uppercase;letter-spacing:.06em;font-size:10px;color:#7b8791;margin-bottom:4px;font-weight:700} .value{font-size:13px;line-height:1.35;word-break:break-word} .value.empty{color:#a5adb4} .procedure{border-top:1px solid #edf0f2;margin-top:12px;padding-top:12px} .procedure p{margin:5px 0 0;color:#4e5d68;font-size:13px;line-height:1.5;white-space:pre-wrap}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px} .btn{border:1px solid #d9e1e6;background:#fff;color:#2c4353;padding:8px 11px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none} .btn:hover{background:#f4f7f9} .btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.emptyState{background:#fff;border:1px dashed #cfd8df;border-radius:16px;padding:40px;text-align:center;color:#6f7c87;grid-column:1/-1} .hint{font-size:12px;color:#85919b;margin-top:8px}.sourceNotice{margin-top:12px;border:1px solid #d8e4ee;background:#eef6fc;color:#33556f;border-radius:12px;padding:10px 12px;font-size:12px;line-height:1.45}.sourceNotice.error{background:#fff0ee;border-color:#efb6b0;color:#8b2f2a}
+footer{text-align:center;color:#8b959d;font-size:12px;padding:10px 0 30px}
+.toast{position:fixed;right:18px;bottom:18px;background:#17212b;color:#fff;padding:11px 14px;border-radius:10px;font-size:13px;opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s;z-index:10} .toast.show{opacity:1;transform:none}
+@media(max-width:780px){.hero h2{font-size:27px} .grid{grid-template-columns:1fr} .searchrow{grid-template-columns:1fr} .meta{grid-template-columns:1fr} .wrap{width:min(100% - 20px,1180px)} .top{padding-top:18px}}
+@media print{.top{padding:14px 0;background:#fff!important;color:#000} .sub,.hero p,.searchbox,.filters,.actions,.stats{display:none!important} .hero h2{color:#000;font-size:24px} .grid{grid-template-columns:1fr} .card{break-inside:avoid;box-shadow:none} body{background:#fff}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><div class="brandrow"><div class="brand"><div class="mark">TM</div><div><h1>Truemate Loss Run Center</h1><p class="sub">Carrier procedures · contacts · request instructions</p></div></div><div id="liveStatus" class="livepill">CARGANDO...</div></div><div class="hero"><h2>Encuentra cómo solicitar un Loss Run en segundos.</h2><p>Busca la aseguradora y consulta método, contacto, firma requerida, tiempo estimado y notas internas del equipo.</p></div></div></header>
+<main class="wrap"><section class="searchbox"><div class="searchrow"><div class="inputwrap"><span class="searchicon">⌕</span><input id="q" type="search" autocomplete="off" placeholder="Buscar compañía, email, teléfono o palabra clave…"><button class="clear" id="clear" aria-label="Limpiar">×</button></div><button class="btn primary" onclick="window.print()">Imprimir resultados</button></div><div class="filters" id="filters"><button class="chip active" data-filter="all">Todos</button><button class="chip" data-filter="Firma">Requiere firma</button><button class="chip" data-filter="Cliente">Cliente solicita</button><button class="chip" data-filter="Email">Email</button><button class="chip" data-filter="Portal">Portal</button><button class="chip" data-filter="Teléfono">Teléfono</button></div></section>
+<div id="sourceNote" class="sourceNotice">Conectando con Directorio Maestro...</div><div class="stats"><span class="stat"><strong id="total">0</strong> carriers en la base</span><span class="stat"><strong id="shown">0</strong> resultados visibles</span><span class="stat">Fuente: Directorio Maestro Truemate</span></div>
+<div class="resultbar"><h3 id="title">Directorio</h3><small>Escribe una parte del nombre, por ejemplo “Canal” o “Progressive”.</small></div>
+<section class="grid" id="grid"></section></main><footer>Herramienta interna · Truemate Group · Loss Run Center</footer><div class="toast" id="toast">Copiado</div>
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbyugowexTVMbuLIj3fZMdOH7iL_9fiKyXJh_1izbZRFgRrY8Bv2g9-kqFm2q-GhsmI9/exec';
+let DATA = [];
+let activeFilter = 'all';
+
+const $ = s => document.querySelector(s);
+const q = $('#q');
+const grid = $('#grid');
+const toast = $('#toast');
+
+const norm = s => (s || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+
+function safe(s) {
+  return (s || '').toString().replace(/[&<>"']/g, m => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+  }[m]));
+}
+
+function yes(v) {
+  return /^(si|sí)$/i.test((v || '').trim());
+}
+
+function field(label, value) {
+  const v = (value || '').toString().trim();
+  return `<div class="field"><div class="label">${label}</div><div class="value ${v ? '' : 'empty'}">${safe(v || 'No indicado')}</div></div>`;
+}
+
+function toastMsg(m) {
+  toast.textContent = m;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1200);
+}
+
+async function copyText(t) {
+  try {
+    await navigator.clipboard.writeText(t);
+    toastMsg('Copiado al portapapeles');
+  } catch (e) {
+    prompt('Copia este texto:', t);
+  }
+}
+
+function firstEmail(s) {
+  const m = (s || '').match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+  return m ? m[0] : '';
+}
+
+function firstUrl(s) {
+  const m = (s || '').match(/https?:\/\/[^\s]+/i);
+  return m ? m[0].replace(/[),.;]+$/,'') : '';
+}
+
+function firstPhone(s) {
+  const m = (s || '').match(/(?:\+?1[ .-]*)?(?:\(?\d{3}\)?[ .-]*)\d{3}[ .-]*\d{4}/);
+  return m ? m[0] : '';
+}
+
+function passesFilter(d) {
+  if (activeFilter === 'all') return true;
+  if (activeFilter === 'Firma') return yes(d['Firma requerida']);
+  if (activeFilter === 'Cliente') return yes(d['Cliente debe solicitar']);
+  if (activeFilter === 'Email') return !!firstEmail(d.Email || d['Método original']);
+  if (activeFilter === 'Portal') return !!firstUrl(d['Portal / Web'] || d['Método original'] || d['Procedimiento / Observaciones']);
+  if (activeFilter === 'Teléfono') return !!firstPhone(d.Teléfono || d['Método original'] || d['Procedimiento / Observaciones']);
+  return true;
+}
+
+function matches(d, term) {
+  if (!term) return true;
+  return norm(Object.values(d).join(' ')).includes(norm(term));
+}
+
+function render() {
+  const term = q.value.trim();
+  $('#title').textContent = term.length >= 2 ? `Resultados para “${term}”` : 'Buscar carrier';
+
+  if (term.length < 2) {
+    $('#shown').textContent = '0';
+    grid.innerHTML = `<div class="emptyState"><strong>Busca un carrier para comenzar.</strong><div class="hint">Escribe al menos 2 letras, por ejemplo: <b>Ca</b>, <b>Pro</b> o <b>Zur</b>.</div></div>`;
+    return;
+  }
+
+  const rows = DATA
+    .filter(d => matches(d, term) && passesFilter(d))
+    .slice(0, 120);
+
+  $('#shown').textContent = rows.length;
+
+  if (!rows.length) {
+    grid.innerHTML = `<div class="emptyState"><strong>No encontré resultados.</strong><div class="hint">Prueba con una parte más corta del nombre o quita el filtro activo.</div></div>`;
+    return;
+  }
+
+  grid.innerHTML = rows.map(d => {
+    const email = firstEmail(d.Email || d['Método original']);
+    const url = firstUrl(d['Portal / Web'] || d['Método original'] || d['Procedimiento / Observaciones']);
+    const phone = firstPhone(d.Teléfono || d['Método original'] || d['Procedimiento / Observaciones']);
+    const proc = d['Procedimiento / Observaciones'] || '';
+    const actions = [];
+
+    if (email) actions.push(`<a class="btn primary" href="mailto:${safe(email)}">Enviar email</a><button class="btn" onclick='copyText(${JSON.stringify(email)})'>Copiar email</button>`);
+    if (url) actions.push(`<a class="btn" href="${safe(url)}" target="_blank" rel="noopener">Abrir portal</a>`);
+    if (phone) actions.push(`<a class="btn" href="tel:${safe(phone.replace(/[^+\d]/g,''))}">Llamar</a>`);
+    if (proc) actions.push(`<button class="btn" onclick='copyText(${JSON.stringify(proc)})'>Copiar instrucciones</button>`);
+
+    return `<article class="card">
+      <div class="cardhead">
+        <div class="company">${safe(d.Compañía)}</div>
+        <span class="status">${safe(d.Estado || 'Comprobado')}</span>
+      </div>
+      <div class="meta">
+        ${field('Método', d['Método principal'])}
+        ${field('Email', email || d.Email)}
+        ${field('Teléfono', phone || d.Teléfono)}
+        ${field('Portal', url || d['Portal / Web'])}
+        ${field('Firma requerida', d['Firma requerida'])}
+        ${field('Tiempo estimado', d['Tiempo estimado'])}
+        ${field('Cliente debe solicitar', d['Cliente debe solicitar'])}
+        ${field('Cliente en línea', d['Cliente en línea'])}
+      </div>
+      <div class="procedure">
+        <div class="label">Procedimiento / Observaciones</div>
+        <p>${safe(proc || 'Sin observaciones adicionales.')}</p>
+      </div>
+      <div class="actions">${actions.join('')}</div>
+      <div class="hint">Actualización: ${safe(d['Actualización registrada'] || 'Sin fecha')} · Verificado por: ${safe(d['Verificado por'] || 'No indicado')}</div>
+    </article>`;
+  }).join('');
+}
+
+async function loadLiveData() {
+  const status = $('#liveStatus');
+  const source = $('#sourceNote');
+
+  try {
+    const sep = API_URL.includes('?') ? '&' : '?';
+    const res = await fetch(API_URL + sep + 'v=' + Date.now(), {
+      method: 'GET',
+      cache: 'no-store'
+    });
+
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+
+    const payload = await res.json();
+
+    if (!payload || payload.success !== true || !Array.isArray(payload.rows)) {
+      throw new Error('Respuesta de API no válida');
+    }
+
+    DATA = payload.rows;
+
+    $('#total').textContent = payload.total_active ?? DATA.length;
+    status.textContent = payload.last_updated
+      ? `LIVE · Actualizado ${payload.last_updated}`
+      : 'LIVE';
+    status.classList.add('ok');
+
+    source.className = 'sourceNotice';
+    source.innerHTML = `<strong>Base en vivo.</strong> Datos cargados desde Directorio Maestro · Fuente: Apps Script API · Solo registros con <strong>Mostrar en portal = SÍ</strong>${payload.last_updated ? ` · Última actualización: <strong>${safe(payload.last_updated)}</strong>` : ''}.`;
+
+    render();
+  } catch (err) {
+    console.error(err);
+    DATA = [];
+    $('#total').textContent = '0';
+    $('#shown').textContent = '0';
+
+    status.textContent = 'BASE NO DISPONIBLE';
+    status.classList.add('err');
+
+    source.className = 'sourceNotice error';
+    source.innerHTML = '<strong>Base en vivo no disponible.</strong> Por seguridad no se muestran datos de una copia antigua. Actualiza la página en unos minutos o informa a administración.';
+
+    grid.innerHTML = `<div class="emptyState"><strong>No se pudo cargar Directorio Maestro.</strong><div class="hint">No se muestran contactos o procedimientos antiguos como respaldo.</div></div>`;
+  }
+}
+
+q.addEventListener('input', render);
+
+$('#clear').onclick = () => {
+  q.value = '';
+  q.focus();
+  render();
+};
+
+document.querySelectorAll('.chip').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  activeFilter = b.dataset.filter;
+  render();
+});
+
+loadLiveData();
+</script>
+</body></html>
