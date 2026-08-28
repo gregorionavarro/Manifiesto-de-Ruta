@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrueMate Tools</title>
+  <style>
+    :root{
+      --navy:#0f2f53;
+      --navy-2:#173d67;
+      --blue:#2d7dd2;
+      --gold:#f5c451;
+      --bg:#eef4fb;
+      --card:#ffffff;
+      --text:#162840;
+      --muted:#60728d;
+      --border:#d6e2ef;
+      --green:#168b4a;
+      --shadow:0 12px 30px rgba(17,47,84,.10);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:linear-gradient(180deg,#f7faff 0%,var(--bg) 100%);
+      color:var(--text);
+    }
+    .topbar{
+      background:linear-gradient(135deg,var(--navy),var(--navy-2));
+      color:#fff;
+      border-bottom:4px solid var(--gold);
+    }
+    .topbar .inner{
+      max-width:1240px;
+      margin:0 auto;
+      padding:28px 24px 24px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .brand h1{
+      margin:0;
+      font-size:32px;
+      letter-spacing:-.02em;
+    }
+    .brand p{
+      margin:8px 0 0;
+      color:#d7e3f1;
+      font-size:15px;
+    }
+    .pill{
+      border:1px solid rgba(255,255,255,.28);
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:13px;
+      color:#eef5ff;
+      background:rgba(255,255,255,.06);
+      white-space:nowrap;
+    }
+    main{
+      max-width:1240px;
+      margin:0 auto;
+      padding:30px 24px 50px;
+    }
+    .intro{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      align-items:center;
+      margin-bottom:24px;
+      flex-wrap:wrap;
+    }
+    .intro h2{
+      margin:0 0 6px;
+      font-size:24px;
+    }
+    .intro p{
+      margin:0;
+      color:var(--muted);
+      max-width:760px;
+      line-height:1.5;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      min-height:230px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      width:6px;
+      height:100%;
+      background:var(--green);
+    }
+    .card .tag{
+      display:inline-flex;
+      width:max-content;
+      align-items:center;
+      gap:8px;
+      background:#e9f7ef;
+      color:#167443;
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:12px;
+      font-weight:700;
+      margin-bottom:16px;
+    }
+    .card h3{
+      margin:0 0 8px;
+      font-size:22px;
+    }
+    .card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.5;
+      flex:1;
+    }
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:22px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      appearance:none;
+      border:none;
+      border-radius:12px;
+      padding:11px 14px;
+      font-weight:700;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-size:14px;
+    }
+    .btn-primary{
+      color:#fff;
+      background:var(--navy);
+    }
+    .btn-secondary{
+      color:var(--navy);
+      background:#edf4ff;
+      border:1px solid #d2e2f4;
+    }
+    .note{
+      margin-top:24px;
+      background:#fff8dd;
+      border:1px solid #efd67c;
+      color:#725200;
+      padding:14px 16px;
+      border-radius:14px;
+      font-size:14px;
+      line-height:1.5;
+    }
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(10,25,45,.68);
+      z-index:1000;
+      padding:18px;
+    }
+    .modal.show{display:flex}
+    .modal-panel{
+      width:min(1500px,96vw);
+      height:min(92vh,1000px);
+      background:#fff;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 30px 70px rgba(0,0,0,.28);
+      display:flex;
+      flex-direction:column;
+    }
+    .modal-head{
+      background:var(--navy);
+      color:#fff;
+      padding:12px 16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:4px solid var(--gold);
+    }
+    .modal-title{
+      font-weight:800;
+      letter-spacing:.01em;
+    }
+    .close{
+      border:1px solid rgba(255,255,255,.3);
+      color:#fff;
+      background:rgba(255,255,255,.06);
+      border-radius:10px;
+      padding:9px 12px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    iframe{
+      border:0;
+      width:100%;
+      height:100%;
+      background:#fff;
+    }
+
+    .directory{
+      padding:24px;
+      overflow:auto;
+      background:#f8fbff;
+      height:100%;
+    }
+    .directory-intro{
+      margin-bottom:18px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+    .subgrid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:16px;
+    }
+    .subcard{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:18px 125px 18px 18px;
+      box-shadow:0 8px 20px rgba(17,47,84,.07);
+      display:flex;
+      flex-direction:column;
+      min-height:220px;
+      position:relative;
+      overflow:hidden;
+    }
+    .state-map{
+      position:absolute;
+      right:18px;
+      top:18px;
+      width:88px;
+      height:72px;
+      object-fit:contain;
+      opacity:.96;
+      filter:drop-shadow(0 5px 10px rgba(15,47,83,.10));
+    }
+    .subcard h4{
+      margin:0 0 8px;
+      font-size:18px;
+      color:var(--navy);
+    }
+    .subcard p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.45;
+      flex:1;
+      font-size:14px;
+    }
+    .subtag{
+      display:inline-flex;
+      width:max-content;
+      margin-bottom:12px;
+      background:#edf4ff;
+      color:var(--navy);
+      border-radius:999px;
+      padding:6px 9px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.02em;
+    }
+    .subcard .actions{margin-top:16px}
+    .helper{
+      margin-top:18px;
+      padding:13px 15px;
+      background:#eef7ff;
+      border:1px solid #cfe4f8;
+      color:#31587f;
+      border-radius:12px;
+      line-height:1.45;
+      font-size:13px;
+    }
+
+    @media(max-width:900px){
+      .grid{grid-template-columns:1fr 1fr}
+      .subgrid{grid-template-columns:1fr 1fr}
+      .topbar .inner{align-items:flex-start}
+    }
+    @media(max-width:640px){
+      .grid,.subgrid{grid-template-columns:1fr}
+      .brand h1{font-size:27px}
+      main{padding:22px 16px 40px}
+      .topbar .inner{padding:22px 16px}
+      .directory{padding:16px}
+      .subcard{padding-right:100px}
+      .state-map{width:68px;height:58px;right:14px;top:14px}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="inner">
+      <div class="brand">
+        <h1>TrueMate Tools</h1>
+        <p>Acceso rápido a herramientas operativas de Commercial Auto / Trucking</p>
+      </div>
+      <div class="pill">Hub independiente del Manifiesto</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div>
+        <h2>Herramientas de uso diario</h2>
+        <p>
+          Este hub abre las herramientas dentro de la misma interfaz. Si una herramienta se actualiza, el acceso desde aquí utiliza la versión nueva.
+        </p>
+      </div>
+      <a class="btn btn-secondary" href="index.html">Abrir Manifiesto de Ruta</a>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="tag">Mercados</div>
+        <h3>Motor Guidelines</h3>
+        <p>Consulta rápida de MGA, carriers, appetite, restricciones y mercados recomendados para someter.</p>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="openTool('Motor Guidelines','motor-guidelines.html')">Abrir herramienta</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="tag">Loss Runs</div>
+        <h3>Loss Run Center</h3>
+        <p>Consulta y administra la información necesaria para solicitar y dar seguimiento a loss runs.</p>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="openTool('Loss Run Center','loss-run-center.html')">Abrir herramienta</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="tag">Financiamiento</div>
+        <h3>PFA Calculator</h3>
+        <p>Calculadora de PFA y pagos diferidos para revisar opciones de financiamiento de prima.</p>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="openTool('PFA Calculator','pfa-calculator.html')">Abrir herramienta</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="tag">FMCSA</div>
+        <h3>Verificar DOT</h3>
+        <p>Valida DOT, autoridad, estatus operativo, seguridad y registros antes de continuar una cotización.</p>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="openDirectory('FMCSA & Trucking','fmcsaDirectory')">Abrir FMCSA</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="tag">VIN</div>
+        <h3>Decodificar VIN</h3>
+        <p>Consulta de VIN para validar año, fabricante y características principales de las unidades.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://vpic.nhtsa.dot.gov/decoder/" target="_blank" rel="noopener">Abrir NHTSA VIN</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="tag">Proceso</div>
+        <h3>Manifiesto de Ruta</h3>
+        <p>Guía completa desde el primer contacto hasta el sometimiento y seguimiento de la cotización.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="index.html">Abrir Manifiesto</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="tag">Empresas</div>
+        <h3>Business Verification</h3>
+        <p>Consulta fuentes oficiales para verificar existencia, nombre legal, estatus y good standing de compañías por estado.</p>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="openDirectory('Business Verification','businessDirectory')">Abrir herramienta</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="tag">Cumplimiento</div>
+        <h3>Insurance & Compliance</h3>
+        <p>Acceso a herramientas de registro y cumplimiento para underwriting, renovaciones y operaciones.</p>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="openDirectory('Insurance & Compliance','complianceDirectory')">Abrir herramienta</button>
+        </div>
+      </article>
+    </section>
+
+    <div class="note">
+      <strong>Importante:</strong> las herramientas internas se abren dentro de este hub. Las fuentes oficiales externas se abren en una nueva pestaña para evitar bloqueos de iframe.
+    </div>
+  </main>
+
+  <div class="modal" id="toolModal" aria-hidden="true">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <div class="modal-title" id="modalTitle">Herramienta</div>
+        <button class="close" onclick="closeTool()">✕ Cerrar</button>
+      </div>
+
+      <iframe id="toolFrame" src="about:blank"></iframe>
+
+      <div class="directory" id="directoryView" style="display:none;">
+        <div id="businessDirectory" class="directory-section" style="display:none;">
+          <div class="directory-intro">
+            Usa estas fuentes oficiales para confirmar que la empresa existe, revisar su nombre legal y validar el estatus antes de cotizar o someter.
+          </div>
+          <div class="subgrid">
+            <article class="subcard">
+              <img class="state-map" src="https://commons.wikimedia.org/wiki/Special:FilePath/Florida%20in%20United%20States.svg" alt="Mapa de Florida" loading="lazy">
+              <div class="subtag">FLORIDA</div>
+              <h4>FL Business Search — Sunbiz</h4>
+              <p>Busca corporations y LLCs registradas en Florida y revisa nombre legal, status, registered agent y datos públicos disponibles.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://search.sunbiz.org/Inquiry/CorporationSearch/ByName" target="_blank" rel="noopener">Abrir Sunbiz</a>
+              </div>
+            </article>
+
+            <article class="subcard">
+              <img class="state-map" src="https://commons.wikimedia.org/wiki/Special:FilePath/California%20in%20United%20States.svg" alt="Mapa de California" loading="lazy">
+              <div class="subtag">CALIFORNIA</div>
+              <h4>CA Business Search — Secretary of State</h4>
+              <p>Consulta entidades registradas en California, status, entity number, direcciones y agent for service of process.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://bizfileonline.sos.ca.gov/search/business" target="_blank" rel="noopener">Abrir California</a>
+              </div>
+            </article>
+
+            <article class="subcard">
+              <img class="state-map" src="https://commons.wikimedia.org/wiki/Special:FilePath/Texas%20in%20United%20States.svg" alt="Mapa de Texas" loading="lazy">
+              <div class="subtag">TEXAS</div>
+              <h4>TX Business Search — Comptroller</h4>
+              <p>Consulta entidades y revisa su estatus y derecho a realizar negocios en Texas.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://mycpa.cpa.state.tx.us/coa/" target="_blank" rel="noopener">Abrir Texas</a>
+              </div>
+            </article>
+
+            <article class="subcard">
+              <img class="state-map" src="https://commons.wikimedia.org/wiki/Special:FilePath/New%20Jersey%20in%20United%20States.svg" alt="Mapa de New Jersey" loading="lazy">
+              <div class="subtag">NEW JERSEY</div>
+              <h4>NJ Business Search — Division of Revenue</h4>
+              <p>Busca compañías registradas en New Jersey y revisa records y status disponibles.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://www.njportal.com/DOR/BusinessNameSearch/Search/BusinessName" target="_blank" rel="noopener">Abrir New Jersey</a>
+              </div>
+            </article>
+
+            <article class="subcard">
+              <img class="state-map" src="https://commons.wikimedia.org/wiki/Special:FilePath/Maryland%20in%20United%20States.svg" alt="Mapa de Maryland" loading="lazy">
+              <div class="subtag">MARYLAND</div>
+              <h4>MD Business Search — Business Express</h4>
+              <p>Busca entidades de Maryland y revisa status y good standing cuando esté disponible.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://egov.maryland.gov/BusinessExpress/EntitySearch" target="_blank" rel="noopener">Abrir Maryland</a>
+              </div>
+            </article>
+          </div>
+          <div class="helper">
+            Flujo recomendado: primero confirma el nombre legal de la empresa en el estado y luego valida la operación de trucking en FMCSA.
+          </div>
+        </div>
+
+        <div id="fmcsaDirectory" class="directory-section" style="display:none;">
+          <div class="directory-intro">
+            Herramientas para validar carriers, USDOT, autoridad, seguridad y registros relacionados con trucking.
+          </div>
+          <div class="subgrid">
+            <article class="subcard">
+              <div class="subtag">OFICIAL</div>
+              <h4>FMCSA SAFER — Company Snapshot</h4>
+              <p>Consulta USDOT, operating status, power units, drivers, inspections, crashes, commodities y otros datos básicos del carrier.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://safer.fmcsa.dot.gov/CompanySnapshot.aspx" target="_blank" rel="noopener">Abrir SAFER</a>
+              </div>
+            </article>
+
+            <article class="subcard">
+              <div class="subtag">OFICIAL</div>
+              <h4>Motus — FMCSA</h4>
+              <p>Sistema actual de FMCSA para registro, autoridad, actualizaciones y operaciones autorizadas de supporting companies.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://motus.dot.gov/" target="_blank" rel="noopener">Abrir Motus</a>
+              </div>
+            </article>
+
+            <article class="subcard">
+              <div class="subtag">RESEARCH</div>
+              <h4>DOT.report</h4>
+              <p>Herramienta complementaria para investigación rápida por USDOT, company name o VIN. Confirma datos críticos en fuentes oficiales.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://dot.report/" target="_blank" rel="noopener">Abrir DOT.report</a>
+              </div>
+            </article>
+
+            <article class="subcard">
+              <div class="subtag">TEXAS</div>
+              <h4>Texas Truck Stop / TxMCCS</h4>
+              <p>Consulta información de motor carriers de Texas y valida registros y autoridad estatal relacionada.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://txmccs.txdmv.gov/truckstop/" target="_blank" rel="noopener">Abrir Texas Truck Stop</a>
+              </div>
+            </article>
+
+            <article class="subcard">
+              <div class="subtag">OFICIAL</div>
+              <h4>FMCSA SMS</h4>
+              <p>Safety Measurement System para revisar BASICs, medidas de seguridad y datos de compliance.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://ai.fmcsa.dot.gov/SMS/" target="_blank" rel="noopener">Abrir FMCSA SMS</a>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div id="complianceDirectory" class="directory-section" style="display:none;">
+          <div class="directory-intro">
+            Accesos complementarios para registros, cumplimiento y documentación operativa.
+          </div>
+          <div class="subgrid">
+            <article class="subcard">
+              <div class="subtag">REGISTRO</div>
+              <h4>UCR — Unified Carrier Registration</h4>
+              <p>Consulta y gestión relacionada con el registro UCR de carriers sujetos al programa.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://www.ucr.gov/" target="_blank" rel="noopener">Abrir UCR</a>
+              </div>
+            </article>
+
+            <article class="subcard">
+              <div class="subtag">FUEL TAX</div>
+              <h4>IFTA</h4>
+              <p>Referencia para información y cumplimiento relacionado con International Fuel Tax Agreement.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://www.iftach.org/" target="_blank" rel="noopener">Abrir IFTA</a>
+              </div>
+            </article>
+
+            <article class="subcard">
+              <div class="subtag">REGISTRATION</div>
+              <h4>IRP — International Registration Plan</h4>
+              <p>Referencia para temas de registro prorrateado de vehículos comerciales interestatales.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="https://www.irponline.org/" target="_blank" rel="noopener">Abrir IRP</a>
+              </div>
+            </article>
+
+            <article class="subcard">
+              <div class="subtag">MVR</div>
+              <h4>Motor Vehicle Records</h4>
+              <p>Espacio reservado para enlazar el proveedor o portal que use Truemate para consultar MVRs.</p>
+              <div class="actions">
+                <button class="btn btn-secondary" onclick="alert('Pendiente agregar el proveedor oficial de MVR que utilice Truemate.')">Pendiente enlace</button>
+              </div>
+            </article>
+
+            <article class="subcard">
+              <div class="subtag">STATE DOT</div>
+              <h4>State DOT Searches</h4>
+              <p>Espacio para agregar búsquedas regulatorias y DOT específicas por estado a medida que se incorporen.</p>
+              <div class="actions">
+                <button class="btn btn-secondary" onclick="alert('Podemos agregar aquí los portales estatales adicionales que quieras usar.')">Agregar después</button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openTool(title, src){
+      const modal = document.getElementById('toolModal');
+      const frame = document.getElementById('toolFrame');
+      const directory = document.getElementById('directoryView');
+
+      document.getElementById('modalTitle').textContent = title;
+      directory.style.display = 'none';
+      frame.style.display = 'block';
+      frame.src = src + '?v=' + Date.now();
+
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+    }
+
+    function openDirectory(title, sectionId){
+      const modal = document.getElementById('toolModal');
+      const frame = document.getElementById('toolFrame');
+      const directory = document.getElementById('directoryView');
+
+      document.getElementById('modalTitle').textContent = title;
+      frame.src='about:blank';
+      frame.style.display='none';
+      directory.style.display='block';
+
+      document.querySelectorAll('.directory-section').forEach(el => el.style.display='none');
+      document.getElementById(sectionId).style.display='block';
+
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+    }
+
+    function closeTool(){
+      const modal = document.getElementById('toolModal');
+      const frame = document.getElementById('toolFrame');
+      const directory = document.getElementById('directoryView');
+
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden','true');
+      frame.src='about:blank';
+      frame.style.display='block';
+      directory.style.display='none';
+      document.querySelectorAll('.directory-section').forEach(el => el.style.display='none');
+      document.body.style.overflow='';
+    }
+
+    document.addEventListener('keydown', function(e){
+      if(e.key==='Escape') closeTool();
+    });
+
+    document.getElementById('toolModal').addEventListener('click', function(e){
+      if(e.target===this) closeTool();
+    });
+  </script>
+</body>
+</html>
