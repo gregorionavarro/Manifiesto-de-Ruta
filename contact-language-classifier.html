@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TrueMate Contact Language Classifier V1.1</title>
+<style>body{font-family:Inter,system-ui,sans-serif;margin:0;background:#f5f7fb;color:#162235}.loading{min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px}.loading strong{display:block;font-size:20px;margin-bottom:8px}.loading span{color:#6e7a8a}</style>
+</head>
+<body>
+<div class="loading" id="loading"><div><strong>Cargando TrueMate Contact Language Classifier…</strong><span>Un momento por favor.</span></div></div>
+<script>
+(async()=>{
+  const files=[
+    'classifier-data-1.txt',
+    'classifier-data-2.txt',
+    'classifier-data-3.txt',
+    'classifier-data-4.txt',
+    'classifier-data-5.txt'
+  ];
+  const parts=[];
+  for(const f of files){
+    const r=await fetch(f+'?v=1',{cache:'no-store'});
+    if(!r.ok) throw new Error('No se pudo cargar '+f);
+    parts.push(await r.text());
+  }
+  const b=parts.join('').replace(/\s+/g,'');
+  const bytes=Uint8Array.from(atob(b),c=>c.charCodeAt(0));
+  const ds=new DecompressionStream('gzip');
+  const html=await new Response(new Blob([bytes]).stream().pipeThrough(ds)).text();
+  document.open();
+  document.write(html);
+  document.close();
+})().catch(e=>{
+  document.getElementById('loading').innerHTML='<div><strong>No se pudo cargar la herramienta.</strong><span>Actualiza la página e inténtalo nuevamente.</span></div>';
+  console.error(e);
+});
+</script>
+</body>
+</html>
