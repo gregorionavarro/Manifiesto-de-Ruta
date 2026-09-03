@@ -3,174 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TrueMate Contact Language Classifier V1.1</title>
+<title>TrueMate Contact Language Classifier</title>
 <style>
-:root{
-  --bg:#f5f7fb;--card:#fff;--text:#162235;--muted:#6e7a8a;--line:#dde3ea;
-  --primary:#173b63;--primary2:#225c91;--soft:#edf4fb;--ok:#1f7a4f;--warn:#a76400;--bad:#a52d2d;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-.header{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;padding:24px 28px}
-.header h1{margin:0;font-size:25px}
-.header p{margin:6px 0 0;opacity:.82}
-.wrap{max-width:1600px;margin:0 auto;padding:20px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 5px 18px rgba(18,37,63,.05)}
-.grid{display:grid;gap:16px}
-.upload{border:2px dashed #adc2d8;border-radius:14px;text-align:center;padding:28px;background:#fbfdff}
-.upload.drag{background:#edf6ff;border-color:var(--primary2)}
-.small{font-size:12px;color:var(--muted)}
-.btn{border:0;background:var(--primary);color:#fff;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer}
-.btn2{border:1px solid #b9c7d5;background:#fff;color:var(--primary);border-radius:9px;padding:9px 12px;font-weight:700;cursor:pointer}
-.btn:disabled,.btn2:disabled{opacity:.45;cursor:not-allowed}
-.kpis{grid-template-columns:repeat(5,minmax(170px,1fr))}
-.kpi{padding:15px;border:1px solid var(--line);border-radius:13px;background:#fff}
-.kpi .n{font-size:27px;font-weight:850;margin-top:4px}
-.kpi .label{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.05em}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.chip{border:1px solid #cad5e0;background:#fff;padding:8px 11px;border-radius:999px;font-size:12px;font-weight:750;cursor:pointer}
-.chip.active{background:var(--primary);border-color:var(--primary);color:#fff}
-.filters{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:10px}
-input,select{width:100%;padding:9px 10px;border:1px solid #cfd8e2;border-radius:9px;background:#fff;color:var(--text)}
-.table-wrap{overflow:auto;max-height:65vh;border:1px solid var(--line);border-radius:12px}
-table{border-collapse:separate;border-spacing:0;width:100%;min-width:1480px;font-size:12px}
-th{position:sticky;top:0;background:#f3f6fa;z-index:2;text-align:left;padding:10px;border-bottom:1px solid var(--line);white-space:nowrap}
-td{padding:9px 10px;border-bottom:1px solid #edf0f3;vertical-align:top}
-tr:hover td{background:#fbfdff}
-.badge{display:inline-flex;align-items:center;padding:4px 7px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap}
-.b-high{background:#e7f6ee;color:#17623f}
-.b-prob{background:#e9f2ff;color:#1f568d}
-.b-review{background:#fff3d8;color:#8a5800}
-.b-unknown{background:#eef1f5;color:#4d5968}
-.b-company{background:#f3eefd;color:#67459c}
-.score{font-weight:850}
-.reason{max-width:300px;line-height:1.35;color:#4f5d6d}
-.hidden{display:none!important}
-.section-title{font-size:16px;margin:0 0 12px}
-.footer-note{margin-top:10px;font-size:11px;color:var(--muted)}
-.notice{background:#fff8e6;border:1px solid #f0d38b;padding:10px 12px;border-radius:10px;font-size:12px;color:#6d5315}
-@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr 1fr}}
-@media(max-width:620px){.wrap{padding:10px}.kpis,.filters{grid-template-columns:1fr}.header{padding:18px}}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f7fb;color:#162235}.gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f2f52,#225c91);padding:24px}.card{width:min(420px,100%);background:#fff;border-radius:18px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.28)}h1{font-size:24px;margin:0 0 8px}.sub{margin:0 0 20px;color:#6e7a8a;line-height:1.45}label{display:block;font-size:12px;font-weight:800;margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em;color:#536174}input{width:100%;padding:12px 13px;border:1px solid #cfd8e2;border-radius:10px;font-size:16px;outline:none}input:focus{border-color:#225c91;box-shadow:0 0 0 3px rgba(34,92,145,.12)}button{width:100%;margin-top:12px;border:0;background:#173b63;color:#fff;border-radius:10px;padding:12px 14px;font-weight:800;cursor:pointer;font-size:15px}.error{min-height:20px;margin-top:10px;color:#a52d2d;font-size:13px;font-weight:700}.app{display:none;width:100%;height:100%}.app iframe{border:0;width:100%;height:100%;background:#fff}body.unlocked .gate{display:none}body.unlocked .app{display:block}
 </style>
 </head>
 <body>
-<div class="header">
-  <h1>TrueMate Contact Language Classifier <span style="font-size:14px;opacity:.78">V1.1 Draft</span></h1>
-  <p>Clasificación preliminar ES / EN para bases de prospectos · Procesamiento local en tu navegador</p>
-</div>
-
-<div class="wrap grid">
+<div class="gate" id="gate">
   <div class="card">
-    <h2 class="section-title">1. Cargar CSV</h2>
-    <div id="drop" class="upload">
-      <strong>Arrastra tu archivo CSV aquí o selecciónalo</strong><br>
-      <span class="small">La herramienta intenta detectar automáticamente Nombre, Teléfono, Email y Fecha de renovación.</span><br><br>
-      <input id="fileInput" type="file" accept=".csv,text/csv" style="max-width:420px">
-    </div>
-    <div id="fileInfo" class="footer-note">No hay archivo cargado.</div>
-  </div>
-
-  <div id="app" class="hidden grid">
-    <div class="notice">
-      Esta herramienta estima el idioma probable usando señales de nombre/apellido. No confirma el idioma real del contacto.
-      Los registros sin señal clara se marcan como <b>English / Unknown</b>.
-    </div>
-
-    <div class="grid kpis">
-      <div class="kpi"><div class="label">Total contactos</div><div class="n" id="kTotal">0</div></div>
-      <div class="kpi"><div class="label">Español - Alta</div><div class="n" id="kHigh">0</div></div>
-      <div class="kpi"><div class="label">Español - Probable</div><div class="n" id="kProb">0</div></div>
-      <div class="kpi"><div class="label">Revisar / Bilingüe</div><div class="n" id="kReview">0</div></div>
-      <div class="kpi"><div class="label">English / Unknown</div><div class="n" id="kUnknown">0</div></div>
-    </div>
-
-    <div class="card">
-      <h2 class="section-title">2. Filtros</h2>
-      <div class="toolbar" id="chips">
-        <button class="chip active" data-class="all">Todos</button>
-        <button class="chip" data-class="high">Español Alta</button>
-        <button class="chip" data-class="probable">Español Probable</button>
-        <button class="chip" data-class="review">Revisar / Bilingüe</button>
-        <button class="chip" data-class="unknown">English / Unknown</button>
-        <button class="chip" data-class="company">Empresa / Sin persona</button>
-      </div>
-      <div class="filters" style="margin-top:12px">
-        <input id="searchBox" placeholder="Buscar nombre, teléfono, email...">
-        <select id="personFilter">
-          <option value="">Persona / Empresa: Todos</option>
-          <option value="Persona">Persona</option>
-          <option value="Empresa">Empresa</option>
-        </select>
-        <input id="dateFrom" type="date" title="Renovación desde">
-        <input id="dateTo" type="date" title="Renovación hasta">
-        <select id="scoreMin">
-          <option value="">Score mínimo</option>
-          <option value="90">90+</option>
-          <option value="70">70+</option>
-          <option value="40">40+</option>
-        </select>
-      </div>
-      <div class="toolbar" style="margin-top:10px">
-        <button class="btn2" id="clearBtn">Limpiar filtros</button>
-        <button class="btn2" id="exportFilteredBtn">Exportar filtro actual CSV</button>
-        <button class="btn" id="exportAllBtn">Exportar todo clasificado CSV</button>
-      </div>
-      <div class="footer-note">
-        Exportación GHL: separa automáticamente <b>First Name</b> y <b>Last Name</b>.
-        Si un registro contiene varios correos, los divide en <b>Email 1</b> a <b>Email 5</b>.
-      </div>
-    </div>
-
-    <div class="card">
-      <h2 class="section-title">3. Contactos clasificados</h2>
-      <div class="small" id="countInfo">Mostrando 0 de 0</div><br>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Nombre completo</th><th>First Name</th><th>Last Name</th><th>Teléfono</th>
-              <th>Email 1</th><th>Email 2</th><th>Email 3</th><th>Renovación</th>
-              <th>Persona vs Empresa</th><th>Nombre Latino</th><th>Apellido Latino</th>
-              <th>Apellido detectado</th><th>Score</th><th>Clasificación</th>
-              <th>Confianza</th><th>Motivo</th><th>Ruta sugerida</th><th>Tag_GHL</th>
-            </tr>
-          </thead>
-          <tbody id="tbody"></tbody>
-        </table>
-      </div>
-    </div>
+    <h1>TrueMate Contact Language Classifier</h1>
+    <p class="sub">Acceso restringido. Ingresa la clave para continuar.</p>
+    <form id="login" autocomplete="off">
+      <label for="password">Clave de acceso</label>
+      <input id="password" type="password" autocomplete="current-password" placeholder="Ingresa la clave" autofocus>
+      <button type="submit">Ingresar</button>
+      <div class="error" id="error" aria-live="polite"></div>
+    </form>
   </div>
 </div>
-
+<div class="app"><iframe src="contact-language-classifier-app.html" title="TrueMate Contact Language Classifier"></iframe></div>
 <script>
-const LATIN_NAMES = new Set(["AARON", "ABDON", "ABEL", "ABELARDO", "ABIGAIL", "ABRAHAM", "ABRIA", "ACACIO", "ADALBERTO", "ADELAIDO", "ADOLFO", "ADRIA", "ADRIAN", "ADRIANA", "ADRIANO", "AFRICA", "AGAPITO", "AGATA", "AGUEDA", "AGUSTIN", "AGUSTINO", "ALAN", "ALBA", "ALBERTO", "ALCIDES", "ALDARA", "ALEJANDRA", "ALEJANDRINA", "ALEJANDRO", "ALEJO", "ALEXIS", "ALFONSO", "ALFREDO", "ALICIA", "ALMA", "ALMUDENA", "ALONSO", "ALVARO", "AMADO", "AMADOR", "AMALIA", "AMANCIO", "AMANDA", "AMBROSIO", "AMELIA", "AMERICA", "AMERICO", "ANA", "ANABEL", "ANABELA", "ANAIS", "ANASTASIO", "ANDONI", "ANDREA", "ANDRES", "ANGEL", "ANGELA", "ANGELICA", "ANGELINA", "ANIBAL", "ANSELMO", "ANTONIA", "ANTONIO", "APOLINAR", "APOLONIO", "AQUILES", "ARACELI", "ARANTXA", "ARANZAZU", "ARCADIO", "ARIADNA", "ARIEL", "ARISTIDES", "ARLETTE", "ARMANDO", "ARNALDO", "ARSENIO", "ARTURO", "ASCENSIO", "ASTURIO", "ATANASIO", "ATAULFO", "AUGUSTO", "AURELIA", "AURELIANO", "AURELIO", "AURORA", "AVELINO", "AVENANCIO", "AVENDANO", "AXEL", "AZAHARA", "AZUCENA", "BALDOMERO", "BALDOVINO", "BALTASAR", "BALTAZAR", "BARBARA", "BARTOLO", "BARTOLOME", "BASILIA", "BASILIO", "BASTIAN", "BAUTISTA", "BEATRIZ", "BELEN", "BELTRAN", "BENEDICTA", "BENEDICTO", "BENICIO", "BENIGNO", "BENITO", "BENJAMIN", "BERENGARIO", "BERENGUER", "BERENICE", "BERNABE", "BERNAL", "BERNARDINO", "BERNARDO", "BERTA", "BERTIN", "BERTOLDO", "BERTOLINO", "BLANCA", "BLAS", "BONAVENTURA", "BONIFACIO", "BORJA", "BRAULINO", "BRAULIO", "BRENDA", "BRICIO", "BRIGIDA", "BRITANO", "BRITANY", "BRITTANY", "BRUNA", "BRUNO", "BRYAN", "CALISTA", "CALIXTO", "CAMILA", "CAMILO", "CANDIDA", "CANDIDO", "CARIDAD", "CARINA", "CARLOS", "CARMELA", "CARMEN", "CAROLINA", "CASANDRA", "CASIANO", "CASILDA", "CASIMIRO", "CASIO", "CASTOR", "CATALINA", "CATALINO", "CATULO", "CAYETANO", "CECILIA", "CECILIO", "CEFERINO", "CELEDONIO", "CELEIDO", "CELESTE", "CELESTINO", "CELIA", "CELINA", "CELIO", "CELONIO", "CELSINO", "CELSO", "CELSON", "CESAR", "CESAREO", "CESARINO", "CESARIO", "CESINO", "CHILINDRON", "CHILO", "CHINAMO", "CHINCHILLA", "CHINDO", "CHINGOLO", "CHINILLA", "CHINO", "CHINORRO", "CHINTILLA", "CHIPOTE", "CHIQUERO", "CHIQUETE", "CINTIA", "CIPRIA", "CIRIACO", "CIRILO", "CLARA", "CLAUDIO", "CLEMENTE", "CLOTILDE", "CONCEPCION", "CONSUELO", "CONSTANCIO", "CRISTIAN", "CRISTINA", "CRISTOBAL", "DANIEL", "DANIELA", "DARIO", "DAVID", "DEBORA", "DELFIN", "DELIA", "DIEGO", "DOLORES", "DOMINGO", "DOROTEO", "EDGAR", "EDGARDO", "EDITH", "EDUARDO", "EDWIN", "EFREN", "ELBA", "ELEAZAR", "ELENA", "ELEUTERIO", "ELIAS", "ELIGIO", "ELISA", "ELISEO", "ELIZABETH", "ELOISA", "ELPIDIO", "ELSA", "ELVIO", "ELVIRA", "EMETERIO", "EMILIA", "EMILIANO", "EMILIO", "EMMANUEL", "ENCARNACION", "ENOC", "ENRIQUE", "EPICTETO", "EPIFANIO", "EQUIEL", "ERASMO", "ERIC", "ERICA", "ERICK", "ERNESTO", "ESEQUIEL", "ESMERALDA", "ESPERANZA", "ESTANISLAO", "ESTEBAN", "ESTEFANIA", "ESTHER", "EUGENIA", "EUGENIO", "EULALIO", "EULOGIO", "EUSEBIO", "EVA", "EVARISTO", "EZEQUIEL", "FABIAN", "FABIANA", "FABIEN", "FABIOLA", "FATIMA", "FAUSTINO", "FAUSTO", "FELICIA", "FELICIANO", "FELICISIMO", "FELIPE", "FELISA", "FERMIN", "FERNANDA", "FERNANDO", "FLAVIA", "FLORA", "FLORENCIA", "FLORENCIO", "FORTUNATO", "FORTUNIO", "FRANCISCA", "FRANCISCO", "FRIDA", "FRUCTUOSO", "FULGENCIO", "GABRIEL", "GABRIELA", "GAEL", "GASPAR", "GEMA", "GENARA", "GENARO", "GENOVEVA", "GERARDO", "GERMAN", "GERTRUDIS", "GERVASIO", "GIL", "GILBERTO", "GISELA", "GLADYS", "GLORIA", "GODOFREDO", "GONZALO", "GRACIANO", "GRACIELA", "GREGORIO", "GUADALUPE", "GUILLERMINA", "GUILLERMO", "GUSTAVO", "HADRIAN", "HECTOR", "HELENA", "HELIODORO", "HENAR", "HENRY", "HERIBERTO", "HERMENEGILDO", "HERNAN", "HIGINIO", "HILARIO", "HILDA", "HOMERO", "HONORIO", "HORTENSIA", "HUGO", "HUMBERTO", "IAGO", "IAN", "IGNACIO", "ILDEFONSO", "INDALECIO", "INES", "INMACULADA", "INOCENCIO", "IRENA", "IRENE", "ISAAC", "ISABEL", "ISABELA", "ISAIAS", "ISIDORO", "ISIDRA", "ISIDRO", "ISMAEL", "ISOLDA", "ISRAEL", "ITZIAR", "IVAN", "IVONNE", "JACOBO", "JACQUELINE", "JAIME", "JAIRO", "JASIEL", "JAVIER", "JAZMIN", "JENNIFER", "JERONIMO", "JESSICA", "JESUALDO", "JESUS", "JESUSMANUEL", "JIMENA", "JOAQUIN", "JOAQUINA", "JOEL", "JONATAN", "JONATHAN", "JORGE", "JOSE", "JOSEANTONIO", "JOSEFA", "JOSEFINA", "JOSELUIS", "JOSEMARIA", "JOSUE", "JOVANNI", "JUAN", "JUANA", "JUANCARLOS", "JUANITO", "JUANJOSE", "JUDITH", "JULIA", "JULIAN", "JULIANA", "JULIO", "JUSTINA", "JUSTINO", "JUVENCIO", "KAREN", "KARINA", "KARLA", "KATHERINE", "KEVIN", "KIMBERLY", "LAIA", "LARA", "LAURA", "LAUREANA", "LAUREANO", "LAZARO", "LEANDRO", "LEON", "LEONARDO", "LEONEL", "LEONOR", "LEOPOLDO", "LESLIE", "LETICIA", "LIBERIO", "LIBORIO", "LIDIA", "LILIANA", "LINA", "LINO", "LISANDRO", "LORENA", "LORENZINO", "LORENZO", "LOURDES", "LUCAS", "LUCIA", "LUCIANO", "LUCINDA", "LUCIO", "LUIS", "LUISA", "LUZ", "MACARENA", "MACARIO", "MACEDONIO", "MAGDALENA", "MAGIN", "MANOLO", "MANUEL", "MANUELA", "MARCELA", "MARCELINO", "MARCIAL", "MARCOS", "MARGARITA", "MARIA", "MARIANA", "MARIBEL", "MARIELA", "MARINA", "MARIO", "MARTA", "MARTHA", "MARTIN", "MATEO", "MATIAS", "MAURICIO", "MAXIMINO", "MAXIMO", "MAYRA", "MEDARDO", "MELCHOR", "MELINA", "MELISA", "MELISSA", "MELQUIADES", "MERCED", "MERCEDES", "MICAELA", "MIGUEL", "MIGUELANGEL", "MILAGROS", "MIREIA", "MIRIAM", "MODESTINO", "MODESTO", "MOISES", "MONICA", "MONSERRAT", "MONTSERRAT", "NAHUEL", "NANCY", "NARCISO", "NATALIA", "NATIVIDAD", "NAZARIO", "NEFTALI", "NELSON", "NEMESIO", "NEPOMUCENO", "NEREA", "NESTOR", "NICANOR", "NICOLAS", "NIEVES", "NILO", "NOAH", "NOE", "NOELIA", "NOEMI", "NORA", "NORBERT", "NORMA", "OBDULIO", "OCTAVIO", "OFELIA", "OLEGARIO", "OLGA", "OLIVERIO", "OMAR", "ONOFRE", "ORFEO", "ORLANDO", "OSCAR", "OSVALDO", "PABLO", "PACO", "PASCUAL", "PATRICIA", "PAULA", "PEDRO", "PILAR", "RAFAEL", "RAMIRO", "RAUL", "RICARDO", "ROBERTO", "ROSA", "ROSARIO", "RUBEN", "SAMUEL", "SANDRA", "SANTIAGO", "SERGIO", "SILVIA", "SOFIA", "TERESA", "VALENTINA", "VERONICA", "VICTOR", "VILMA", "XIMENA", "XIOMARA", "YOLANDA"]);
-const LATIN_SURNAMES = new Set(["ABARCA", "ABREU", "ACEVEDO", "ACOSTA", "AGUILAR", "AGUIRRE", "ALANIS", "ALBA", "ALCALA", "ALCANTARA", "ALCARAZ", "ALEMAN", "ALFARO", "ALMANZA", "ALONSO", "ALVARADO", "ALVAREZ", "AMAYA", "ANDRADE", "ANGEL", "ANGULO", "ARAGON", "ARANDA", "ARAUJO", "ARELLANO", "ARIAS", "ARIZA", "ARMENTA", "ARROYO", "ARTEAGA", "AVALOS", "AVILA", "AYALA", "BAEZ", "BALDERAS", "BARAJAS", "BARRAGAN", "BARRERA", "BARRIOS", "BATISTA", "BATRES", "BAUTISTA", "BAYAS", "BECERRA", "BEDOYA", "BEJAR", "BEJARAN", "BELLO", "BELTRAN", "BENAVIDES", "BENITEZ", "BERMEO", "BERMUDEZ", "BERNAL", "BERROA", "BETANCOUR", "BETANCOURT", "BETANCUR", "BLANCO", "BLAS", "BOGARIN", "BOJORQUEZ", "BOLANOS", "BONILLA", "BORJA", "BOTELLO", "BOTERO", "BRAMBILA", "BRAVO", "BRIONES", "BRISENO", "BRITO", "BUENDIA", "BUENO", "BUENROSTRO", "BUENTELLO", "BUGARIN", "BURGOS", "BUSTAMANTE", "BUSTILLO", "BUSTILLOS", "BUSTOS", "CABADA", "CABALLERO", "CABELLO", "CABEZAS", "CABRAL", "CABRERA", "CABRERIZA", "CACERES", "CACIQUE", "CADENA", "CAICEDO", "CAIRO", "CALDERA", "CALDERON", "CALLE", "CALLES", "CALVILLO", "CALZADA", "CAMACHO", "CAMARENA", "CAMARGO", "CAMBEROS", "CAMBLOR", "CAMEJO", "CAMILO", "CAMPA", "CAMPOS", "CAMPOSANO", "CANALES", "CANCINO", "CANCIO", "CANDELARIA", "CANELA", "CANETE", "CANO", "CANOSA", "CANTERO", "CANTILLO", "CANTOR", "CANTU", "CAPETILLO", "CAPISTRAN", "CAPOTE", "CAPRILES", "CARBAJAL", "CARBALLIDO", "CARBONELL", "CARCAMO", "CARDENAS", "CARDONA", "CARDOZA", "CARDOZO", "CARIAS", "CARMONA", "CARNERO", "CARRANZA", "CARRASCO", "CARREON", "CARRERA", "CARRILLO", "CARRION", "CARRIZALEZ", "CARTAYA", "CARVAJAL", "CASANOVA", "CASAS", "CASILLAS", "CASTANEDA", "CASTANO", "CASTELLANOS", "CASTELLON", "CASTILLO", "CASTORENA", "CASTREJON", "CASTRO", "CAVAZOS", "CAZAREZ", "CEA", "CEBALLOS", "CEDILLO", "CEJA", "CELIS", "CENDEJAS", "CENICEROS", "CENTENO", "CEPEDA", "CERDA", "CERNA", "CERON", "CERVANTES", "CERVERA", "CEVERINO", "CHACON", "CHAGOYA", "CHAMORRO", "CHASTAIN", "CHAVARRIA", "CHAVEZ", "CHICAS", "CHINCHILLA", "CIFUENTES", "CISNERO", "CISNEROS", "CLAVIJO", "COBA", "COLATO", "COLINA", "COLINDRES", "COLLAZO", "COLON", "CONCEPCION", "CONTRERAS", "CORDERO", "CORDOVA", "CORNEJO", "CORONA", "CORONADO", "CORREA", "CORTEZ", "CORTES", "CRESPO", "CRUZ", "CUELLAR", "DELGADO", "DIAZ", "DOMINGUEZ", "DUARTE", "DURAN", "ECHEVERRIA", "ENRIQUEZ", "ESCOBAR", "ESPINOZA", "ESTRADA", "FERNANDEZ", "FERRER", "FLORES", "FUENTES", "GALLARDO", "GALLEGOS", "GARCIA", "GARZA", "GIL", "GOMEZ", "GONZALES", "GONZALEZ", "GUERRERO", "GUEVARA", "GUTIERREZ", "GUZMAN", "HERNANDEZ", "HERRERA", "IBARRA", "IGLESIAS", "JIMENEZ", "JUAREZ", "LARA", "LEON", "LOPEZ", "MALDONADO", "MARQUEZ", "MARTINEZ", "MEDINA", "MEJIA", "MELENDEZ", "MENDEZ", "MENDOZA", "MOLINA", "MORA", "MORALES", "MORENO", "MUNOZ", "NAVARRO", "NUNEZ", "OCHOA", "ORTEGA", "ORTIZ", "PACHECO", "PADILLA", "PENA", "PEREZ", "RAMIREZ", "RAMOS", "RIVERA", "RODRIGUEZ", "ROJAS", "ROMERO", "RUIZ", "SALAZAR", "SANCHEZ", "SANDOVAL", "SANTOS", "SILVA", "SOTO", "SUAREZ", "TORRES", "VALDEZ", "VARGAS", "VASQUEZ", "VAZQUEZ", "VEGA", "VELASQUEZ", "VELAZQUEZ", "ZAMORA", "ZAPATA"]);
-const STOPWORDS = new Set(["AND","CO","COMPANY","CORP","CORPORATION","INC","INCORPORATED","JR","LLC","LLP","LP","LTD","OF","PC","PLLC","SON","SONS","SR","THE"]);
-let rows=[]; let filtered=[]; let classFilter='all';
-const $=id=>document.getElementById(id);
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function normalizeText(s){return String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9@.\-\s]/g,' ').replace(/\s+/g,' ').trim()}
-function parseCSV(text){
-  const rows=[];let row=[],field='',q=false;
-  for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];if(q){if(c==='"'&&n==='"'){field+='"';i++;}else if(c==='"'){q=false;}else field+=c;}else{if(c==='"')q=true;else if(c===','){row.push(field);field='';}else if(c==='\n'){row.push(field);rows.push(row);row=[];field='';}else if(c!=='\r')field+=c;}}
-  if(field.length||row.length){row.push(field);rows.push(row);} return rows;
-}
-function detectColumn(headers,cands){const H=headers.map(normalizeText);for(const c of cands){const i=H.indexOf(normalizeText(c));if(i>=0)return i;}for(let i=0;i<H.length;i++){for(const c of cands){if(H[i].includes(normalizeText(c)))return i;}}return -1}
-function isCompanyName(name){const n=normalizeText(name);return /\b(LLC|INC|CORP|CORPORATION|COMPANY|CO|LTD|LLP|LP|PLLC|ENTERPRISES?|TRANSPORT|TRANSPORTATION|TRUCKING|LOGISTICS|SERVICES|GROUP)\b/.test(n)}
-function extractFirstRealName(name){const p=normalizeText(name).split(' ').filter(Boolean);for(const x of p){if(!STOPWORDS.has(x)&&!/^\d+$/.test(x))return x;}return ''}
-function extractLastName(name){const p=normalizeText(name).split(' ').filter(x=>x&&!STOPWORDS.has(x));return p.length?p[p.length-1]:''}
-function splitNameForGHL(name){const clean=String(name||'').replace(/\s+/g,' ').trim();if(!clean)return{firstName:'',lastName:''};const parts=clean.split(' ').filter(Boolean);if(parts.length===1)return{firstName:parts[0],lastName:''};return{firstName:parts[0],lastName:parts[parts.length-1]}}
-function extractEmails(value){const s=String(value||'');if(!s.trim())return[];const matches=s.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi)||[];const seen=new Set(),out=[];for(const email of matches){const e=email.trim().toLowerCase();if(!seen.has(e)){seen.add(e);out.push(e)}}return out}
-function normalizeDate(v){const s=String(v||'').trim();if(!s)return'';const d=new Date(s);if(!Number.isNaN(d.getTime()))return d.toISOString().slice(0,10);const m=s.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);if(m){let y=m[3];if(y.length===2)y='20'+y;return`${y}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`}return s}
-function classify(raw){const name=raw.name||'';const company=isCompanyName(name);const first=extractFirstRealName(name);const last=extractLastName(name);const nameLat=first&&LATIN_NAMES.has(first);const surnameLat=last&&LATIN_SURNAMES.has(last);let legacyScore=0;if(nameLat&&surnameLat)legacyScore=100;else if(!nameLat&&surnameLat)legacyScore=75;else if(nameLat&&!surnameLat)legacyScore=60;let score=legacyScore;let cls='unknown',label='English / Unknown',confidence='Baja',route='AI Trucking English',tag='TRUCKING-EN-UNKNOWN';const reasons=[];if(company&&!first){cls='company';label='Empresa / Sin persona';confidence='Sin determinar';route='Revisar contacto';tag='TRUCKING-COMPANY';reasons.push('Nombre parece empresa y no se detectó persona')}else{if(nameLat)reasons.push(`Nombre ${first} encontrado en base latina`);if(surnameLat)reasons.push(`Apellido ${last} encontrado en base latina`);if(!nameLat&&!surnameLat)reasons.push('Sin señales latinas claras en nombre/apellido');if(score>=90){cls='high';label='Español - Alta';confidence='Alta';route='AI Trucking Spanish';tag='TRUCKING-ES-HIGH'}else if(score>=70){cls='probable';label='Español - Probable';confidence='Media/Alta';route='AI Trucking Spanish';tag='TRUCKING-ES-PROBABLE'}else if(score>=40){cls='review';label='Revisar / Bilingüe';confidence='Media';route='Primer contacto bilingüe';tag='TRUCKING-ES-REVIEW'}}const splitName=splitNameForGHL(name);const emails=extractEmails(raw.email);return{...raw,personType:company?'Empresa':'Persona',firstDetected:first,lastDetected:last,firstName:splitName.firstName,lastName:splitName.lastName,emails,email1:emails[0]||'',email2:emails[1]||'',email3:emails[2]||'',email4:emails[3]||'',email5:emails[4]||'',nameLat:nameLat?'Yes':'No',surnameLat:surnameLat?'Yes':'No',score,cls,label,confidence,reason:reasons.join(' · '),route,tag}}
-function importCSV(text,filename){const matrix=parseCSV(text);if(matrix.length<2){alert('El CSV no contiene suficientes filas.');return;}const headers=matrix[0].map(x=>String(x).trim());const iName=detectColumn(headers,['NAME','CONTACT NAME','FULL NAME','NOMBRE']);const iPhone=detectColumn(headers,['PHONE','PHONE NUMBER','TELEPHONE','TELEFONO']);const iEmail=detectColumn(headers,['EMAIL','E MAIL','CORREO']);const iExp=detectColumn(headers,['DV POLICY EXPIRATION DATE','POLICY EXPIRATION DATE','EXPIRATION DATE','RENEWAL DATE','EXPIRATION','VENCIMIENTO']);if(iName<0){alert('No pude detectar la columna de nombre. En este primer borrador el CSV necesita una columna como name, contact name o nombre.');return;}rows=matrix.slice(1).filter(r=>r.some(x=>String(x).trim()!=='')).map((r,idx)=>{const original={};headers.forEach((h,i)=>original[h]=r[i]??'');return classify({_id:idx+1,name:r[iName]??'',phone:iPhone>=0?(r[iPhone]??''):'',email:iEmail>=0?(r[iEmail]??''):'',expiration:iExp>=0?normalizeDate(r[iExp]??''):'',original})});$('fileInfo').textContent=`${filename} — ${rows.length.toLocaleString()} contactos cargados`;$('app').classList.remove('hidden');updateKPIs();applyFilters()}
-function updateKPIs(){$('kTotal').textContent=rows.length.toLocaleString();$('kHigh').textContent=rows.filter(r=>r.cls==='high').length.toLocaleString();$('kProb').textContent=rows.filter(r=>r.cls==='probable').length.toLocaleString();$('kReview').textContent=rows.filter(r=>r.cls==='review').length.toLocaleString();$('kUnknown').textContent=rows.filter(r=>r.cls==='unknown').length.toLocaleString()}
-function applyFilters(){const q=normalizeText($('searchBox').value);const person=$('personFilter').value;const from=$('dateFrom').value,to=$('dateTo').value;const minScore=Number($('scoreMin').value||0);filtered=rows.filter(r=>{if(classFilter!=='all'&&r.cls!==classFilter)return false;if(person&&r.personType!==person)return false;if(minScore&&r.score<minScore)return false;if(from&&(!r.expiration||r.expiration<from))return false;if(to&&(!r.expiration||r.expiration>to))return false;if(q){const hay=normalizeText([r.name,r.firstName,r.lastName,r.phone,r.email1,r.email2,r.email3,r.email4,r.email5,r.lastDetected,r.label,r.tag].join(' '));if(!hay.includes(q))return false}return true});render()}
-function badgeClass(cls){return cls==='high'?'b-high':cls==='probable'?'b-prob':cls==='review'?'b-review':cls==='company'?'b-company':'b-unknown'}
-function render(){$('countInfo').textContent=`Mostrando ${filtered.length.toLocaleString()} de ${rows.length.toLocaleString()} contactos`;const show=filtered.slice(0,1000);$('tbody').innerHTML=show.map(r=>`<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.firstName)}</td><td>${esc(r.lastName)}</td><td>${esc(r.phone)}</td><td>${esc(r.email1)}</td><td>${esc(r.email2)}</td><td>${esc(r.email3)}</td><td>${esc(r.expiration)}</td><td>${esc(r.personType)}</td><td>${esc(r.nameLat)}</td><td>${esc(r.surnameLat)}</td><td>${esc(r.lastDetected)}</td><td class="score">${r.score}%</td><td><span class="badge ${badgeClass(r.cls)}">${esc(r.label)}</span></td><td>${esc(r.confidence)}</td><td class="reason">${esc(r.reason)}</td><td>${esc(r.route)}</td><td>${esc(r.tag)}</td></tr>`).join('');if(filtered.length>1000)$('countInfo').textContent+=' · La tabla muestra las primeras 1,000; el CSV exporta todas.'}
-function csvEscape(v){const s=String(v??'');return /[",\n\r]/.test(s)?`"${s.replace(/"/g,'""')}"`:s}
-function exportRows(data,filename){const baseHeaders=data.length?Object.keys(data[0].original):[];const extra=['First Name','Last Name','Email 1','Email 2','Email 3','Email 4','Email 5','Nombre Latino','Apellido Latino','Confianza Español','Idioma Probable','Confianza','Review','Tag_GHL','Persona vs Empresa','Apellido detectado','Motivo','Ruta sugerida'];const lines=[[...baseHeaders,...extra].map(csvEscape).join(',')];data.forEach(r=>{const base=baseHeaders.map(h=>r.original[h]??'');const review=r.cls==='review'?'REVISAR':'';lines.push([...base,r.firstName,r.lastName,r.email1,r.email2,r.email3,r.email4,r.email5,r.nameLat,r.surnameLat,r.score,r.label,r.confidence,review,r.tag,r.personType,r.lastDetected,r.reason,r.route].map(csvEscape).join(','))});const blob=new Blob(["\ufeff"+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-$('fileInput').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const reader=new FileReader();reader.onload=()=>importCSV(reader.result,f.name);reader.readAsText(f)});const drop=$('drop');['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag')}));['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag')}));drop.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(!f)return;const reader=new FileReader();reader.onload=()=>importCSV(reader.result,f.name);reader.readAsText(f)});$('chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');classFilter=b.dataset.class;applyFilters()});['searchBox','personFilter','dateFrom','dateTo','scoreMin'].forEach(id=>$(id).addEventListener('input',applyFilters));$('clearBtn').onclick=()=>{classFilter='all';document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x.dataset.class==='all'));['searchBox','personFilter','dateFrom','dateTo','scoreMin'].forEach(id=>$(id).value='');applyFilters()};$('exportFilteredBtn').onclick=()=>exportRows(filtered,'truemate_contacts_filtered.csv');$('exportAllBtn').onclick=()=>exportRows(rows,'truemate_contacts_classified.csv');
+(function(){
+  const SESSION_KEY='truemate_classifier_v11_access';
+  const PASSWORD='Truemate2026!';
+  function unlock(){document.body.classList.add('unlocked');sessionStorage.setItem(SESSION_KEY,'1');}
+  if(sessionStorage.getItem(SESSION_KEY)==='1') unlock();
+  document.getElementById('login').addEventListener('submit',function(e){
+    e.preventDefault();
+    const input=document.getElementById('password');
+    const error=document.getElementById('error');
+    if(input.value===PASSWORD){error.textContent='';unlock();}
+    else{error.textContent='Clave incorrecta.';input.select();}
+  });
+})();
 </script>
 </body>
 </html>
