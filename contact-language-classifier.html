@@ -16,7 +16,7 @@ input{width:100%;padding:12px 13px;border:1px solid #cfd8e2;border-radius:10px;f
 input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(34,92,145,.12)}
 button{width:100%;margin-top:12px;border:0;background:var(--navy);color:#fff;border-radius:10px;padding:12px 14px;font-weight:800;cursor:pointer;font-size:15px}
 #error{min-height:20px;margin-top:10px;color:#a52d2d;font-size:13px;font-weight:700}
-.loading{min-height:100vh;display:none;place-items:center;text-align:center;padding:24px}.loading.show{display:grid}.loading strong{display:block;font-size:20px;margin-bottom:8px}.loading span{color:var(--muted)}
+.loading{min-height:100vh;display:none;place-items:center;text-align:center;padding:24px}.loading.show{display:grid}.loading strong{display:block;font-size:20px;margin-bottom:8px}.loading span{display:block;color:var(--muted);margin-top:6px}.loading small{display:block;color:#8a4b00;margin-top:12px;max-width:680px;word-break:break-word}
 </style>
 </head>
 <body>
@@ -36,7 +36,43 @@ button{width:100%;margin-top:12px;border:0;background:var(--navy);color:#fff;bor
 <script>
 const ACCESS_KEY='tm_classifier_access_v11';
 const PASSWORD='Truemate2026!';
+const FILES=['classifier-data-1.txt','classifier-data-2.txt','classifier-data-3.txt','classifier-data-4.txt','classifier-data-5.txt'];
+const PAGE_BASE='https://gregorionavarro.github.io/Manifiesto-de-Ruta/';
+const RAW_BASE='https://raw.githubusercontent.com/gregorionavarro/Manifiesto-de-Ruta/main/';
 let started=false;
+
+async function getPart(file){
+  const urls=[PAGE_BASE+file+'?v=3',RAW_BASE+file+'?v=3'];
+  let lastError='';
+  for(const url of urls){
+    try{
+      const r=await fetch(url,{cache:'no-store'});
+      if(r.ok) return await r.text();
+      lastError=`${url} → HTTP ${r.status}`;
+    }catch(e){lastError=`${url} → ${e.message}`;}
+  }
+  throw new Error(lastError || ('No se pudo cargar '+file));
+}
+
+function loadPako(){
+  return new Promise((resolve,reject)=>{
+    if(window.pako) return resolve();
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js';
+    s.onload=resolve;
+    s.onerror=()=>reject(new Error('No se pudo cargar el descompresor alternativo.'));
+    document.head.appendChild(s);
+  });
+}
+
+async function gunzip(bytes){
+  if('DecompressionStream' in window){
+    const ds=new DecompressionStream('gzip');
+    return await new Response(new Blob([bytes]).stream().pipeThrough(ds)).text();
+  }
+  await loadPako();
+  return new TextDecoder().decode(window.pako.ungzip(bytes));
+}
 
 async function loadClassifier(){
   if(started) return;
@@ -44,23 +80,20 @@ async function loadClassifier(){
   document.getElementById('gate').style.display='none';
   document.getElementById('loading').classList.add('show');
   try{
-    const files=['classifier-data-1.txt','classifier-data-2.txt','classifier-data-3.txt','classifier-data-4.txt','classifier-data-5.txt'];
     const parts=[];
-    for(const f of files){
-      const r=await fetch(f+'?v=1',{cache:'no-store'});
-      if(!r.ok) throw new Error('No se pudo cargar '+f);
-      parts.push(await r.text());
-    }
+    for(const f of FILES) parts.push(await getPart(f));
     const b=parts.join('').replace(/\s+/g,'');
     const bytes=Uint8Array.from(atob(b),c=>c.charCodeAt(0));
-    const ds=new DecompressionStream('gzip');
-    const html=await new Response(new Blob([bytes]).stream().pipeThrough(ds)).text();
+    const html=await gunzip(bytes);
+    if(!html || !html.includes('TrueMate Contact Language Classifier')) throw new Error('El contenido reconstruido no es válido.');
     document.open();
     document.write(html);
     document.close();
   }catch(e){
-    document.getElementById('loading').innerHTML='<div><strong>No se pudo cargar la herramienta.</strong><span>Actualiza la página e inténtalo nuevamente.</span></div>';
-    console.error(e);
+    const msg=(e && e.message) ? e.message : String(e);
+    document.getElementById('loading').innerHTML='<div><strong>No se pudo cargar la herramienta.</strong><span>Actualiza la página e inténtalo nuevamente.</span><small>'+msg.replace(/[<>&]/g,'')+'</small></div>';
+    console.error('Classifier load error:',e);
+    started=false;
   }
 }
 
