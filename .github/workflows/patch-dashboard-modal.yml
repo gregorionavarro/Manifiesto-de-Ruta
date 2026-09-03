@@ -1,0 +1,45 @@
+name: TrueMate · Dashboard dentro del Tools
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/patch-dashboard-modal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abrir Dashboard como Motor Guidelines
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tools.html')
+          s=p.read_text(encoding='utf-8')
+          old='<a class="btn btn-primary" href="https://truemate-internal-tools.pages.dev/dashboard-comercial-v5.html" target="_blank" rel="noopener">Abrir Dashboard Comercial</a>'
+          new='<button class="btn btn-primary" onclick="openTool(\'Dashboard Comercial\',\'https://truemate-internal-tools.pages.dev/dashboard-comercial-v6.html\')">Abrir Dashboard Comercial</button>'
+          if old in s:
+              s=s.replace(old,new)
+          else:
+              s=s.replace('https://truemate-internal-tools.pages.dev/dashboard-comercial-v5.html','https://truemate-internal-tools.pages.dev/dashboard-comercial-v6.html')
+              s=s.replace('<a class="btn btn-primary" href="https://truemate-internal-tools.pages.dev/dashboard-comercial-v6.html" target="_blank" rel="noopener">Abrir Dashboard Comercial</a>',new)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Guardar cambio
+        shell: bash
+        run: |
+          if git diff --quiet -- tools.html; then
+            echo 'tools.html ya estaba actualizado.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add tools.html
+            git commit -m 'Open Dashboard Comercial inside TrueMate Tools modal'
+            git push
+          fi
