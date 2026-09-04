@@ -1,0 +1,50 @@
+name: TrueMate · Restaurar Dashboard Comercial
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/restore-dashboard-card.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restaurar tarjeta Dashboard Comercial v7.2
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('tools.html')
+          s = p.read_text(encoding='utf-8')
+          card = '''<article class="card featured"><div><div class="tag">Gerencia · Operaciones <span class="featured-badge">● GHL EN VIVO</span></div><h3>📊 Dashboard Comercial</h3><p>Revisa pipeline, expiradas, precios imbatibles y prioridades. Incluye guía de seguimiento, acuerdos y semáforo mensual de cumplimiento.</p></div><div class="actions"><button class="btn btn-primary" onclick="openTool('Dashboard Comercial','https://noisy-leaf-ece5.gregorio-navarro.workers.dev/dashboard-comercial-v7-2.html')">Abrir Dashboard Comercial</button></div></article>\n'''
+
+          if '📊 Dashboard Comercial' in s:
+              s = s.replace('https://truemate-internal-tools.pages.dev/dashboard-comercial-v6.html','https://noisy-leaf-ece5.gregorio-navarro.workers.dev/dashboard-comercial-v7-2.html')
+              s = s.replace('https://truemate-internal-tools.pages.dev/dashboard-comercial-v7.html','https://noisy-leaf-ece5.gregorio-navarro.workers.dev/dashboard-comercial-v7-2.html')
+          else:
+              marker = '<section class="grid">\n'
+              if marker not in s:
+                  raise SystemExit('No se encontró <section class="grid"> en tools.html')
+              s = s.replace(marker, marker + card, 1)
+
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Guardar cambio
+        shell: bash
+        run: |
+          if git diff --quiet -- tools.html; then
+            echo 'tools.html ya estaba correcto.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add tools.html
+            git commit -m 'Restore Dashboard Comercial v7.2 card in TrueMate Tools'
+            git push
+          fi
