@@ -1,0 +1,44 @@
+name: TrueMate · Agregar Procedimiento IA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/add-ai-procedure-card.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  add-card:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Insertar tarjeta de procedimiento IA
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('tools.html')
+          s = p.read_text()
+          if 'guia-nuevo-agente-ia.html' in s:
+              print('Tarjeta ya existe')
+              raise SystemExit(0)
+          marker = '<article class="card"><div class="tag">FMCSA</div>'
+          card = '''<article class="card"><div class="tag">IA · Procedimiento interno</div><h3>🤖 Agregar nuevo agente IA</h3><p>Guía protegida para crear un agente en Retell, conectarlo a n8n, validar Sheet, Dashboard y GHL, y completar el checklist de lanzamiento.</p><div class="actions"><button class="btn btn-primary" onclick="openTool('Guía · Nuevo Agente IA','guia-nuevo-agente-ia.html')">Abrir procedimiento</button></div></article>\n'''
+          if marker not in s:
+              raise SystemExit('No se encontró el punto de inserción en tools.html')
+          s = s.replace(marker, card + marker, 1)
+          p.write_text(s)
+          print('Tarjeta agregada')
+          PY
+      - name: Guardar cambios
+        run: |
+          if git diff --quiet; then
+            echo 'Sin cambios'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tools.html
+          git commit -m 'Add protected AI agent procedure to TrueMate Tools [skip ci]'
+          git push
