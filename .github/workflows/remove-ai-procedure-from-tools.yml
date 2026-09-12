@@ -1,0 +1,34 @@
+name: TrueMate · Quitar Procedimiento IA de Tools
+
+on:
+  push:
+    paths:
+      - '.github/workflows/remove-ai-procedure-from-tools.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove wrong card from TrueMate Tools
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('tools.html')
+          s = p.read_text()
+          block = '''<article class="card"><div class="tag">IA · Procedimiento interno</div><h3>🤖 Agregar nuevo agente IA</h3><p>Guía protegida para crear un agente en Retell, conectarlo a n8n, validar Sheet, Dashboard y GHL, y completar el checklist de lanzamiento.</p><div class="actions"><button class="btn btn-primary" onclick="openTool('Guía · Nuevo Agente IA','guia-nuevo-agente-ia.html')">Abrir procedimiento</button></div></article>\n'''
+          if block in s:
+              s = s.replace(block, '', 1)
+              p.write_text(s)
+          PY
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Remove AI procedure card from TrueMate Tools"
+          git push
