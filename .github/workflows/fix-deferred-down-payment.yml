@@ -1,0 +1,37 @@
+name: Fix Deferred Down Payment Refresh
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-deferred-down-payment.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fix Step 2 refresh when premium changes
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('deferred-payment-manager.html')
+          s = p.read_text(encoding='utf-8')
+          old = "if(f==='coverage'||f==='mga') renderDownRows();"
+          new = "if(f==='coverage'||f==='mga'||f==='premium') renderDownRows();"
+          if old not in s:
+              raise SystemExit('Expected code was not found; no change made.')
+          s = s.replace(old, new, 1)
+          p.write_text(s, encoding='utf-8')
+
+      - name: Commit fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add deferred-payment-manager.html
+          git commit -m "Fix down payment refresh for added coverages" || exit 0
+          git push
