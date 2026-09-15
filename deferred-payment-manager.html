@@ -191,7 +191,7 @@
 </div>
 
 <script>
-const OWNER_KEY = 'Acceso79796@'; // TEMPORARY FRONT-END KEY. Move validation to Cloudflare/Worker for production.
+const OWNER_KEY_HASH='21b97732ba8522a0ed6006d328653d00f0519069f8d6e3e35518947fcf807717'; // TEMPORARY FRONT-END KEY. Move validation to Cloudflare/Worker for production.
 const N8N_SAVE_WEBHOOK = 'https://n8n.truemategroup.com/webhook-test/truemate-deferred-save'; // TEST webhook for n8n.
 const N8N_HISTORY_WEBHOOK = ''; // Paste production n8n GET webhook here.
 const $ = s => document.querySelector(s); const $$ = s => [...document.querySelectorAll(s)];
@@ -269,8 +269,11 @@ $('#addCoverage').onclick=()=>{coverages.push({coverage:'',mga:'',premium:0,comm
 document.addEventListener('click',e=>{if(e.target.classList.contains('removeCoverage')){coverages.splice(+e.target.dataset.i,1);renderCoverage();}});
 
 $$('.tab').forEach(b=>b.onclick=()=>{$$('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');$$('.tabPanel').forEach(p=>p.classList.add('hidden'));$('#'+b.dataset.tab).classList.remove('hidden'); if(b.dataset.tab==='history')renderHistory();});
-$('#unlockBtn').onclick=()=>{
-  if($('#ownerKey').value===OWNER_KEY){
+$('#unlockBtn').onclick=async()=>{
+  const inputBytes=new TextEncoder().encode($('#ownerKey').value);
+  const digest=await crypto.subtle.digest('SHA-256',inputBytes);
+  const inputHash=Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(inputHash===OWNER_KEY_HASH){
     $('#lockOverlay').classList.add('hidden');
     $('#lockError').textContent='';
     // La guía se muestra solo DESPUÉS de desbloquear, salvo que el usuario haya optado por no verla automáticamente.
