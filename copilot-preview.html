@@ -5,128 +5,175 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TrueMate Copilot · Trucking</title>
 <style>
-:root{--navy:#193251;--navy2:#24456f;--paper:#f5f2ea;--line:#d9d6cf;--orange:#e8590c;--yellow:#ffc845;--green:#2e7d46;--red:#b9372b;--amber:#a56b00;--muted:#667085;--white:#fff}
+:root{--navy:#193251;--navy2:#24456f;--paper:#f5f2ea;--line:#d9d6cf;--orange:#e8590c;--yellow:#ffc845;--green:#2e7d46;--red:#b9372b;--amber:#a56b00;--muted:#667085;--white:#fff;--bluebg:#eef3f8}
 *{box-sizing:border-box} body{margin:0;background:var(--paper);font-family:Inter,Arial,sans-serif;color:var(--navy)}
-.wrap{max-width:1200px;margin:auto;padding:24px}.hero{background:var(--navy);color:white;border-radius:14px;padding:24px;box-shadow:0 12px 30px #0001}.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--yellow);text-transform:uppercase}.hero h1{margin:6px 0 4px;font-size:34px}.hero p{margin:0;color:#d4dbe5;line-height:1.5}.search{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:18px}.search input{padding:14px 16px;border:0;border-radius:9px;font-size:17px}.search button,.btn{border:0;border-radius:9px;background:var(--orange);color:white;font-weight:700;padding:12px 18px;cursor:pointer}.status{margin-top:10px;font-size:13px;color:#d4dbe5}.hidden{display:none!important}
+.wrap{max-width:1250px;margin:auto;padding:24px}.hero{background:var(--navy);color:white;border-radius:14px;padding:24px;box-shadow:0 12px 30px #0001}.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--yellow);text-transform:uppercase}.hero h1{margin:6px 0 4px;font-size:34px}.hero p{margin:0;color:#d4dbe5;line-height:1.5}.search{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:18px}.search input{padding:14px 16px;border:0;border-radius:9px;font-size:17px}.search button,.btn{border:0;border-radius:9px;background:var(--orange);color:white;font-weight:700;padding:12px 18px;cursor:pointer}.btn.secondary{background:white;color:var(--navy);border:1px solid var(--line)}.btn.small{padding:7px 10px;font-size:12px}.status{margin-top:10px;font-size:13px;color:#d4dbe5}.hidden{display:none!important}
 .casehead{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin:20px 0 14px}.casehead h2{margin:0;font-size:28px}.meta{color:var(--muted);margin-top:5px}.risk{padding:9px 13px;border-radius:999px;font-weight:800;font-size:13px;white-space:nowrap}.risk.red{background:#fde8e5;color:var(--red)}.risk.amber{background:#fff3d3;color:var(--amber)}.risk.green{background:#e6f3e9;color:var(--green)}
-.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}@media(max-width:850px){.grid,.search{grid-template-columns:1fr}.casehead{flex-direction:column}}
-.card{background:white;border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}.card h3{margin:0 0 10px;font-size:18px}.sub{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.45}.alert{border-left:5px solid var(--red);background:#fff5f4;border-radius:8px;padding:12px 14px;margin:8px 0}.alert.amber{border-left-color:#d59500;background:#fff9e8}.alert.green{border-left-color:var(--green);background:#f0f8f2}.alert strong{display:block;margin-bottom:4px}.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}@media(max-width:650px){.facts{grid-template-columns:1fr 1fr}}.fact{background:#f7f8fa;border:1px solid #e6e8eb;border-radius:8px;padding:11px}.fact b{display:block;font-size:17px;margin-top:4px}.fact span{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
-ol.call{padding-left:24px;margin:8px 0}ol.call li{padding:8px 8px;line-height:1.45}ol.call li::marker{font-weight:800;color:var(--orange)}
-ul.clean{list-style:none;padding:0;margin:0}ul.clean li{padding:8px 0;border-bottom:1px dotted #ddd;line-height:1.4}ul.clean li:last-child{border:0}.check:before{content:'✓';color:var(--green);font-weight:900;margin-right:8px}.warn:before{content:'!';color:var(--amber);font-weight:900;margin-right:10px}.noask:before{content:'↳';color:var(--navy2);font-weight:900;margin-right:8px}.doc:before{content:'□';color:var(--orange);font-weight:900;margin-right:8px}.script{background:#eef3f8;border:1px solid #d6e0ea;border-radius:10px;padding:14px;line-height:1.55;font-size:14px}.why{margin-top:7px;font-size:12px;color:var(--muted)}
-.objectives{display:flex;flex-wrap:wrap;gap:8px}.pill{border:1px solid #cfd5dd;border-radius:999px;padding:8px 11px;font-size:12px;background:white;cursor:pointer}.pill.active{background:#fff1e8;border-color:var(--orange);color:#b8460a;font-weight:700}.footer-note{font-size:12px;color:var(--muted);text-align:center;margin:20px 0}.error{background:#fde8e5;color:#8f2d24;border-radius:8px;padding:12px;margin-top:10px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}.save-state{font-size:12px;color:var(--muted);align-self:center;margin-left:auto}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}@media(max-width:900px){.grid,.search{grid-template-columns:1fr}.casehead{flex-direction:column}.save-state{width:100%;margin-left:0}}
+.card{background:white;border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}.card h3{margin:0 0 10px;font-size:18px}.sub{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.45}.alert{border-left:5px solid var(--red);background:#fff5f4;border-radius:8px;padding:12px 14px;margin:8px 0;line-height:1.45}.alert.amber{border-left-color:#d59500;background:#fff9e8}.alert.green{border-left-color:var(--green);background:#f0f8f2}.alert strong{display:block;margin-bottom:4px}.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}@media(max-width:650px){.facts{grid-template-columns:1fr 1fr}}.fact{background:#f7f8fa;border:1px solid #e6e8eb;border-radius:8px;padding:11px}.fact b{display:block;font-size:17px;margin-top:4px;word-break:break-word}.fact span{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+ul.clean{list-style:none;padding:0;margin:0}ul.clean li{padding:8px 0;border-bottom:1px dotted #ddd;line-height:1.4}ul.clean li:last-child{border:0}.check:before{content:'✓';color:var(--green);font-weight:900;margin-right:8px}.noask:before{content:'↳';color:var(--navy2);font-weight:900;margin-right:8px}.doc:before{content:'□';color:var(--orange);font-weight:900;margin-right:8px}.script{background:var(--bluebg);border:1px solid #d6e0ea;border-radius:10px;padding:14px;line-height:1.55;font-size:14px}.why{margin-top:7px;font-size:12px;color:var(--muted)}
+.objectives{display:flex;flex-wrap:wrap;gap:8px}.pill{border:1px solid #cfd5dd;border-radius:999px;padding:8px 11px;font-size:12px;background:white;cursor:pointer}.pill.active{background:#fff1e8;border-color:var(--orange);color:#b8460a;font-weight:700}
+.routes{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:12px}@media(max-width:700px){.routes{grid-template-columns:1fr 1fr}}.route{border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px;text-align:left;cursor:pointer}.route.active{border-color:var(--orange);box-shadow:0 0 0 2px #e8590c18}.route b{display:block;font-size:13px}.route span{font-size:10.5px;color:var(--muted)}
+.question-card{border:1px solid #dfe3e8;border-radius:11px;margin:10px 0;background:#fff;overflow:hidden}.q-head{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:start;padding:13px 14px;background:#fbfbfa}.q-num{width:28px;height:28px;border-radius:50%;background:var(--navy);color:var(--yellow);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px}.q-text{font-size:14px;line-height:1.45;font-weight:600}.help-btn{border:1px solid #cfd5dd;background:white;color:var(--navy);border-radius:999px;padding:6px 9px;font-size:11px;cursor:pointer;white-space:nowrap}.q-help{display:none;padding:12px 14px;background:#f5f8fb;border-top:1px solid #e1e7ed;font-size:12.5px;line-height:1.5}.q-help.open{display:block}.q-help strong{display:block;margin:0 0 3px}.expert-reply{background:#fff;border-left:3px solid var(--navy2);padding:9px 10px;border-radius:0 7px 7px 0;margin:7px 0}.listen{color:var(--muted);margin-top:6px}.answer-wrap{padding:0 14px 14px}.answer-wrap label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:4px 0 5px}.answer{width:100%;min-height:66px;border:1px solid #cfd5dd;border-radius:8px;padding:10px;font:13px Inter,Arial,sans-serif;resize:vertical}.answer:focus{outline:2px solid #e8590c25;border-color:var(--orange)}
+.notes{width:100%;min-height:100px;border:1px solid #cfd5dd;border-radius:8px;padding:11px;font:13px Inter,Arial,sans-serif;resize:vertical}.footer-note{font-size:12px;color:var(--muted);text-align:center;margin:20px 0}.error{background:#fde8e5;color:#8f2d24;border-radius:8px;padding:12px;margin-top:10px}
+@media print{body{background:#fff}.hero .search,.hero .status,.actions,.help-btn,.routes{display:none!important}.wrap{max-width:none;padding:0}.hero{box-shadow:none;border-radius:0;padding:14px 18px}.grid{display:block}.card{break-inside:avoid;border-color:#bbb}.q-help{display:block!important}.answer{border:1px solid #bbb;min-height:48px}.footer-note{display:none}.casehead{margin-top:12px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <section class="hero">
-    <div class="eyebrow">TrueMate Group · Copiloto de Trucking</div>
-    <h1>Manifiesto de Ruta · Modo Experto</h1>
-    <p>Escribe el DOT. El sistema te dice qué sabemos, qué preocupa, qué preguntar primero y qué pedir antes de cotizar.</p>
-    <div class="search"><input id="dot" inputmode="numeric" placeholder="Ej. 2792782"><button id="go">Analizar riesgo</button></div>
-    <div class="status" id="status">Fuente: BrokerSnapshot vía proxy seguro de TrueMate.</div>
+<section class="hero">
+  <div class="eyebrow">TrueMate Group · Copiloto de Trucking</div>
+  <h1>Manifiesto de Ruta · Modo Experto</h1>
+  <p>Escribe el DOT. El sistema prepara la conversación, explica por qué preguntar, te ayuda a responder como productor y guarda lo que dice el cliente.</p>
+  <div class="search"><input id="dot" inputmode="numeric" placeholder="Ej. 2792782"><button id="go">Analizar riesgo</button></div>
+  <div class="status" id="status">Fuente: BrokerSnapshot vía proxy seguro de TrueMate.</div>
+</section>
+
+<main id="result" class="hidden">
+  <div class="casehead"><div><h2 id="companyName"></h2><div class="meta" id="companyMeta"></div></div><div id="riskBadge" class="risk amber"></div></div>
+  <div class="actions"><button class="btn" onclick="window.print()">Imprimir / Guardar PDF</button><button class="btn secondary" id="clearNotes">Limpiar respuestas</button><span class="save-state" id="saveState">Respuestas guardadas automáticamente en este navegador.</span></div>
+
+  <section class="card">
+    <h3>Conversación comercial</h3>
+    <div class="sub">Elige cómo llegó el cliente. Esta guía te ayuda a abrir la llamada y pasar naturalmente al análisis del riesgo.</div>
+    <div class="routes" id="routes">
+      <button class="route" data-route="email"><b>Campaña de correo</b><span>Respondió a email</span></button>
+      <button class="route" data-route="cold"><b>Llamada en frío</b><span>Contacto sin interés previo</span></button>
+      <button class="route" data-route="referido"><b>Referido</b><span>Llega con confianza previa</span></button>
+      <button class="route active" data-route="renewal"><b>Renovación</b><span>Confirmar cambios y mejorar póliza</span></button>
+    </div>
+    <div class="script" id="routeGuide"></div>
   </section>
 
-  <main id="result" class="hidden">
-    <div class="casehead">
-      <div><h2 id="companyName"></h2><div class="meta" id="companyMeta"></div></div>
-      <div id="riskBadge" class="risk amber"></div>
+  <div class="grid">
+    <div>
+      <section class="card"><h3>1. Qué debes ver antes de hablar</h3><div class="sub">No son conclusiones de underwriting. Son puntos que debes entender y confirmar con el cliente.</div><div id="alerts"></div></section>
+
+      <section class="card">
+        <h3>2. Pregunta esto primero · con ayuda de experto</h3>
+        <div class="sub">Cada pregunta tiene tres cosas: qué preguntar, qué responder si el cliente te pide explicación y un espacio para escribir lo que te dijo. Se guarda automáticamente.</div>
+        <div id="questions"></div>
+      </section>
+
+      <section class="card"><h3>3. Objetivo comercial del cliente</h3><div class="sub">Selecciona todo lo que el cliente quiere mejorar.</div><div class="objectives" id="objectives"><button class="pill">Premium total</button><button class="pill">Down payment</button><button class="pill">Pago mensual</button><button class="pill">Mejor cobertura</button><button class="pill">Agregar unidades/drivers</button><button class="pill">Requisito contractual</button><button class="pill">Solo comparar</button></div></section>
+
+      <section class="card"><h3>4. Guion sugerido para esta llamada</h3><div class="script" id="script"></div><div class="why">Confirma lo que ya sabemos; no hagas sentir al cliente que empezamos desde cero.</div></section>
+
+      <section class="card"><h3>5. Notas libres de la reunión</h3><div class="sub">Anota cualquier detalle que no encaje en las preguntas anteriores. También se guarda automáticamente.</div><textarea class="notes" id="meetingNotes" placeholder="Ej: cliente quiere incluir solo 7 de las 9 unidades; una se vende en octubre; pide down payment bajo..."></textarea></section>
     </div>
 
-    <div class="grid">
-      <div>
-        <section class="card">
-          <h3>1. Qué debes ver antes de hablar</h3>
-          <div class="sub">Estas alertas cambian la conversación. No son una decisión de underwriting; son puntos que debemos confirmar.</div>
-          <div id="alerts"></div>
-        </section>
-
-        <section class="card">
-          <h3>2. Pregunta esto primero</h3>
-          <div class="sub">Orden sugerido para que una persona que está aprendiendo pueda conducir la reunión.</div>
-          <ol class="call" id="questions"></ol>
-        </section>
-
-        <section class="card">
-          <h3>3. Objetivo comercial del cliente</h3>
-          <div class="sub">Pregúntalo temprano. Ayuda a saber qué comparar cuando lleguen las cotizaciones.</div>
-          <div class="objectives" id="objectives">
-            <button class="pill">Premium total</button><button class="pill">Down payment</button><button class="pill">Pago mensual</button><button class="pill">Mejor cobertura</button><button class="pill">Agregar unidades/drivers</button><button class="pill">Requisito contractual</button><button class="pill">Solo comparar</button>
-          </div>
-        </section>
-
-        <section class="card">
-          <h3>4. Guion sugerido para esta llamada</h3>
-          <div class="script" id="script"></div>
-          <div class="why">La meta es confirmar datos existentes en vez de interrogar al cliente desde cero.</div>
-        </section>
-      </div>
-
-      <aside>
-        <section class="card">
-          <h3>Lo que ya sabemos</h3>
-          <div class="facts" id="facts"></div>
-        </section>
-
-        <section class="card">
-          <h3>No vuelvas a preguntar desde cero</h3>
-          <div class="sub">Confirma estos datos con el cliente; no los presentes como si no supiéramos nada.</div>
-          <ul class="clean" id="known"></ul>
-        </section>
-
-        <section class="card">
-          <h3>Documentos a solicitar</h3>
-          <ul class="clean" id="docs"></ul>
-        </section>
-
-        <section class="card">
-          <h3>Siguiente paso</h3>
-          <div id="nextStep" class="script"></div>
-        </section>
-      </aside>
-    </div>
-  </main>
-  <div class="footer-note">TrueMate Copilot organiza información pública/precargada y preguntas de intake. Confirmar siempre con el asegurado y con underwriting.</div>
+    <aside>
+      <section class="card"><h3>Lo que ya sabemos</h3><div class="facts" id="facts"></div></section>
+      <section class="card"><h3>No vuelvas a preguntar desde cero</h3><div class="sub">Confirma estos datos con el cliente.</div><ul class="clean" id="known"></ul></section>
+      <section class="card"><h3>Documentos a solicitar</h3><ul class="clean" id="docs"></ul></section>
+      <section class="card"><h3>Siguiente paso</h3><div id="nextStep" class="script"></div></section>
+    </aside>
+  </div>
+</main>
+<div class="footer-note">TrueMate Copilot organiza datos precargados y guía el intake. Confirmar siempre la información con el asegurado y los requisitos con underwriting.</div>
 </div>
 <script>
 const API='https://truemate-brokersnapshot-api.gregorio-navarro.workers.dev/company';
 const $=id=>document.getElementById(id);
 const fmt=n=>n==null?'—':new Intl.NumberFormat('en-US').format(n);
 const money=n=>n==null?'—':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
-const date=s=>{if(!s)return '—';const d=new Date(s+'T00:00:00');return Number.isNaN(d)?s:d.toLocaleDateString('en-US')};
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function insuranceChurn(history){if(!Array.isArray(history))return {count:0,companies:[]};const cutoff=new Date();cutoff.setFullYear(cutoff.getFullYear()-3);const rows=history.filter(x=>x.effectiveDate&&new Date(x.effectiveDate)>=cutoff);return {count:rows.length,companies:[...new Set(rows.map(x=>x.company).filter(Boolean))]}}
+function q(text,why,reply,listen){return {text,why,reply,listen}}
 function buildExpert(d){
- const alerts=[], positives=[], questions=[], known=[], docs=[];
- let score=0;
+ const alerts=[], positives=[], questions=[], known=[], docs=[]; let score=0;
  const status=(d.authority?.operatingStatus||'').toLowerCase();
- if(status.includes('not authorized')||d.authority?.operatingStatusIndicator==='I'){score+=4;alerts.push({level:'red',title:'Autoridad requiere confirmación',body:`BrokerSnapshot muestra “${d.authority?.operatingStatus||'Not Authorized'}”. Antes de hablar de precio, confirma si el cliente está operando actualmente bajo este DOT y si hubo una revocación, reinstatement o cambio reciente.`});questions.push('Me aparece que la autoridad requiere revisión. ¿Actualmente estás operando bajo este mismo DOT y está activa tu autoridad?')}
- else if(status){positives.push(`Operating Status: ${d.authority.operatingStatus}`)}
- if(d.company?.authorityAgeYears!=null){if(d.company.authorityAgeYears>=3)positives.push(`${d.company.authorityAgeYears} años desde el registro del carrier`);else {score+=1;alerts.push({level:'amber',title:'Autoridad relativamente nueva',body:`El registro tiene aproximadamente ${d.company.authorityAgeYears} año(s). Confirma experiencia previa del negocio y de los conductores.`})}}
+ if(status.includes('not authorized')||d.authority?.operatingStatusIndicator==='I'){
+   score+=4;alerts.push({level:'red',title:'Autoridad requiere confirmación',body:`BrokerSnapshot muestra “${d.authority?.operatingStatus||'Not Authorized'}”. Confirma la situación antes de someter.`});
+   questions.push(q(
+     'Me aparece que la autoridad requiere revisión. ¿Actualmente estás operando bajo este mismo DOT y está activa tu autoridad?',
+     'La autoridad FMCSA es una de las primeras cosas que revisan muchos mercados. “Not Authorized” puede aparecer por revocación, reinstatement pendiente, cambio reciente o porque el registro todavía no refleja una actualización.',
+     'Si te pregunta “¿cómo así?”, puedes responder: “En la consulta pública que usamos para preparar la cotización, el estatus aparece como Not Authorized. No significa que yo esté diciendo que no puedes operar; quiero confirmar contigo si hubo una reinstalación, cambio o actualización reciente para presentar el riesgo correctamente a la aseguradora.”',
+     'Escucha si menciona reinstatement, revocation, lapse, cambio de DOT/MC, pago pendiente, insurance filing o que ya resolvió el problema. Anótalo exactamente.'
+   ));
+ } else if(status) positives.push(`Operating Status: ${d.authority.operatingStatus}`);
+ if(d.company?.authorityAgeYears!=null){if(d.company.authorityAgeYears>=3)positives.push(`${d.company.authorityAgeYears} años desde el registro del carrier`);else{score+=1;alerts.push({level:'amber',title:'Autoridad relativamente nueva',body:`El registro tiene aproximadamente ${d.company.authorityAgeYears} año(s). Confirma experiencia previa del owner y los drivers.`})}}
  const churn=insuranceChurn(d.insurance?.history);
- if(churn.companies.length>=3){score+=2;alerts.push({level:'amber',title:'Varios cambios de aseguradora recientes',body:`Se observan ${churn.companies.length} aseguradoras distintas en aproximadamente los últimos 3 años. Pregunta la razón de los cambios; no asumas que fueron por siniestros.`});questions.push('Veo varios cambios de aseguradora en los últimos años. ¿Fueron por precio, renovación, cancelación, claims o algún otro motivo?')}
- if(d.insurance?.current){positives.push(`Seguro activo con ${d.insurance.current.company||'carrier reportado'}`); if(Number(d.insurance.current.limit||0)<1000000){score+=1;alerts.push({level:'amber',title:'Límite actual menor a $1M',body:`El filing actual aparece por ${money(d.insurance.current.limit)}. Confirma qué límite necesita el cliente y si sus contratos exigen $1M.`});questions.push(`Tu filing actual aparece por ${money(d.insurance.current.limit)}. ¿Tus brokers o contratos te exigen $1M de Auto Liability?`)}}
- else {score+=2;alerts.push({level:'red',title:'No aparece seguro activo',body:'No encontramos una póliza activa en esta consulta. Confirma inmediatamente la situación actual y las fechas de cobertura.'})}
- if(d.operation?.powerUnits!=null){known.push(`Power Units reportadas: ${d.operation.powerUnits}`);questions.push(`Me aparecen ${d.operation.powerUnits} power units. ¿Siguen activas todas y cuántas quieres incluir en esta cotización?`)}
- if(d.operation?.drivers!=null){known.push(`Drivers reportados: ${d.operation.drivers}`);questions.push(`Me aparecen ${d.operation.drivers} drivers. ¿Son los mismos que quieres asegurar o hubo altas/bajas recientes?`)}
- if(d.operation?.cargo?.length){known.push(`Carga reportada: ${d.operation.cargo.join(', ')}`);questions.push(`Me aparece ${d.operation.cargo.join(', ')}. ¿Cuáles son las 3 mercancías que más transportas y hay alguna carga especial, hazmat, autos, reefer o high value?`)} else questions.push('¿Qué tipo de carga transportas principalmente y cuáles son tus 3 commodities más frecuentes?');
- questions.push('¿Cuál es tu radio máximo normal y cuáles son los estados donde operas con más frecuencia?');
- questions.push('¿Dónde se guardan normalmente las unidades cuando no están trabajando? ¿Es la misma dirección del negocio?');
- questions.push('¿Qué quieres mejorar de tu póliza actual: premium total, down payment, mensualidad, cobertura o algún requisito de un broker/shipper?');
- questions.push('¿Hubo accidentes, claims, tickets importantes, unidades nuevas o conductores nuevos desde la última póliza?');
- if(d.company?.legalName)known.push(`Nombre legal: ${d.company.legalName}`);if(d.mc)known.push(`MC: ${d.mc}`);if(d.address?.state)known.push(`Estado / dirección reportada: ${[d.address.street,d.address.city,d.address.state,d.address.zip].filter(Boolean).join(', ')}`);if(d.contact?.phone)known.push(`Teléfono reportado: ${d.contact.phone}`);if(d.contact?.email)known.push(`Email reportado: ${d.contact.email}`);if(d.insurance?.current?.company)known.push(`Carrier actual reportado: ${d.insurance.current.company}`);
+ if(churn.companies.length>=3){score+=2;alerts.push({level:'amber',title:'Varios cambios de aseguradora recientes',body:`Se observan ${churn.companies.length} aseguradoras distintas en aproximadamente 3 años. Averigua la razón sin asumir que fue por claims.`});questions.push(q(
+   'Veo varios cambios de aseguradora en los últimos años. ¿Fueron por precio, renovación, cancelación, claims o algún otro motivo?',
+   'La continuidad de seguro puede afectar el apetito del mercado. Un cambio por precio es muy distinto a una cancelación por pago, pérdida o underwriting.',
+   'Si pregunta por qué: “Estoy revisando el historial para explicarle bien el caso a underwriting. Cambiar de compañía no es necesariamente malo; solo necesito saber la razón para que no interpreten incorrectamente el historial.”',
+   'Distingue: cambio voluntario por precio, non-renewal, cancelación por pago, cambio de agente, claim, carrier salió del estado, crecimiento de flota.'
+ ))}
+ if(d.insurance?.current){positives.push(`Seguro activo con ${d.insurance.current.company||'carrier reportado'}`);if(Number(d.insurance.current.limit||0)<1000000){score+=1;alerts.push({level:'amber',title:'Límite actual menor a $1M',body:`El filing actual aparece por ${money(d.insurance.current.limit)}. Confirma requisitos contractuales.`});questions.push(q(
+   `Tu filing actual aparece por ${money(d.insurance.current.limit)}. ¿Tus brokers, shippers o contratos te exigen $1M de Auto Liability?`,
+   'Aunque FMCSA puede mostrar un límite filing, muchos brokers o contratos privados exigen $1M. Debemos cotizar el límite que realmente necesita para trabajar.',
+   'Si pregunta la diferencia: “Una cosa es el mínimo o filing que aparece reportado y otra lo que te exige un broker o contrato. Quiero asegurarme de cotizar el límite que necesitas para no perder cargas.”',
+   'Busca si necesita $1M, $750K, umbrella/excess, UIIA o certificado con wording especial.'
+ ))}} else {score+=2;alerts.push({level:'red',title:'No aparece seguro activo',body:'No encontramos póliza activa en la consulta. Confirma fechas y situación actual.'})}
+ if(d.operation?.powerUnits!=null){known.push(`Power Units reportadas: ${d.operation.powerUnits}`);questions.push(q(
+   `Me aparecen ${d.operation.powerUnits} power units. ¿Siguen activas todas y cuántas quieres incluir en esta cotización?`,
+   'La cantidad de unidades afecta mercado, clasificación de fleet/non-fleet y prima. Además, FMCSA puede no reflejar cambios recientes.',
+   'Si pregunta por qué ya lo sabes: “Sí, me aparecen reportadas, pero quiero confirmar las que realmente están activas y las que vamos a asegurar para no cotizar unidades que ya vendiste o dejar una fuera.”',
+   'Anota unidades vendidas, nuevas, leased, owner-operators y cuántas exactamente se cotizan.'
+ ))}
+ if(d.operation?.drivers!=null){known.push(`Drivers reportados: ${d.operation.drivers}`);questions.push(q(
+   `Me aparecen ${d.operation.drivers} drivers. ¿Son los mismos que quieres asegurar o hubo altas/bajas recientes?`,
+   'Los drivers son uno de los puntos más sensibles del underwriting de trucking. La cantidad pública no sustituye la driver list actual.',
+   'Si pregunta por qué: “El DOT me da una referencia, pero underwriting necesita saber quiénes realmente van a manejar las unidades en esta póliza.”',
+   'Busca nuevos drivers, drivers removidos, owner-drivers, edad, años CDL y quién conduce cada unidad.'
+ ))}
+ if(d.operation?.cargo?.length){known.push(`Carga reportada: ${d.operation.cargo.join(', ')}`);questions.push(q(
+   `Me aparece ${d.operation.cargo.join(', ')}. ¿Cuáles son las 3 mercancías que más transportas y hay alguna carga especial, hazmat, autos, reefer o high value?`,
+   '“General Freight” es demasiado amplio para algunos mercados. El tipo real de commodity puede abrir o cerrar mercados y cambiar cargo coverage.',
+   'Si pregunta por qué tanto detalle: “Porque General Freight puede significar muchas cosas. Quiero evitar enviarte a un mercado que después rechace una carga que tú mueves normalmente.”',
+   'Pregunta porcentaje aproximado por commodity y detecta autos, alcohol, electronics, pharmaceuticals, hazmat, refrigerated, steel, produce, household goods.'
+ ))} else questions.push(q('¿Qué tipo de carga transportas principalmente y cuáles son tus 3 commodities más frecuentes?','La mercancía define apetito, cargo limits y exclusiones.','“Necesito saber qué mueves normalmente para buscar mercados que sí acepten tu operación.”','Anota commodities y porcentaje aproximado.'));
+ questions.push(q(
+   '¿Cuál es tu radio máximo normal y cuáles son los estados donde operas con más frecuencia?',
+   'El radius y territorio son factores básicos de underwriting. Local, intermediate y long-haul pueden ir a mercados distintos.',
+   'Si pregunta: “No es solo cuántas millas haces al año; a la aseguradora le importa qué tan lejos viaja cada unidad y por qué estados.”',
+   'Anota radio normal, máximo, porcentaje local vs long haul y estados frecuentes.'
+ ));
+ questions.push(q(
+   '¿Dónde se guardan normalmente las unidades cuando no están trabajando? ¿Es la misma dirección del negocio?',
+   'El garaging real ayuda a validar territorio, exposición a robo/catástrofe y elegibilidad.',
+   'Si pregunta por qué: “La aseguradora necesita saber dónde duermen normalmente los trucks. La dirección comercial no siempre es donde se guardan.”',
+   'Anota dirección exacta, fenced yard, home parking, terminal o múltiples garaging locations.'
+ ));
+ questions.push(q(
+   '¿Qué quieres mejorar de tu póliza actual: premium total, down payment, mensualidad, cobertura o algún requisito de un broker/shipper?',
+   'Esto cambia la estrategia de venta. La cotización más barata no siempre es la mejor solución para el cliente.',
+   'Si duda: “Quiero saber qué significa una buena renovación para ti. Así cuando comparemos opciones no me enfoco solo en el premium.”',
+   'Marca prioridades en orden: total premium, cash inicial, installments, carrier, coverage, certificates.'
+ ));
+ questions.push(q(
+   '¿Hubo accidentes, claims, tickets importantes, unidades nuevas o conductores nuevos desde la última póliza?',
+   'Necesitamos detectar cambios materiales antes de pedir una cotización. Los loss runs y MVR luego validarán la información.',
+   'Si pregunta por qué si pediremos loss runs: “Los documentos nos darán el detalle, pero si conocemos los cambios desde ahora puedo dirigir mejor la cotización y evitar sorpresas.”',
+   'No juzgues. Pide fecha, qué pasó, pago aproximado si lo conoce, driver involucrado y si el caso sigue abierto.'
+ ));
+ if(d.company?.legalName)known.push(`Nombre legal: ${d.company.legalName}`);if(d.mc)known.push(`MC: ${d.mc}`);if(d.address?.state)known.push(`Dirección reportada: ${[d.address.street,d.address.city,d.address.state,d.address.zip].filter(Boolean).join(', ')}`);if(d.contact?.phone)known.push(`Teléfono reportado: ${d.contact.phone}`);if(d.contact?.email)known.push(`Email reportado: ${d.contact.email}`);if(d.insurance?.current?.company)known.push(`Carrier actual reportado: ${d.insurance.current.company}`);
  docs.push('Loss Runs de 3–5 años (según mercado)','Driver list + CDL/DL de cada conductor a cotizar','MVRs cuando el mercado los requiera','Registrations / VINs y valor de cada unidad','IFTA reciente cuando aplique','Current Dec Pages / póliza actual','Lienholders / financing de unidades financiadas');
- if(score>=4)return {level:'red',label:'REVISAR ANTES DE COTIZAR',alerts,positives,questions,known,docs};if(score>=2)return {level:'amber',label:'REQUIERE VALIDACIONES',alerts,positives,questions,known,docs};return {level:'green',label:'PERFIL INICIAL FAVORABLE',alerts,positives,questions,known,docs}
+ const level=score>=4?'red':score>=2?'amber':'green';const label=score>=4?'REVISAR ANTES DE COTIZAR':score>=2?'REQUIERE VALIDACIONES':'PERFIL INICIAL FAVORABLE';return {level,label,alerts,positives,questions,known,docs}
 }
-function render(payload){const d=payload.data;const e=buildExpert(d);$('result').classList.remove('hidden');$('companyName').textContent=d.company?.legalName||'Carrier';$('companyMeta').textContent=[`DOT ${d.dot||'—'}`,d.mc,d.address?.state,d.authority?.operatingStatus].filter(Boolean).join(' · ');$('riskBadge').className=`risk ${e.level}`;$('riskBadge').textContent=e.label;
- $('alerts').innerHTML='';e.alerts.forEach(a=>$('alerts').insertAdjacentHTML('beforeend',`<div class="alert ${a.level==='amber'?'amber':a.level==='green'?'green':''}"><strong>${esc(a.title)}</strong>${esc(a.body)}</div>`));e.positives.forEach(x=>$('alerts').insertAdjacentHTML('beforeend',`<div class="alert green"><strong>Punto positivo</strong>${esc(x)}</div>`));if(!e.alerts.length&&!e.positives.length)$('alerts').innerHTML='<div class="alert amber">No hay suficiente información para un diagnóstico preliminar.</div>';
- $('questions').innerHTML=e.questions.map(q=>`<li>${esc(q)}</li>`).join('');$('known').innerHTML=e.known.map(x=>`<li class="noask">${esc(x)}</li>`).join('');$('docs').innerHTML=e.docs.map(x=>`<li class="doc">${esc(x)}</li>`).join('');
+const routeText={
+ renewal:{title:'Renovación',html:'<b>Apertura:</b> “Quiero hacer primero una revisión rápida de lo que ya tenemos para no hacerte repetir información. Después vemos qué cambió y qué quieres mejorar de esta renovación.”<br><br><b>Objetivo:</b> confirmar cambios de unidades, drivers, operación, claims y prioridades de precio/down payment. <b>No empieces preguntando todo desde cero.</b>'},
+ email:{title:'Campaña de correo',html:'<b>Apertura:</b> “Gracias por responder. Ya revisé información básica de tu DOT para aprovechar mejor tu tiempo. Quiero confirmar unas cosas y ver si vale la pena mover tu caso a nuestros mercados.”<br><br><b>Objetivo:</b> calificar interés, fecha de renovación, operación real y documentos disponibles.'},
+ cold:{title:'Llamada en frío',html:'<b>Apertura:</b> “Te llamo porque trabajamos trucking y revisé información pública básica de tu operación. No quiero quitarte tiempo: si me das 30 segundos te digo por qué pensé que podríamos ayudarte.”<br><br><b>Objetivo:</b> conseguir permiso para conversar; no convertir los datos públicos en una interrogación.'},
+ referido:{title:'Referido',html:'<b>Apertura:</b> “Me compartieron tu contacto para ayudarte con trucking. Ya revisé tu DOT para llegar preparado. Quiero confirmar lo esencial y entender qué necesitas mejorar.”<br><br><b>Objetivo:</b> aprovechar la confianza del referido e ir directo a las necesidades y cambios del riesgo.'}
+};
+let currentDot='', currentExpert=null, currentData=null;
+function storageKey(){return `truemate-copilot-${currentDot}`}
+function loadSaved(){try{return JSON.parse(localStorage.getItem(storageKey())||'{}')}catch{return {}}}
+function saveAll(){if(!currentDot)return;const answers={};document.querySelectorAll('.answer').forEach(t=>answers[t.dataset.q]=t.value);const objectives=[...document.querySelectorAll('.pill.active')].map(x=>x.textContent);const payload={answers,meetingNotes:$('meetingNotes').value,objectives,route:document.querySelector('.route.active')?.dataset.route||'renewal',savedAt:new Date().toISOString()};localStorage.setItem(storageKey(),JSON.stringify(payload));$('saveState').textContent='Guardado automático · '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});}
+function restoreSaved(){const s=loadSaved();document.querySelectorAll('.answer').forEach(t=>{if(s.answers?.[t.dataset.q])t.value=s.answers[t.dataset.q]});$('meetingNotes').value=s.meetingNotes||'';document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',(s.objectives||[]).includes(p.textContent)));setRoute(s.route||'renewal',false)}
+function setRoute(route,save=true){document.querySelectorAll('.route').forEach(x=>x.classList.toggle('active',x.dataset.route===route));$('routeGuide').innerHTML=routeText[route]?.html||routeText.renewal.html;if(save)saveAll()}
+function renderQuestions(items){$('questions').innerHTML=items.map((x,i)=>`<div class="question-card"><div class="q-head"><div class="q-num">${i+1}</div><div class="q-text">${esc(x.text)}</div><button class="help-btn" type="button" data-help="${i}">Si pregunta “¿por qué?”</button></div><div class="q-help" id="help-${i}"><strong>Por qué la hacemos</strong>${esc(x.why)}<div class="expert-reply"><strong>Respuesta sugerida para verte preparado</strong>${esc(x.reply)}</div><div class="listen"><strong>Qué debes escuchar / anotar:</strong> ${esc(x.listen)}</div></div><div class="answer-wrap"><label>Respuesta del cliente / notas</label><textarea class="answer" data-q="${i}" placeholder="Escribe aquí lo que te dice el cliente..."></textarea></div></div>`).join('');document.querySelectorAll('.help-btn').forEach(b=>b.addEventListener('click',()=>document.getElementById('help-'+b.dataset.help).classList.toggle('open')));document.querySelectorAll('.answer').forEach(t=>t.addEventListener('input',saveAll))}
+function render(payload){const d=payload.data,e=buildExpert(d);currentData=d;currentExpert=e;currentDot=String(d.dot||$('dot').value);$('result').classList.remove('hidden');$('companyName').textContent=d.company?.legalName||'Carrier';$('companyMeta').textContent=[`DOT ${d.dot||'—'}`,d.mc,d.address?.state,d.authority?.operatingStatus].filter(Boolean).join(' · ');$('riskBadge').className=`risk ${e.level}`;$('riskBadge').textContent=e.label;
+ $('alerts').innerHTML='';e.alerts.forEach(a=>$('alerts').insertAdjacentHTML('beforeend',`<div class="alert ${a.level==='amber'?'amber':''}"><strong>${esc(a.title)}</strong>${esc(a.body)}</div>`));e.positives.forEach(x=>$('alerts').insertAdjacentHTML('beforeend',`<div class="alert green"><strong>Punto positivo</strong>${esc(x)}</div>`));
+ renderQuestions(e.questions);$('known').innerHTML=e.known.map(x=>`<li class="noask">${esc(x)}</li>`).join('');$('docs').innerHTML=e.docs.map(x=>`<li class="doc">${esc(x)}</li>`).join('');
  const facts=[['Power Units',fmt(d.operation?.powerUnits)],['Drivers',fmt(d.operation?.drivers)],['Mileage',fmt(d.operation?.mileage)],['Cargo',(d.operation?.cargo||[]).join(', ')||'—'],['Carrier',d.insurance?.current?.company||'—'],['Liability',money(d.insurance?.current?.limit)]];$('facts').innerHTML=facts.map(([k,v])=>`<div class="fact"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('');
- const name=d.company?.legalName||'tu empresa';const carrier=d.insurance?.current?.company;const pu=d.operation?.powerUnits;const drv=d.operation?.drivers;$('script').innerHTML=`“Gracias por tu tiempo. Antes de hablar de precio, quiero confirmar lo que ya tenemos para no hacerte repetir información. Me aparece <b>${esc(name)}</b>${pu!=null?`, con <b>${pu} power units</b>`:''}${drv!=null?` y <b>${drv} drivers</b>`:''}${carrier?`, actualmente con <b>${esc(carrier)}</b>`:''}. ¿Eso sigue correcto? Perfecto. Ahora solo voy a completar los puntos que realmente cambian la cotización.”`;
- $('nextStep').innerHTML=e.level==='red'?'<b>No someter todavía.</b><br>Resolver primero la alerta roja, después completar operación, drivers y documentos.':'<b>Completar intake.</b><br>Confirmar operación, pedir documentos y luego cruzar el riesgo con Motor Guidelines.';
-}
+ const name=d.company?.legalName||'tu empresa',carrier=d.insurance?.current?.company,pu=d.operation?.powerUnits,drv=d.operation?.drivers;$('script').innerHTML=`“Gracias por tu tiempo. Antes de hablar de precio, quiero confirmar lo que ya revisé para no hacerte repetir información. Me aparece <b>${esc(name)}</b>${pu!=null?`, con <b>${pu} power units</b>`:''}${drv!=null?` y <b>${drv} drivers</b>`:''}${carrier?`, actualmente con <b>${esc(carrier)}</b>`:''}. ¿Eso sigue correcto? Perfecto. Ahora voy a completar únicamente los puntos que pueden cambiar la cotización.”`;
+ $('nextStep').innerHTML=e.level==='red'?'<b>No someter todavía.</b><br>Resolver primero la alerta roja y documentar la explicación del cliente. Después completar operación, drivers y documentos.':'<b>Completar intake.</b><br>Confirmar operación, pedir documentos y luego cruzar el riesgo con Motor Guidelines.';restoreSaved();}
 async function lookup(){const dot=$('dot').value.replace(/\D/g,'');if(!dot){$('status').textContent='Escribe un DOT válido.';return}$('status').textContent='Analizando DOT…';$('go').disabled=true;try{const r=await fetch(`${API}?dot=${encodeURIComponent(dot)}`);const j=await r.json();if(!r.ok||!j.ok)throw new Error(j.error||'No se pudo consultar');render(j);$('status').textContent=`Datos cargados desde BrokerSnapshot · ${new Date(j.fetchedAt).toLocaleString()}`;}catch(err){$('status').innerHTML=`<span class="error">${esc(err.message)}</span>`;$('result').classList.add('hidden')}finally{$('go').disabled=false}}
-$('go').addEventListener('click',lookup);$('dot').addEventListener('keydown',e=>{if(e.key==='Enter')lookup()});document.querySelectorAll('.pill').forEach(p=>p.addEventListener('click',()=>p.classList.toggle('active')));
-const q=new URLSearchParams(location.search).get('dot');if(q){$('dot').value=q;lookup()}
+$('go').addEventListener('click',lookup);$('dot').addEventListener('keydown',e=>{if(e.key==='Enter')lookup()});document.querySelectorAll('.pill').forEach(p=>p.addEventListener('click',()=>{p.classList.toggle('active');saveAll()}));document.querySelectorAll('.route').forEach(r=>r.addEventListener('click',()=>setRoute(r.dataset.route)));$('meetingNotes').addEventListener('input',saveAll);$('clearNotes').addEventListener('click',()=>{if(!confirm('¿Quieres borrar las respuestas guardadas de este DOT?'))return;localStorage.removeItem(storageKey());document.querySelectorAll('.answer').forEach(t=>t.value='');$('meetingNotes').value='';document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));$('saveState').textContent='Respuestas borradas.'});setRoute('renewal',false);const qdot=new URLSearchParams(location.search).get('dot');if(qdot){$('dot').value=qdot;lookup()}
 </script>
 </body>
 </html>
