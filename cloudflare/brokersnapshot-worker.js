@@ -1,5 +1,6 @@
 // TrueMate · Manifiesto de Ruta
 // Cloudflare Worker: secure proxy + normalizer for BrokerSnapshot API v2
+// V2: 12-hour edge cache per DOT to protect BrokerSnapshot API quota.
 //
 // REQUIRED SECRET (Cloudflare Worker Settings > Variables and Secrets):
 //   BROKERSNAPSHOT_TOKEN = <Bearer token generated in BrokerSnapshot>
@@ -8,6 +9,7 @@
 //   GET https://<your-worker-domain>/company?dot=2792782
 
 const BROKERSNAPSHOT_BASE = 'https://brokersnapshot.com/api/v2';
+const COMPANY_CACHE_TTL_SECONDS = 60 * 60 * 12; // 12 hours
 
 const ALLOWED_ORIGINS = new Set([
   'https://gregorionavarro.github.io',
@@ -213,7 +215,6 @@ function normalizeCompany(data) {
       sms,
     },
 
-    // Fields Manifiesto must still confirm with the insured.
     missingForQuote: [
       'Radius',
       'Garaging',
@@ -263,8 +264,36 @@ async function brokerSnapshotFetch(env, path) {
   return body.Data;
 }
 
+function companyCacheRequest(dot) {
+  return new Request(`https://truemate-cache.internal/company/${encodeURIComponent(dot)}`, {
+    method: 'GET',
+  });
+}
+
+async function readCompanyCache(dot) {
+  const cache = caches.default;
+  const cached = await cache.match(companyCacheRequest(dot));
+  if (!cached) return null;
+  try {
+    return await cached.json();
+  } catch {
+    return null;
+  }
+}
+
+async function writeCompanyCache(dot, payload) {
+  const cache = caches.default;
+  const response = new Response(JSON.stringify(payload), {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': `public, max-age=${COMPANY_CACHE_TTL_SECONDS}`,
+    },
+  });
+  await cache.put(companyCacheRequest(dot), response);
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders(request) });
     }
@@ -279,8 +308,9 @@ export default {
       return json(request, {
         ok: true,
         service: 'TrueMate BrokerSnapshot Proxy',
-        version: 1,
+        version: 2,
         tokenConfigured: Boolean(env.BROKERSNAPSHOT_TOKEN),
+        companyCacheHours: COMPANY_CACHE_TTL_SECONDS / 3600,
       });
     }
 
@@ -291,15 +321,44 @@ export default {
       }
 
       try {
-        const data = await brokerSnapshotFetch(
+        const cachedPayload = await readCompanyCache(dot);
+        if (cachedPayload?.data) {
+          return json(request, {
+            ...cachedPayload,
+            cache: {
+              status: 'HIT',
+              apiRequestUsed: false,
+              ttlHours: COMPANY_CACHE_TTL_SECONDS / 3600,
+              note: 'Served from TrueMate cache; no new BrokerSnapshot API request used.',
+            },
+          });
+        }
+
+        const upstreamData = await brokerSnapshotFetch(
           env,
           `/Company?dot=${encodeURIComponent(dot)}&include=3&includeInsurance=3&includeSos=0&includeSms=1&includeReview=0`
         );
 
-        return json(request, {
+        const payload = {
           ok: true,
           fetchedAt: new Date().toISOString(),
-          data: normalizeCompany(data),
+          data: normalizeCompany(upstreamData),
+        };
+
+        if (ctx?.waitUntil) {
+          ctx.waitUntil(writeCompanyCache(dot, payload));
+        } else {
+          await writeCompanyCache(dot, payload);
+        }
+
+        return json(request, {
+          ...payload,
+          cache: {
+            status: 'MISS',
+            apiRequestUsed: true,
+            ttlHours: COMPANY_CACHE_TTL_SECONDS / 3600,
+            note: 'Fresh BrokerSnapshot query; result cached for 12 hours.',
+          },
         });
       } catch (error) {
         const status = Number(error.status) || 502;
