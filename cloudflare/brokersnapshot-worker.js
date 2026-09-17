@@ -1,6 +1,7 @@
 // TrueMate · Manifiesto de Ruta
 // Cloudflare Worker: secure proxy + normalizer for BrokerSnapshot API v2
-// V3: company + Safety (inspections/crashes), each cached 12 hours.
+// V3.1: company + Safety (inspections/crashes), each cached 12 hours.
+// Fix: BrokerSnapshot Safety calls use DOT-only request and filter the date window locally.
 
 const BROKERSNAPSHOT_BASE = 'https://brokersnapshot.com/api/v2';
 const CACHE_TTL_SECONDS = 60 * 60 * 12;
@@ -168,15 +169,26 @@ function dateYearsAgo(years) {
   return d.toISOString().slice(0,10);
 }
 
-function normalizeSafety(inspections, crashes, years) {
-  const insp = Array.isArray(inspections) ? inspections : [];
-  const cr = Array.isArray(crashes) ? crashes : [];
+function filterByDate(items, from, fields) {
+  const cutoff = new Date(from + 'T00:00:00Z').getTime();
+  return (Array.isArray(items) ? items : []).filter(x => {
+    const raw = fields.map(f => x?.[f]).find(Boolean);
+    if (!raw) return true;
+    const t = new Date(raw).getTime();
+    return Number.isNaN(t) ? true : t >= cutoff;
+  });
+}
+
+function normalizeSafety(inspections, crashes, years, from) {
+  const insp = filterByDate(inspections, from, ['date','inspection_date']);
+  const cr = filterByDate(crashes, from, ['date','crash_date']);
   const sum = (arr,key) => arr.reduce((n,x) => n + Number(x?.[key] || 0), 0);
   return {
     periodYears: years,
+    fromDate: from,
     inspections: {
       returned: insp.length,
-      possiblyTruncated: insp.length >= 100,
+      possiblyTruncated: Array.isArray(inspections) && inspections.length >= 100,
       violations: sum(insp,'viol_total'),
       oosViolations: sum(insp,'oos_total'),
       inspectionsWithOos: insp.filter(x => Number(x?.oos_total || 0) > 0).length,
@@ -195,7 +207,7 @@ function normalizeSafety(inspections, crashes, years) {
     },
     crashes: {
       returned: cr.length,
-      possiblyTruncated: cr.length >= 100,
+      possiblyTruncated: Array.isArray(crashes) && crashes.length >= 100,
       fatalities: sum(cr,'fatalities'), injuries: sum(cr,'injuries'),
       towAway: cr.filter(x => x?.tow_away === true).length,
       federalRecordable: cr.filter(x => x?.federal_recordable === true).length,
@@ -215,7 +227,7 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === '/' || url.pathname === '/health') {
-      return json(request,{ok:true,service:'TrueMate BrokerSnapshot Proxy',version:3,tokenConfigured:Boolean(env.BROKERSNAPSHOT_TOKEN),companyCacheHours:12,safetyCacheHours:12});
+      return json(request,{ok:true,service:'TrueMate BrokerSnapshot Proxy',version:'3.1',tokenConfigured:Boolean(env.BROKERSNAPSHOT_TOKEN),companyCacheHours:12,safetyCacheHours:12});
     }
 
     if (url.pathname === '/company') {
@@ -237,16 +249,16 @@ export default {
       const dot = cleanDot(url.searchParams.get('dot'));
       const years = Math.min(5, Math.max(1, Number(url.searchParams.get('years') || 3)));
       if (!dot) return json(request,{ok:false,error:'Valid USDOT is required'},400);
-      const cacheKey = `${dot}-${years}`;
+      const cacheKey = `${dot}-${years}-v31`;
       try {
         const cached = await readCache('safety',cacheKey);
         if (cached?.data) return json(request,{...cached,cache:{status:'HIT',apiRequestsUsed:0,ttlHours:12,note:'Safety served from TrueMate cache; no new BrokerSnapshot requests used.'}});
         const from = dateYearsAgo(years);
         const [inspections,crashes] = await Promise.all([
-          brokerSnapshotFetch(env,`/Inspections?dot=${encodeURIComponent(dot)}&datefrom=${from}&limit=100&skip=0`),
-          brokerSnapshotFetch(env,`/Crashes?dot=${encodeURIComponent(dot)}&datefrom=${from}&limit=100&skip=0`),
+          brokerSnapshotFetch(env,`/Inspections?dot=${encodeURIComponent(dot)}&limit=100&skip=0`),
+          brokerSnapshotFetch(env,`/Crashes?dot=${encodeURIComponent(dot)}&limit=100&skip=0`),
         ]);
-        const payload={ok:true,fetchedAt:new Date().toISOString(),dot:Number(dot),data:normalizeSafety(inspections,crashes,years)};
+        const payload={ok:true,fetchedAt:new Date().toISOString(),dot:Number(dot),data:normalizeSafety(inspections,crashes,years,from)};
         if (ctx?.waitUntil) ctx.waitUntil(writeCache('safety',cacheKey,payload)); else await writeCache('safety',cacheKey,payload);
         return json(request,{...payload,cache:{status:'MISS',apiRequestsUsed:2,ttlHours:12,note:'Fresh inspections + crashes queries; Safety cached for 12 hours.'}});
       } catch(error) {
