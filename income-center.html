@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TrueMate Income Center</title>
+<style>
+:root{--navy:#133b63;--gold:#e7b94b;--bg:#f4f6f9;--line:#d9e2ec;--text:#1e293b;--muted:#64748b;--green:#1fa971;--red:#d94b4b;--white:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}body.locked{overflow:hidden}
+.top{background:var(--navy);color:#fff;padding:18px 28px;font-weight:800}.gold{height:5px;background:var(--gold)}
+.head{display:grid;grid-template-columns:220px 1fr 150px;gap:18px;align-items:center;background:#fff;padding:18px 28px;border-bottom:1px solid var(--line)}
+.brand{font-weight:900;color:var(--navy);font-size:22px}.brand small{display:block;font-size:10px;letter-spacing:.12em;color:#7a8797;margin-top:5px}
+.title{background:var(--navy);color:#fff;border-radius:11px;padding:17px 20px}.title h1{margin:0;font-size:21px}.title p{margin:4px 0 0;font-size:12px;opacity:.82}
+.lock{padding:12px;border:1px solid var(--line);border-radius:10px;text-align:center;font-weight:800;color:var(--navy);cursor:pointer}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;padding:15px 28px;background:#fff;border-bottom:1px solid var(--line)}
+.tab{padding:10px 15px;border:1px solid var(--line);border-radius:9px;background:#fff;font-weight:800;cursor:pointer}.tab.active{background:var(--navy);color:#fff}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;padding:22px 28px}.panel,.side{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}
+h2{margin:0 0 4px}.sub{margin:0 0 18px;color:var(--muted);font-size:13px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.kpi{border:1px solid var(--line);border-radius:12px;padding:14px}.kpi b{display:block;font-size:22px;margin-top:6px}.lbl{font-size:11px;font-weight:800;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.box{border:1px solid var(--line);border-radius:12px;padding:15px}.box h3{margin:0 0 10px;color:var(--navy);font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:13px}th{background:#eef4fb;color:#506176;text-align:left;padding:9px}td{padding:9px;border-bottom:1px solid #edf1f5}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.f{display:flex;flex-direction:column;gap:6px}.f label{font-size:11px;font-weight:800;color:var(--muted)}
+input,select,textarea{padding:11px;border:1px solid var(--line);border-radius:9px;font:inherit}.full{grid-column:1/-1}.btn{border:0;border-radius:9px;padding:11px 15px;font-weight:800;cursor:pointer}.primary{background:var(--navy);color:#fff}.secondary{background:#eef4fb;color:var(--navy)}
+.actions{display:flex;gap:10px;margin-top:16px}.hero{background:var(--navy);color:#fff;border-radius:14px;padding:18px}.hero .big{font-size:34px;font-weight:900;margin:5px 0}.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #e9edf2;font-size:13px}.hidden{display:none}
+.gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0f2f4e,#133b63);display:flex;align-items:center;justify-content:center;padding:20px}.gate.hide{display:none}
+.gatecard{width:min(430px,100%);background:#fff;border-radius:18px;padding:28px;border-top:6px solid var(--gold);box-shadow:0 25px 80px rgba(0,0,0,.3)}
+.gatecard h2{color:var(--navy)}.gateform{display:flex;gap:8px;margin-top:18px}.gateform input{flex:1}.err{min-height:20px;color:var(--red);font-size:12px;margin-top:8px;font-weight:700}
+@media(max-width:950px){.layout{grid-template-columns:1fr}.head{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+@media(max-width:620px){.layout,.head,.tabs{padding-left:14px;padding-right:14px}.kpis,.form{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="gate" class="gate"><div class="gatecard"><div class="brand">TRUEMATE<small>INSURANCE FINANCIAL</small></div><h2>Owner Access · Income Center</h2><p class="sub">Ingresa la clave privada para continuar.</p><form id="gateForm" class="gateform"><input id="gateKey" type="password" placeholder="Clave de acceso" autocomplete="current-password"><button class="btn primary">Desbloquear</button></form><div id="gateErr" class="err"></div></div></div>
+
+<div class="top">TrueMate Financial Tools</div><div class="gold"></div>
+<div class="head"><div class="brand">TRUEMATE<small>INSURANCE FINANCIAL</small></div><div class="title"><h1>TrueMate Income Center</h1><p>Revenue & Cash Flow Analyzer · Owner / Administration</p></div><div class="lock" id="lockBtn">🔒 Bloquear</div></div>
+<div class="tabs">
+<button class="tab active" data-v="dashboard">1 · Dashboard</button><button class="tab" data-v="add">2 · Add Income</button><button class="tab" data-v="expected">3 · Expected</button><button class="tab" data-v="sources">4 · Sources</button><button class="tab" data-v="history">5 · History</button><button class="tab" data-v="guide">Guía</button>
+</div>
+
+<div class="layout"><main>
+<section id="dashboard" class="panel view"><h2>Dashboard · September 2026</h2><p class="sub">Vista rápida de ingresos recibidos, esperados y pendientes.</p>
+<div class="kpis"><div class="kpi"><span class="lbl">TOTAL RECEIVED</span><b id="received">$0.00</b></div><div class="kpi"><span class="lbl">EXPECTED THIS MONTH</span><b id="expected">$0.00</b></div><div class="kpi"><span class="lbl">PENDING TO RECEIVE</span><b id="pending">$0.00</b></div><div class="kpi"><span class="lbl">OTHER CASH INFLOWS</span><b id="otherAmt">$0.00</b></div></div>
+<div class="grid2"><div class="box"><h3>Income by Business Line</h3><div id="lines"></div></div><div class="box"><h3>Latest Income</h3><table><thead><tr><th>Date</th><th>Source</th><th>Line</th><th>Amount</th></tr></thead><tbody id="latest"></tbody></table></div></div>
+<div class="actions"><button class="btn primary" onclick="showView('add')">+ Add Income</button><button class="btn secondary" onclick="showView('expected')">Review Expected</button></div></section>
+
+<section id="add" class="panel view hidden"><h2>Add Income</h2><p class="sub">Registra el ingreso sin tocar la hoja maestra.</p><form id="incomeForm"><div class="form">
+<div class="f"><label>DATE</label><input id="date" type="date" required></div><div class="f"><label>BUSINESS LINE</label><select id="line"><option>Health</option><option>Life</option><option>Trucking</option><option>Auto & Home</option><option>Commercial</option><option>Fees</option><option>Other</option></select></div>
+<div class="f"><label>INCOME TYPE</label><select id="type"><option>Commission</option><option>Agency Fee</option><option>Broker Fee</option><option>Renewal Commission</option><option>Bonus</option><option>Refund</option><option>Loan / Capital Inflow</option><option>Other</option></select></div>
+<div class="f"><label>CARRIER / SOURCE</label><input id="source" required placeholder="Ej. National Life, GEICO, Ambetter"></div><div class="f"><label>CLIENT</label><input id="client" placeholder="Opcional"></div>
+<div class="f"><label>PAYMENT METHOD</label><select id="method"><option>ACH</option><option>Stripe</option><option>Zelle</option><option>Wire</option><option>Check</option><option>Cash</option><option>Other</option></select></div>
+<div class="f"><label>AMOUNT</label><input id="amount" type="number" min="0" step="0.01" required></div><div class="f"><label>STATUS</label><select id="status"><option>Received</option><option>Expected</option><option>Pending</option></select></div>
+<div class="f"><label>BANK ACCOUNT</label><input id="account" placeholder="Ej. BofA 1058"></div><div class="f"><label>EXPECTED DATE</label><input id="expectedDate" type="date"></div><div class="f full"><label>NOTES</label><textarea id="notes"></textarea></div>
+</div><div class="actions"><button class="btn primary">Save Income</button><button class="btn secondary" type="reset">Clear</button></div></form></section>
+
+<section id="expectedView" class="panel view hidden"><h2>Expected Income</h2><p class="sub">Dinero que debería llegar o está pendiente.</p><table><thead><tr><th>Expected</th><th>Source</th><th>Line</th><th>Amount</th><th>Status</th></tr></thead><tbody id="expectedBody"></tbody></table></section>
+<section id="sources" class="panel view hidden"><h2>Sources</h2><p class="sub">Resumen por carrier o fuente.</p><table><thead><tr><th>Source</th><th>Received</th><th>Pending</th><th>Total</th></tr></thead><tbody id="sourcesBody"></tbody></table></section>
+<section id="history" class="panel view hidden"><h2>History</h2><p class="sub">Historial mensual.</p><table><thead><tr><th>Month</th><th>Received</th><th>Expected</th><th>Pending</th><th>Records</th></tr></thead><tbody id="historyBody"></tbody></table></section>
+<section id="guide" class="panel view hidden"><h2>Guía</h2><p class="sub">Flujo simple para que pocas personas mantengan la información.</p><div class="box"><p><b>1.</b> Registra todo desde Add Income.</p><p><b>2.</b> Separa comisiones, fees y préstamos.</p><p><b>3.</b> Los préstamos se muestran como Other Cash Inflows, no como revenue.</p><p><b>4.</b> Expected sirve para revisar lo que todavía no ha llegado.</p><p><b>5.</b> Esta versión guarda localmente en el navegador. La siguiente fase será sincronizar con Google Sheets.</p></div></section>
+</main>
+
+<aside><div class="hero"><span class="lbl" style="color:#fff">RECEIVED THIS MONTH</span><div class="big" id="sideReceived">$0.00</div><div style="font-size:12px;opacity:.8">Revenue actually received</div></div>
+<div class="side" style="margin-top:14px"><div class="row"><span>Expected</span><b id="sideExpected">$0.00</b></div><div class="row"><span>Remaining</span><b id="sidePending">$0.00</b></div><div class="row"><span>Fees</span><b id="fees">$0.00</b></div><div class="row"><span>Health / Life</span><b id="hl">$0.00</b></div><div class="row"><span>Trucking</span><b id="truck">$0.00</b></div><div class="row"><span>Auto & Home</span><b id="ah">$0.00</b></div><div class="row"><span>Commercial</span><b id="comm">$0.00</b></div></div></aside></div>
+
+<script>
+const KEY='truemate_income_center_v1',SESSION='truemate_income_center_unlocked_v1',HASH='3c53f7bbeed7d38a8dd11df0462e32f9a90ec4ef212deabf2cf8da55d4bc0913';
+const seed=[{date:'2026-09-05',line:'Health',type:'Commission',source:'Ambetter',amount:2373,status:'Received',expectedDate:'2026-09-11'},{date:'2026-09-07',line:'Trucking',type:'Commission',source:'GEICO',amount:2650,status:'Received',expectedDate:'2026-09-07'},{date:'2026-09-10',line:'Life',type:'Commission',source:'National Life',amount:4894,status:'Expected',expectedDate:'2026-09-25'},{date:'2026-09-12',line:'Fees',type:'Agency Fee',source:'Client Fees',amount:1700,status:'Received',expectedDate:''},{date:'2026-09-15',line:'Commercial',type:'Commission',source:'Commercial Carrier',amount:650,status:'Pending',expectedDate:'2026-09-20'},{date:'2026-09-16',line:'Other',type:'Loan / Capital Inflow',source:'Owner Capital',amount:3000,status:'Received',expectedDate:''}];
+let data;try{data=JSON.parse(localStorage.getItem(KEY))||seed}catch(e){data=seed}
+const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(n||0)),isOther=x=>x.type==='Loan / Capital Inflow';
+const sum=f=>data.filter(f).reduce((a,b)=>a+Number(b.amount||0),0);
+function lineSum(l){return sum(x=>x.status==='Received'&&!isOther(x)&&(l==='Health / Life'?['Health','Life'].includes(x.line):x.line===l))}
+function render(){const rec=sum(x=>x.status==='Received'&&!isOther(x)),pend=sum(x=>x.status!=='Received'&&!isOther(x)),exp=rec+pend,oth=sum(x=>x.status==='Received'&&isOther(x));
+document.getElementById('received').textContent=document.getElementById('sideReceived').textContent=money(rec);document.getElementById('expected').textContent=document.getElementById('sideExpected').textContent=money(exp);document.getElementById('pending').textContent=document.getElementById('sidePending').textContent=money(pend);document.getElementById('otherAmt').textContent=money(oth);
+document.getElementById('fees').textContent=money(lineSum('Fees'));document.getElementById('hl').textContent=money(lineSum('Health / Life'));document.getElementById('truck').textContent=money(lineSum('Trucking'));document.getElementById('ah').textContent=money(lineSum('Auto & Home'));document.getElementById('comm').textContent=money(lineSum('Commercial'));
+document.getElementById('lines').innerHTML=['Health','Life','Trucking','Auto & Home','Commercial','Fees'].map(l=>'<div class="row"><b>'+l+'</b><span>'+money(lineSum(l))+'</span></div>').join('');
+document.getElementById('latest').innerHTML=[...data].sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,8).map(x=>'<tr><td>'+x.date+'</td><td>'+x.source+'</td><td>'+x.line+'</td><td>'+money(x.amount)+'</td></tr>').join('');
+document.getElementById('expectedBody').innerHTML=data.filter(x=>x.status!=='Received').map(x=>'<tr><td>'+(x.expectedDate||'-')+'</td><td>'+x.source+'</td><td>'+x.line+'</td><td>'+money(x.amount)+'</td><td>'+x.status+'</td></tr>').join('');
+const sm={};data.forEach(x=>{sm[x.source]??={r:0,p:0};x.status==='Received'?sm[x.source].r+=x.amount:sm[x.source].p+=x.amount});document.getElementById('sourcesBody').innerHTML=Object.entries(sm).map(([s,v])=>'<tr><td>'+s+'</td><td>'+money(v.r)+'</td><td>'+money(v.p)+'</td><td>'+money(v.r+v.p)+'</td></tr>').join('');
+const hm={};data.forEach(x=>{const m=String(x.date||'').slice(0,7);hm[m]??={r:0,e:0,p:0,n:0};hm[m].n++;if(x.status==='Received')hm[m].r+=x.amount;if(x.status==='Expected')hm[m].e+=x.amount;if(x.status==='Pending')hm[m].p+=x.amount});document.getElementById('historyBody').innerHTML=Object.entries(hm).sort((a,b)=>b[0].localeCompare(a[0])).map(([m,v])=>'<tr><td>'+m+'</td><td>'+money(v.r)+'</td><td>'+money(v.e)+'</td><td>'+money(v.p)+'</td><td>'+v.n+'</td></tr>').join('')}
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));const el=id==='expected'?document.getElementById('expectedView'):document.getElementById(id);el.classList.remove('hidden');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.v===id))}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>showView(t.dataset.v));
+document.getElementById('incomeForm').onsubmit=e=>{e.preventDefault();data.push({date:date.value,line:line.value,type:type.value,source:source.value.trim(),client:client.value.trim(),method:method.value,amount:Number(amount.value),status:status.value,account:account.value.trim(),expectedDate:expectedDate.value,notes:notes.value.trim()});localStorage.setItem(KEY,JSON.stringify(data));e.target.reset();render();showView('dashboard')};
+async function sha256(s){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('')}
+function unlock(){sessionStorage.setItem(SESSION,'1');document.getElementById('gate').classList.add('hide');document.body.classList.remove('locked')}function lock(){sessionStorage.removeItem(SESSION);document.getElementById('gate').classList.remove('hide');document.body.classList.add('locked');document.getElementById('gateKey').value=''}
+if(sessionStorage.getItem(SESSION)==='1')document.getElementById('gate').classList.add('hide');else document.body.classList.add('locked');
+document.getElementById('gateForm').onsubmit=async e=>{e.preventDefault();if(await sha256(document.getElementById('gateKey').value)===HASH){document.getElementById('gateErr').textContent='';unlock()}else{document.getElementById('gateErr').textContent='Clave incorrecta';document.getElementById('gateKey').select()}};
+document.getElementById('lockBtn').onclick=lock;document.getElementById('date').value=new Date().toISOString().slice(0,10);render();
+</script></body></html>
