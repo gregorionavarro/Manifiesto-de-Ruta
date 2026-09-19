@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TrueMate Admin</title>
+<style>
+:root{--navy:#0f2f53;--navy2:#173d67;--gold:#f5c451;--bg:#eef4fb;--card:#fff;--text:#162840;--muted:#60728d;--border:#d6e2ef;--shadow:0 12px 30px rgba(17,47,84,.10)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(180deg,#f7faff,var(--bg));color:var(--text)}body.locked{overflow:hidden}
+.top{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-bottom:4px solid var(--gold)}.inner{max-width:1180px;margin:auto;padding:28px 24px}.inner h1{margin:0;font-size:32px}.inner p{margin:8px 0 0;color:#d7e3f1}
+main{max-width:1180px;margin:auto;padding:30px 24px 50px}.intro{margin-bottom:24px}.intro h2{margin:0 0 6px}.intro p{margin:0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px;box-shadow:var(--shadow);min-height:220px;display:flex;flex-direction:column;position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:0;top:0;width:6px;height:100%;background:var(--gold)}
+.tag{display:inline-flex;width:max-content;background:#fff7dd;color:#725200;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800;margin-bottom:16px}.card h3{margin:0 0 8px;font-size:22px}.card p{margin:0;color:var(--muted);line-height:1.5;flex:1}
+.actions{margin-top:22px}.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:800;cursor:pointer;background:var(--navy);color:#fff}
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(10,25,45,.68);z-index:1000;padding:18px}.modal.show{display:flex}.panel{width:min(1500px,96vw);height:min(92vh,1000px);background:#fff;border-radius:18px;overflow:hidden;display:flex;flex-direction:column}.head{background:var(--navy);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:4px solid var(--gold)}.close{border:1px solid rgba(255,255,255,.3);color:#fff;background:rgba(255,255,255,.06);border-radius:10px;padding:9px 12px;font-weight:700;cursor:pointer}iframe{border:0;width:100%;height:100%}
+.gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0f2f4e,#133b63);display:flex;align-items:center;justify-content:center;padding:20px}.gate.hide{display:none}.gatecard{width:min(430px,100%);background:#fff;border-radius:18px;padding:28px;border-top:6px solid var(--gold);box-shadow:0 25px 80px rgba(0,0,0,.3)}.gatecard h2{margin:18px 0 6px;color:var(--navy)}.gatecard p{color:var(--muted);font-size:13px}.gateform{display:flex;gap:8px;margin-top:18px}.gateform input{flex:1;padding:11px;border:1px solid var(--border);border-radius:9px}.err{min-height:20px;color:#b42318;font-size:12px;margin-top:8px;font-weight:700}
+@media(max-width:850px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="gate" class="gate"><div class="gatecard"><strong style="color:var(--navy);font-size:22px">TRUEMATE ADMIN</strong><h2>Acceso administrativo</h2><p>Herramientas reservadas para gerencia / owner.</p><form id="gateForm" class="gateform"><input id="gateKey" type="password" placeholder="Clave de acceso"><button class="btn">Entrar</button></form><div id="gateErr" class="err"></div></div></div>
+<header class="top"><div class="inner"><h1>TrueMate Admin</h1><p>Aplicaciones administrativas y financieras separadas de las herramientas del equipo.</p></div></header>
+<main><section class="intro"><h2>Administración</h2><p>Este espacio concentra las aplicaciones que no deben aparecer en TrueMate Tools para usuarios operativos.</p></section>
+<section class="grid">
+<article class="card"><div class="tag">💰 Finanzas</div><h3>Income Center</h3><p>Comisiones, fees, ingresos esperados, fuentes, historial y control de registros.</p><div class="actions"><button class="btn" onclick="openTool('Income Center','income-center.html')">Abrir Income Center</button></div></article>
+<article class="card"><div class="tag">📊 Gerencia</div><h3>Dashboard Comercial</h3><p>Pipeline, expiradas, prioridades, acuerdos y seguimiento gerencial.</p><div class="actions"><button class="btn" onclick="openTool('Dashboard Comercial','https://noisy-leaf-ece5.gregorio-navarro.workers.dev/dashboard-comercial-v7-2.html')">Abrir Dashboard</button></div></article>
+<article class="card"><div class="tag">🧭 Proceso</div><h3>Manifiesto de Ruta</h3><p>Guía completa del proceso de cotización y operación de Trucking.</p><div class="actions"><button class="btn" onclick="openTool('Manifiesto de Ruta','index.html')">Abrir Manifiesto</button></div></article>
+</section></main>
+<div class="modal" id="modal"><div class="panel"><div class="head"><b id="modalTitle">Herramienta</b><button class="close" onclick="closeTool()">✕ Cerrar</button></div><iframe id="frame" src="about:blank"></iframe></div></div>
+<script>
+const HASH='21b97732ba8522a0ed6006d328653d00f0519069f8d6e3e35518947fcf807717',SESSION='truemate_admin_unlocked_v1';
+async function sha256(s){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('')}
+function unlock(){sessionStorage.setItem(SESSION,'1');gate.classList.add('hide');document.body.classList.remove('locked')}
+if(sessionStorage.getItem(SESSION)==='1')gate.classList.add('hide');else document.body.classList.add('locked');
+gateForm.onsubmit=async e=>{e.preventDefault();if(await sha256(gateKey.value)===HASH){gateErr.textContent='';unlock()}else{gateErr.textContent='Clave incorrecta';gateKey.select()}};
+function openTool(title,src){modalTitle.textContent=title;frame.src=src+(src.includes('?')?'&':'?')+'v='+Date.now();modal.classList.add('show');document.body.style.overflow='hidden'}
+function closeTool(){modal.classList.remove('show');frame.src='about:blank';document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTool()});
+</script>
+</body></html>
