@@ -20,7 +20,7 @@ h2{margin:0 0 4px}.sub{margin:0 0 18px;color:var(--muted);font-size:13px}
 table{width:100%;border-collapse:collapse;font-size:13px}th{background:#eef4fb;color:#506176;text-align:left;padding:9px}td{padding:9px;border-bottom:1px solid #edf1f5}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.f{display:flex;flex-direction:column;gap:6px}.f label{font-size:11px;font-weight:800;color:var(--muted)}
 input,select,textarea{padding:11px;border:1px solid var(--line);border-radius:9px;font:inherit}.full{grid-column:1/-1}.btn{border:0;border-radius:9px;padding:11px 15px;font-weight:800;cursor:pointer}.primary{background:var(--navy);color:#fff}.secondary{background:#eef4fb;color:var(--navy)}
-.actions{display:flex;gap:10px;margin-top:16px}.hero{background:var(--navy);color:#fff;border-radius:14px;padding:18px}.hero .big{font-size:34px;font-weight:900;margin:5px 0}.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #e9edf2;font-size:13px}.hidden{display:none}
+.actions{display:flex;gap:10px;margin-top:16px}.danger{background:#fdecec;color:#b42318}.mini-btn{border:0;border-radius:8px;padding:7px 10px;font-weight:800;cursor:pointer}.hero{background:var(--navy);color:#fff;border-radius:14px;padding:18px}.hero .big{font-size:34px;font-weight:900;margin:5px 0}.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #e9edf2;font-size:13px}.hidden{display:none}
 .gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0f2f4e,#133b63);display:flex;align-items:center;justify-content:center;padding:20px}.gate.hide{display:none}
 .gatecard{width:min(430px,100%);background:#fff;border-radius:18px;padding:28px;border-top:6px solid var(--gold);box-shadow:0 25px 80px rgba(0,0,0,.3)}
 .gatecard h2{color:var(--navy)}.gateform{display:flex;gap:8px;margin-top:18px}.gateform input{flex:1}.err{min-height:20px;color:var(--red);font-size:12px;margin-top:8px;font-weight:700}
@@ -46,15 +46,15 @@ input,select,textarea{padding:11px;border:1px solid var(--line);border-radius:9p
 <section id="add" class="panel view hidden"><h2>Add Income</h2><p class="sub">Registra el ingreso sin tocar la hoja maestra.</p><form id="incomeForm"><div class="form">
 <div class="f"><label>DATE</label><input id="date" type="date" required></div><div class="f"><label>BUSINESS LINE</label><select id="line"><option>Health</option><option>Life</option><option>Trucking</option><option>Auto & Home</option><option>Commercial</option><option>Fees</option><option>Other</option></select></div>
 <div class="f"><label>INCOME TYPE</label><select id="type"><option>Commission</option><option>Agency Fee</option><option>Broker Fee</option><option>Renewal Commission</option><option>Bonus</option><option>Refund</option><option>Loan / Capital Inflow</option><option>Other</option></select></div>
-<div class="f"><label>CARRIER / SOURCE</label><input id="source" required placeholder="Ej. National Life, GEICO, Ambetter"></div><div class="f"><label>CLIENT</label><input id="client" placeholder="Opcional"></div>
+<div class="f"><label>CARRIER / SOURCE</label><select id="sourceSelect" required></select><input id="customSource" class="hidden" placeholder="Escribe nueva empresa / carrier" style="margin-top:8px"><small id="sourceHelp" class="sub" style="margin:0">Elige una empresa o selecciona “+ Añadir nueva”.</small></div><div class="f"><label>CLIENT</label><input id="client" placeholder="Opcional"></div>
 <div class="f"><label>PAYMENT METHOD</label><select id="method"><option>ACH</option><option>Stripe</option><option>Zelle</option><option>Wire</option><option>Check</option><option>Cash</option><option>Other</option></select></div>
-<div class="f"><label>AMOUNT</label><input id="amount" type="number" min="0" step="0.01" required></div><div class="f"><label>STATUS</label><select id="status"><option>Received</option><option>Expected</option><option>Pending</option></select></div>
+<div class="f"><label>AMOUNT</label><input id="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="1,290.00" required><small class="sub" style="margin:0">Se formatea automáticamente como monto.</small></div><div class="f"><label>STATUS</label><select id="status"><option>Received</option><option>Expected</option><option>Pending</option></select></div>
 <div class="f"><label>BANK ACCOUNT</label><input id="account" placeholder="Ej. BofA 1058"></div><div class="f"><label>EXPECTED DATE</label><input id="expectedDate" type="date"></div><div class="f full"><label>NOTES</label><textarea id="notes"></textarea></div>
 </div><div class="actions"><button class="btn primary">Save Income</button><button class="btn secondary" type="reset">Clear</button></div></form></section>
 
 <section id="expectedView" class="panel view hidden"><h2>Expected Income</h2><p class="sub">Dinero que debería llegar o está pendiente.</p><table><thead><tr><th>Expected</th><th>Source</th><th>Line</th><th>Amount</th><th>Status</th></tr></thead><tbody id="expectedBody"></tbody></table></section>
 <section id="sources" class="panel view hidden"><h2>Sources</h2><p class="sub">Resumen por carrier o fuente.</p><table><thead><tr><th>Source</th><th>Received</th><th>Pending</th><th>Total</th></tr></thead><tbody id="sourcesBody"></tbody></table></section>
-<section id="history" class="panel view hidden"><h2>History</h2><p class="sub">Historial mensual.</p><table><thead><tr><th>Month</th><th>Received</th><th>Expected</th><th>Pending</th><th>Records</th></tr></thead><tbody id="historyBody"></tbody></table></section>
+<section id="history" class="panel view hidden"><h2>History</h2><p class="sub">Historial mensual y administración de registros.</p><div class="box"><h3>Monthly Summary</h3><table><thead><tr><th>Month</th><th>Received</th><th>Expected</th><th>Pending</th><th>Records</th></tr></thead><tbody id="historyBody"></tbody></table></div><div class="box" style="margin-top:16px"><h3>Manage Records</h3><p class="sub">Si registraste algo mal, elimínalo aquí. El sistema pide confirmación antes de borrar.</p><div style="overflow:auto"><table><thead><tr><th>Date</th><th>Source</th><th>Line</th><th>Type</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead><tbody id="recordsBody"></tbody></table></div></div></section>
 <section id="guide" class="panel view hidden"><h2>Guía</h2><p class="sub">Flujo simple para que pocas personas mantengan la información.</p><div class="box"><p><b>1.</b> Registra todo desde Add Income.</p><p><b>2.</b> Separa comisiones, fees y préstamos.</p><p><b>3.</b> Los préstamos se muestran como Other Cash Inflows, no como revenue.</p><p><b>4.</b> Expected sirve para revisar lo que todavía no ha llegado.</p><p><b>5.</b> Esta versión guarda localmente en el navegador. La siguiente fase será sincronizar con Google Sheets.</p></div></section>
 </main>
 
@@ -62,12 +62,41 @@ input,select,textarea{padding:11px;border:1px solid var(--line);border-radius:9p
 <div class="side" style="margin-top:14px"><div class="row"><span>Expected</span><b id="sideExpected">$0.00</b></div><div class="row"><span>Remaining</span><b id="sidePending">$0.00</b></div><div class="row"><span>Fees</span><b id="fees">$0.00</b></div><div class="row"><span>Health / Life</span><b id="hl">$0.00</b></div><div class="row"><span>Trucking</span><b id="truck">$0.00</b></div><div class="row"><span>Auto & Home</span><b id="ah">$0.00</b></div><div class="row"><span>Commercial</span><b id="comm">$0.00</b></div></div></aside></div>
 
 <script>
-const KEY='truemate_income_center_v1',SESSION='truemate_income_center_unlocked_v1',HASH='21b97732ba8522a0ed6006d328653d00f0519069f8d6e3e35518947fcf807717';
-const seed=[{date:'2026-09-05',line:'Health',type:'Commission',source:'Ambetter',amount:2373,status:'Received',expectedDate:'2026-09-11'},{date:'2026-09-07',line:'Trucking',type:'Commission',source:'GEICO',amount:2650,status:'Received',expectedDate:'2026-09-07'},{date:'2026-09-10',line:'Life',type:'Commission',source:'National Life',amount:4894,status:'Expected',expectedDate:'2026-09-25'},{date:'2026-09-12',line:'Fees',type:'Agency Fee',source:'Client Fees',amount:1700,status:'Received',expectedDate:''},{date:'2026-09-15',line:'Commercial',type:'Commission',source:'Commercial Carrier',amount:650,status:'Pending',expectedDate:'2026-09-20'},{date:'2026-09-16',line:'Other',type:'Loan / Capital Inflow',source:'Owner Capital',amount:3000,status:'Received',expectedDate:''}];
+const KEY='truemate_income_center_v1',CUSTOM_SOURCES_KEY='truemate_income_custom_sources_v1',SESSION='truemate_income_center_unlocked_v1',HASH='21b97732ba8522a0ed6006d328653d00f0519069f8d6e3e35518947fcf807717';
+const seed=[{date:'2026-09-05',line:'Health',type:'Commission',source:'AMBETTER (Orange)',amount:2373,status:'Received',expectedDate:'2026-09-11'},{date:'2026-09-07',line:'Trucking',type:'Commission',source:'GEICO',amount:2650,status:'Received',expectedDate:'2026-09-07'},{date:'2026-09-10',line:'Life',type:'Commission',source:'National Life',amount:4894,status:'Expected',expectedDate:'2026-09-25'},{date:'2026-09-12',line:'Fees',type:'Agency Fee',source:'Client Fees',amount:1700,status:'Received',expectedDate:''},{date:'2026-09-15',line:'Commercial',type:'Commission',source:'Commercial Carrier',amount:650,status:'Pending',expectedDate:'2026-09-20'},{date:'2026-09-16',line:'Other',type:'Loan / Capital Inflow',source:'Owner Capital',amount:3000,status:'Received',expectedDate:''}];
+const BASE_SOURCES={
+  'Health':['CIGNA','UNITEDHEALTHCARE','AETNA','JEFFERSONHEALTH (American Senior)','DEVOTED','UHIC SEC United-SALUD','CLICO','AMBETTER (Orange)','ACA ORANGE','ORANGE','ELITE'],
+  'Life':['National Life','F&G'],
+  'Trucking':['GEICO','STRIPE','EQUITY ONE','STAR MUTUAL','WIRE TRANSFER','ZELLE','First Insurance Funding','First Connect','Neptune Flood','COVER BADGER','ROCKLAKE INSURANCE','APPALACHIAN','GEORGIA STERN','PRIME HOLDINGS'],
+  'Auto & Home':['GEICO','STRIPE','ZELLE','WIRE TRANSFER','EQUITY ONE','APPALACHIAN','NEPTUNE'],
+  'Commercial':['STRIPE','WIRE TRANSFER','ZELLE','First Connect','COVER BADGER','ROCKLAKE INSURANCE','APPALACHIAN'],
+  'Fees':['Client Fees','STRIPE','ZELLE','WIRE TRANSFER'],
+  'Other':['Owner Capital','Loan','Transfer']
+};
+let customSources={};try{customSources=JSON.parse(localStorage.getItem(CUSTOM_SOURCES_KEY))||{}}catch(e){customSources={}}
 let data;try{data=JSON.parse(localStorage.getItem(KEY))||seed}catch(e){data=seed}
+data=data.map((x,i)=>({...x,id:x.id||('r'+Date.now()+i)}));
+localStorage.setItem(KEY,JSON.stringify(data));
 const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(n||0)),isOther=x=>x.type==='Loan / Capital Inflow';
 const sum=f=>data.filter(f).reduce((a,b)=>a+Number(b.amount||0),0);
 function lineSum(l){return sum(x=>x.status==='Received'&&!isOther(x)&&(l==='Health / Life'?['Health','Life'].includes(x.line):x.line===l))}
+function sourcesFor(lineName){return [...new Set([...(BASE_SOURCES[lineName]||[]),...((customSources[lineName]||[]))])]}
+function refreshSources(){
+  const lineName=document.getElementById('line').value,sel=document.getElementById('sourceSelect'),current=sel.value;
+  sel.innerHTML=sourcesFor(lineName).map(s=>'<option value="'+s.replace(/"/g,'&quot;')+'">'+s+'</option>').join('')+'<option value="__NEW__">+ Añadir nueva empresa / carrier</option>';
+  if([...sel.options].some(o=>o.value===current)) sel.value=current;
+  toggleCustomSource();
+}
+function toggleCustomSource(){const isNew=document.getElementById('sourceSelect').value==='__NEW__';document.getElementById('customSource').classList.toggle('hidden',!isNew);if(isNew)document.getElementById('customSource').focus()}
+function normalizeAmount(raw){
+  let s=String(raw||'').trim().replace(/\$/g,'').replace(/\s/g,'');
+  if(!s)return 0;
+  if(s.includes(',')&&s.includes('.')){ if(s.lastIndexOf(',')>s.lastIndexOf('.')) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(/,/g,''); }
+  else if(s.includes(',')){ const p=s.split(','); s=(p.length===2&&p[1].length<=2)?p[0].replace(/\./g,'')+'.'+p[1]:s.replace(/,/g,''); }
+  return Number(s.replace(/[^0-9.-]/g,''))||0;
+}
+function formatAmountInput(){const el=document.getElementById('amount'),v=normalizeAmount(el.value);el.value=v?new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(v):''}
+function deleteRecord(id){const rec=data.find(x=>x.id===id);if(!rec)return;if(!confirm('¿Eliminar este ingreso de '+rec.source+' por '+money(rec.amount)+'?'))return;data=data.filter(x=>x.id!==id);localStorage.setItem(KEY,JSON.stringify(data));render()}
 function render(){const rec=sum(x=>x.status==='Received'&&!isOther(x)),pend=sum(x=>x.status!=='Received'&&!isOther(x)),exp=rec+pend,oth=sum(x=>x.status==='Received'&&isOther(x));
 document.getElementById('received').textContent=document.getElementById('sideReceived').textContent=money(rec);document.getElementById('expected').textContent=document.getElementById('sideExpected').textContent=money(exp);document.getElementById('pending').textContent=document.getElementById('sidePending').textContent=money(pend);document.getElementById('otherAmt').textContent=money(oth);
 document.getElementById('fees').textContent=money(lineSum('Fees'));document.getElementById('hl').textContent=money(lineSum('Health / Life'));document.getElementById('truck').textContent=money(lineSum('Trucking'));document.getElementById('ah').textContent=money(lineSum('Auto & Home'));document.getElementById('comm').textContent=money(lineSum('Commercial'));
@@ -75,13 +104,29 @@ document.getElementById('lines').innerHTML=['Health','Life','Trucking','Auto & H
 document.getElementById('latest').innerHTML=[...data].sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,8).map(x=>'<tr><td>'+x.date+'</td><td>'+x.source+'</td><td>'+x.line+'</td><td>'+money(x.amount)+'</td></tr>').join('');
 document.getElementById('expectedBody').innerHTML=data.filter(x=>x.status!=='Received').map(x=>'<tr><td>'+(x.expectedDate||'-')+'</td><td>'+x.source+'</td><td>'+x.line+'</td><td>'+money(x.amount)+'</td><td>'+x.status+'</td></tr>').join('');
 const sm={};data.forEach(x=>{sm[x.source]??={r:0,p:0};x.status==='Received'?sm[x.source].r+=x.amount:sm[x.source].p+=x.amount});document.getElementById('sourcesBody').innerHTML=Object.entries(sm).map(([s,v])=>'<tr><td>'+s+'</td><td>'+money(v.r)+'</td><td>'+money(v.p)+'</td><td>'+money(v.r+v.p)+'</td></tr>').join('');
-const hm={};data.forEach(x=>{const m=String(x.date||'').slice(0,7);hm[m]??={r:0,e:0,p:0,n:0};hm[m].n++;if(x.status==='Received')hm[m].r+=x.amount;if(x.status==='Expected')hm[m].e+=x.amount;if(x.status==='Pending')hm[m].p+=x.amount});document.getElementById('historyBody').innerHTML=Object.entries(hm).sort((a,b)=>b[0].localeCompare(a[0])).map(([m,v])=>'<tr><td>'+m+'</td><td>'+money(v.r)+'</td><td>'+money(v.e)+'</td><td>'+money(v.p)+'</td><td>'+v.n+'</td></tr>').join('')}
+const hm={};data.forEach(x=>{const m=String(x.date||'').slice(0,7);hm[m]??={r:0,e:0,p:0,n:0};hm[m].n++;if(x.status==='Received')hm[m].r+=x.amount;if(x.status==='Expected')hm[m].e+=x.amount;if(x.status==='Pending')hm[m].p+=x.amount});document.getElementById('historyBody').innerHTML=Object.entries(hm).sort((a,b)=>b[0].localeCompare(a[0])).map(([m,v])=>'<tr><td>'+m+'</td><td>'+money(v.r)+'</td><td>'+money(v.e)+'</td><td>'+money(v.p)+'</td><td>'+v.n+'</td></tr>').join('');
+document.getElementById('recordsBody').innerHTML=[...data].sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(x=>'<tr><td>'+x.date+'</td><td>'+x.source+'</td><td>'+x.line+'</td><td>'+x.type+'</td><td>'+money(x.amount)+'</td><td>'+x.status+'</td><td><button class="mini-btn danger" onclick="deleteRecord(\''+x.id+'\')">Eliminar</button></td></tr>').join('')}
 function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));const el=id==='expected'?document.getElementById('expectedView'):document.getElementById(id);el.classList.remove('hidden');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.v===id))}
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>showView(t.dataset.v));
-document.getElementById('incomeForm').onsubmit=e=>{e.preventDefault();data.push({date:date.value,line:line.value,type:type.value,source:source.value.trim(),client:client.value.trim(),method:method.value,amount:Number(amount.value),status:status.value,account:account.value.trim(),expectedDate:expectedDate.value,notes:notes.value.trim()});localStorage.setItem(KEY,JSON.stringify(data));e.target.reset();render();showView('dashboard')};
+document.getElementById('incomeForm').onsubmit=e=>{e.preventDefault();
+  let src=document.getElementById('sourceSelect').value;
+  if(src==='__NEW__'){
+    src=document.getElementById('customSource').value.trim();
+    if(!src){alert('Escribe el nombre de la nueva empresa / carrier.');return}
+    const ln=document.getElementById('line').value;customSources[ln]=[...new Set([...(customSources[ln]||[]),src])];localStorage.setItem(CUSTOM_SOURCES_KEY,JSON.stringify(customSources));
+  }
+  const amt=normalizeAmount(document.getElementById('amount').value);if(amt<=0){alert('Ingresa un monto válido.');return}
+  data.push({id:'r'+Date.now(),date:date.value,line:line.value,type:type.value,source:src,client:client.value.trim(),method:method.value,amount:amt,status:status.value,account:account.value.trim(),expectedDate:expectedDate.value,notes:notes.value.trim()});
+  localStorage.setItem(KEY,JSON.stringify(data));e.target.reset();refreshSources();render();showView('dashboard')
+};
 async function sha256(s){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('')}
 function unlock(){sessionStorage.setItem(SESSION,'1');document.getElementById('gate').classList.add('hide');document.body.classList.remove('locked')}function lock(){sessionStorage.removeItem(SESSION);document.getElementById('gate').classList.remove('hide');document.body.classList.add('locked');document.getElementById('gateKey').value=''}
 if(sessionStorage.getItem(SESSION)==='1')document.getElementById('gate').classList.add('hide');else document.body.classList.add('locked');
 document.getElementById('gateForm').onsubmit=async e=>{e.preventDefault();if(await sha256(document.getElementById('gateKey').value)===HASH){document.getElementById('gateErr').textContent='';unlock()}else{document.getElementById('gateErr').textContent='Clave incorrecta';document.getElementById('gateKey').select()}};
-document.getElementById('lockBtn').onclick=lock;document.getElementById('date').value=new Date().toISOString().slice(0,10);render();
+document.getElementById('lockBtn').onclick=lock;
+document.getElementById('line').addEventListener('change',refreshSources);
+document.getElementById('sourceSelect').addEventListener('change',toggleCustomSource);
+document.getElementById('amount').addEventListener('blur',formatAmountInput);
+document.getElementById('date').value=new Date().toISOString().slice(0,10);
+refreshSources();render();
 </script></body></html>
