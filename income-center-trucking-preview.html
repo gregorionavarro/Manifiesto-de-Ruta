@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TrueMate Income Center · Trucking</title>
+<style>body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#20324d}.loading{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}.spinner{width:38px;height:38px;border:4px solid #d9e4ef;border-top-color:#174675;border-radius:50%;animation:s .8s linear infinite}@keyframes s{to{transform:rotate(360deg)}}</style>
+</head>
+<body>
+<div class="loading" id="loading"><div class="spinner"></div><strong>Cargando TrueMate Income Center…</strong></div>
+<script>
+(async function(){
+  const base='https://cdn.jsdelivr.net/gh/gregorionavarro/Manifiesto-de-Ruta@main/';
+  try{
+    let html=await fetch(base+'income-center-trucking.html?v=20260924').then(r=>{if(!r.ok)throw new Error('HTML '+r.status);return r.text()});
+    html=html
+      .replace('href="/income-center-trucking.css"','href="'+base+'income-center-trucking.css?v=20260924"')
+      .replace('src="/income-center-trucking-1.js"','src="'+base+'income-center-trucking-1.js?v=20260924"')
+      .replace('src="/income-center-trucking-2.js"','src="'+base+'income-center-trucking-2.js?v=20260924"')
+      .replace('src="/income-center-trucking-3.js"','src="'+base+'income-center-trucking-3.js?v=20260924"');
+    document.open();
+    document.write(html);
+    document.close();
+  }catch(e){
+    document.getElementById('loading').innerHTML='<h2>No se pudo cargar el Income Center</h2><p>'+String(e)+'</p>';
+  }
+})();
+</script>
+</body>
+</html>
