@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TrueMate Income Center · Trucking</title>
+<link rel="stylesheet" href="/income-center-trucking.css">
+</head>
+<body>
+<div class="app">
+<div class="topbar">
+  <div><h1>TrueMate Income Center · Trucking</h1><p>Revenue & Cash Flow Analyzer · Cobros, diferidos, depósitos y Carrier/PFA</p></div>
+  <button id="btnRegisterTop" class="btn btn-white">+ Registrar ingreso</button>
+</div>
+<div class="tabs">
+  <button class="tab active" data-view="summary">1 · Resumen</button>
+  <button class="tab" data-view="income">2 · Ingresos</button>
+  <button class="tab" data-view="deferredView">3 · Diferidos</button>
+  <button class="tab" data-view="carrierView">4 · Carrier / PFA</button>
+  <button class="tab" data-view="feesView">5 · Fees / Producers</button>
+  <button class="tab" data-view="yearView">6 · Año por mes</button>
+  <button class="tab" data-view="tasksView">7 · Notas / Tareas</button>
+  <button class="tab" data-view="settingsView">8 · Configuración</button>
+</div>
+<section id="summary" class="view active">
+<div class="panel">
+<div class="panel-head">
+  <div><h2 id="summaryTitle">Resumen</h2><div class="sub">Haz clic en cliente, invoice o tarjeta para ver el detalle.</div></div>
+  <div class="month-controls">
+    <select id="monthSelect" class="month-select"><option value="01">enero</option><option value="02">febrero</option><option value="03">marzo</option><option value="04">abril</option><option value="05">mayo</option><option value="06">junio</option><option value="07">julio</option><option value="08">agosto</option><option value="09" selected>septiembre</option><option value="10">octubre</option><option value="11">noviembre</option><option value="12">diciembre</option></select>
+    <select id="yearSelect" class="month-select"><option>2025</option><option selected>2026</option><option>2027</option></select>
+  </div>
+</div>
+<div class="enterprise-hero">
+  <div class="hero-panel"><div class="hero-kicker">Cash Collected</div><div class="hero-value" id="heroReceived">$0.00</div><div class="hero-caption">Lo pagado por clientes en el mes seleccionado.</div><div class="hero-compare"><span id="heroCompare" class="hero-badge">Sin base anterior</span><span id="heroPrev" class="hero-badge">Mes pasado: $0.00</span></div></div>
+  <div class="hero-side">
+    <div class="side-card"><div class="eyebrow">Neto depositado / esperado</div><div class="big" id="heroNet">$0.00</div><div class="muted">Después de fees del procesador.</div></div>
+    <div class="side-card"><div class="eyebrow">Depósitos en proceso</div><div class="big" id="heroProcessing">$0.00</div><div class="muted">Cobros aún no reflejados en banco.</div></div>
+    <div class="side-card"><div class="eyebrow">Cartera pendiente</div><div class="big" id="heroPending">$0.00</div><div class="muted">Saldo pendiente por cobrar a clientes.</div></div>
+    <div class="side-card"><div class="eyebrow">Fees cobrados</div><div class="big" id="heroFees">$0.00</div><div class="muted">Fee total generado por la agencia.</div></div>
+  </div>
+</div>
+<div class="insight-grid">
+  <div class="insight-card"><div class="label">Top Producer</div><div class="main" id="insightProducer">—</div><div class="mini" id="insightProducerSub">Sin datos todavía.</div></div>
+  <div class="insight-card"><div class="label">Top Carrier pagado</div><div class="main" id="insightCarrier">—</div><div class="mini" id="insightCarrierSub">Sin pagos registrados.</div></div>
+  <div class="insight-card"><div class="label">Método principal</div><div class="main" id="insightMethod">—</div><div class="mini" id="insightMethodSub">Sin transacciones todavía.</div></div>
+  <div class="insight-card"><div class="label">Alertas activas</div><div class="main" id="insightAlerts">0</div><div class="mini" id="insightAlertsSub">Sin alertas críticas.</div></div>
+</div>
+<div class="alerts">
+  <div class="alert red" data-detail="carrier"><strong id="aCarrier">0</strong>Pagos Carrier / PFA vencidos</div>
+  <div class="alert yellow" data-detail="deferred"><strong id="aDeferred">0</strong>Diferidos próximos / vencidos</div>
+  <div class="alert blue" data-detail="processing"><strong id="aProcessing">0</strong>Depósitos en proceso</div>
+  <div class="alert green" data-detail="tasks"><strong id="aTasks">0</strong>Tareas abiertas</div>
+</div>
+<div class="grid2">
+  <div class="box"><div class="box-head"><div class="table-card-title"><div class="table-icon">≡</div><div><span class="section-eyebrow">Ingresos</span><h3>Movimientos recientes</h3><div class="sub">Últimos cobros procesados en el período.</div></div></div><button class="btn btn-soft" id="btnViewIncome">Ver todos</button></div><div class="tablewrap"><table><thead><tr><th>Cliente</th><th>Invoice</th><th>Producer</th><th>Método</th><th>Pagó cliente</th><th>Fee cobrado</th><th>Fee procesador</th><th>Neto</th><th>Depósito</th><th>Carrier/PFA</th><th>Acción</th></tr></thead><tbody id="movements"></tbody></table></div></div>
+  <div class="box"><div class="box-head"><div class="table-card-title"><div class="table-icon green">⏱</div><div><span class="section-eyebrow">Cobros futuros</span><h3>Próximos diferidos</h3><div class="sub">Cuotas programadas próximas a recibirse.</div></div></div><button class="btn btn-soft" id="btnViewDeferred">Ver todos</button></div><div class="tablewrap"><table style="min-width:540px"><thead><tr><th>Cliente</th><th>Invoice</th><th>Fecha</th><th>Monto</th><th>Estado</th></tr></thead><tbody id="deferred"></tbody></table></div></div>
+</div>
+<div class="analytics-grid">
+  <div class="analytics-card"><div class="box-head"><div><h3>Pagos a aseguradoras</h3><div class="analytics-sub">Ranking histórico por monto pagado a Carrier / MGA / PFA.</div></div><button class="btn btn-soft" id="btnViewCarrierAnalytics">Ver detalle</button></div><div id="carrierAnalytics"></div></div>
+  <div class="analytics-card"><div class="box-head"><div><h3>Top Producers por fee cobrado</h3><div class="analytics-sub">Quién ha generado más fee en los últimos 12 meses.</div></div><button class="btn btn-soft" id="btnViewProducerAnalytics">Ver detalle</button></div><div id="producerAnalytics"></div></div>
+</div>
+</div>
+</section>
+<section id="income" class="view"><div class="panel"><div class="panel-head"><div><h2>Ingresos</h2><div class="sub">Todos los ingresos del mes seleccionado.</div></div><button id="btnRegisterIncome" class="btn btn-navy">+ Registrar ingreso</button></div><div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Cliente</th><th>Empresa</th><th>Invoice</th><th>Producer</th><th>Método</th><th>Pago cliente</th><th>Fee cobrado</th><th>Neto</th><th>Estado depósito</th><th>Acción</th></tr></thead><tbody id="incomeBody"></tbody></table></div></div></section>
+<section id="deferredView" class="view"><div class="panel"><div class="panel-head"><div><h2>Diferidos</h2><div class="sub">Cuotas futuras y vencidas.</div></div></div><div class="tablewrap"><table><thead><tr><th>Cliente</th><th>Invoice</th><th>Fecha</th><th>Monto</th><th>Estado</th></tr></thead><tbody id="deferredAllBody"></tbody></table></div></div></section>
+<section id="carrierView" class="view"><div class="panel"><div class="panel-head"><div><h2>Carrier / MGA / PFA</h2><div class="sub">Control de obligaciones.</div></div></div><div class="tablewrap"><table><thead><tr><th>Cliente</th><th>Invoice</th><th>Carrier/PFA</th><th>Monto</th><th>Fecha límite</th><th>Estado</th></tr></thead><tbody id="carrierBody"></tbody></table></div></div></section>
+<section id="feesView" class="view"><div class="panel"><div class="panel-head"><div><h2>Fees / Producers</h2><div class="sub">Cuánto fee generó cada Producer.</div></div></div><div class="tablewrap"><table><thead><tr><th>Producer</th><th>Operaciones</th><th>Fees cobrados</th><th>Promedio fee</th></tr></thead><tbody id="feesBody"></tbody></table></div></div></section>
+<section id="yearView" class="view"><div class="panel"><div class="panel-head"><div><h2>Ingresos del año por mes</h2><div class="sub">Recibido, fees y neto mensual.</div></div></div><div class="cards12" id="yearCards"></div></div></section>
+<section id="tasksView" class="view"><div class="panel"><div class="panel-head"><div><h2>Notas / Tareas</h2><div class="sub">Seguimiento automático de diferidos y Carrier/PFA.</div></div><button id="btnNewTask" class="btn btn-navy">+ Nueva tarea</button></div><div id="tasksList"></div></div></section>
+<section id="settingsView" class="view"><div class="panel"><div class="panel-head"><div><h2>Configuración</h2><div class="sub">Producers y Carrier/MGA/PFA.</div></div></div><div class="grid2"><div class="box"><h3>Producers</h3><div id="producerList" class="catalog-list"></div><div style="margin-top:12px;display:flex;gap:8px"><input id="newProducer" class="month-select" style="min-width:0;flex:1" placeholder="Nombre producer"><button id="btnAddProducer" class="btn btn-navy">Agregar</button></div></div><div class="box"><h3>Carrier / MGA / PFA</h3><div id="carrierList" class="catalog-list"></div><div style="margin-top:12px;display:flex;gap:8px"><input id="newCarrier" class="month-select" style="min-width:0;flex:1" placeholder="Nombre Carrier / MGA / PFA"><button id="btnAddCarrier" class="btn btn-navy">Agregar</button></div></div></div></div></section>
+</div>
+<div class="footer-nav"><div class="footer-copy"><strong>TrueMate Internal Tools</strong>Regresa al flujo principal de Trucking cuando termines de revisar ingresos.</div><a class="footer-link" href="https://truemate-internal-tools.pages.dev/manifiesto-trucking" target="_blank" rel="noopener noreferrer">← Volver a Manifiesto Trucking</a></div>
+<div class="modal" id="registerModal"><div class="modalbox"><div class="modalhead"><h2 id="registerTitle">Registrar ingreso</h2><span class="close" id="closeRegister">×</span></div><div class="modalbody">
+<div class="formsec"><div class="section-title">1 · Cliente e invoice</div><div class="fields"><div class="field"><label>Nombre del cliente</label><input id="client"></div><div class="field"><label>Empresa</label><input id="company"></div><div class="field"><label>Invoice #</label><input id="invoice"></div><div class="field"><label>Producer</label><select id="producer"></select></div><div class="field"><label>Fecha del pago</label><input id="paymentDate" type="date" value="2026-09-23"></div><div class="field"><label>Método de pago</label><select id="method"><option>Stripe</option><option>Zelle</option><option>Wire</option><option>ACH</option><option>Check</option></select></div></div></div>
+<div class="formsec"><div class="section-title">2 · Lo que pagó el cliente</div><div class="fields"><div class="field"><label>Pago hecho por el cliente</label><input id="grossPayment" type="number" step="0.01"></div><div class="field"><label>Fee cobrado al cliente</label><input id="producerFee" type="number" step="0.01"></div></div></div>
+<div class="formsec"><div class="section-title">3 · ¿El cliente quedó debiendo?</div><div class="switchrow"><input type="checkbox" id="hasPending"><div><b>No por defecto.</b><div class="sub">Actívalo si hay saldo pendiente o diferido.</div></div></div><div id="pendingArea" class="hidden" style="margin-top:12px"><div class="fields"><div class="field"><label>Saldo pendiente</label><input id="pendingAmount" type="number" step="0.01"></div></div><div id="installments"></div><button id="btnAddInstallment" class="btn btn-soft" type="button">+ Agregar pago futuro</button></div></div>
+<div class="formsec"><div class="section-title">4 · Depósito / settlement</div><div class="callout" id="processorNote"></div><div class="settlement"><div class="metric"><span>Pagó cliente</span><b id="mGross">$0.00</b></div><div class="metric"><span>Fee procesador</span><b id="mFee">$0.00</b></div><div class="metric"><span>Neto esperado</span><b id="mNet">$0.00</b></div><div class="metric"><span>Estado depósito</span><b id="mStatus">—</b></div></div><div class="fields" style="margin-top:12px"><div class="field"><label>Fee real procesador</label><input id="processorFee" type="number" step="0.01"></div><div class="field"><label>Neto recibido / esperado</label><input id="netDeposit" type="number" step="0.01"></div><div class="field"><label>Estado depósito</label><select id="depositStatus"><option>En proceso</option><option>Depositado</option></select></div><div class="field"><label>Fecha depositado</label><input id="depositDate" type="date"></div></div></div>
+<div class="formsec"><div class="section-title">5 · Carrier / MGA / PFA</div><div class="fields"><div class="field"><label>Carrier / MGA / PFA</label><select id="carrierName"></select></div><div class="field"><label>Monto a pagar</label><input id="carrierAmount" type="number" step="0.01"></div><div class="field"><label>Fecha límite</label><input id="carrierDue" type="date"></div><div class="field"><label>Estado</label><select id="carrierStatus"><option>Pendiente</option><option>Pagado</option><option>No aplica</option></select></div></div></div>
+<div class="formsec"><div class="section-title">6 · Nota / tarea</div><div class="fields"><div class="field" style="grid-column:1/-1"><label>Nota</label><textarea id="notes"></textarea></div><div class="field"><label>Crear tarea manual</label><select id="createTask"><option>No</option><option>Sí</option></select></div><div class="field"><label>Fecha tarea</label><input id="taskDate" type="date"></div></div></div>
+</div><div class="modalfoot"><button id="cancelRegister" class="btn btn-soft">Cancelar</button><button id="saveRegister" class="btn btn-navy">Guardar</button></div></div></div>
+<div class="modal" id="recordModal"><div class="modalbox small"><div class="modalhead"><h2 id="recordTitle">Detalle</h2><span class="close" id="closeRecord">×</span></div><div class="modalbody" id="recordBody"></div><div class="modalfoot"><button id="closeRecordBtn" class="btn btn-soft">Cerrar</button></div></div></div>
+<div class="modal" id="alertModal"><div class="modalbox small"><div class="modalhead"><h2>🔔 Alertas de hoy</h2><span class="close" id="closeAlert">×</span></div><div class="modalbody" id="alertBody"></div><div class="modalfoot"><button id="closeAlertBtn" class="btn btn-navy">Entendido</button></div></div></div>
+<div class="toast" id="toast"></div>
+<script src="/income-center-trucking-1.js"></script>
+<script src="/income-center-trucking-2.js"></script>
+<script src="/income-center-trucking-3.js"></script>
+</body>
+</html>
